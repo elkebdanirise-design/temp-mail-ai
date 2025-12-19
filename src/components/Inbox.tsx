@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { MessageCard } from './MessageCard';
 import { MessageModal } from './MessageModal';
 import { EmptyInbox } from './EmptyInbox';
+import { InboxSkeleton } from './InboxSkeleton';
 
 interface Message {
   id: string;
@@ -29,9 +30,10 @@ interface InboxProps {
   onRefresh: () => void;
   onDeleteMessage: (id: string) => void;
   getMessageDetail: (id: string) => Promise<Message | null>;
+  isRefreshing?: boolean;
 }
 
-export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, getMessageDetail }: InboxProps) => {
+export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, getMessageDetail, isRefreshing = false }: InboxProps) => {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoadingMessage, setIsLoadingMessage] = useState(false);
@@ -81,14 +83,17 @@ export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, getMessag
           size="sm"
           onClick={onRefresh}
           className="text-muted-foreground hover:text-foreground"
+          disabled={isRefreshing}
         >
-          <RefreshCw className="w-4 h-4 mr-2" />
+          <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
           Refresh
         </Button>
       </motion.div>
 
       {/* Messages Grid */}
-      {messages.length === 0 ? (
+      {isRefreshing && messages.length === 0 ? (
+        <InboxSkeleton />
+      ) : messages.length === 0 ? (
         <EmptyInbox />
       ) : (
         <motion.div
