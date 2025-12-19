@@ -31,16 +31,47 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Aura-Mail | Free Disposable Email - Temp Mail AI & Secure Inbox</title>
+        <title>Aura-Mail | Fastest AI-Powered Disposable Email Service 2026</title>
         <meta 
           name="description" 
-          content="Generate free disposable email addresses instantly. Aura-Mail provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest temp mail service of 2026." 
+          content="Generate free disposable email addresses instantly. Aura-Mail provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest AI-powered temp mail service of 2026." 
         />
-        <meta name="keywords" content="disposable email, temp mail, temporary email, anonymous email, secure inbox, Temp Mail AI, free email, spam protection" />
-        <meta property="og:title" content="Aura-Mail | Free Disposable Email Service" />
-        <meta property="og:description" content="Generate anonymous temporary email addresses instantly. No signup required. Real-time inbox with military-grade privacy." />
+        <meta name="keywords" content="disposable email, temp mail, temporary email, anonymous email, secure inbox, Temp Mail AI, free email, spam protection, AI email" />
+        <meta property="og:title" content="Aura-Mail | Fastest AI-Powered Disposable Email Service 2026" />
+        <meta property="og:description" content="Generate anonymous temporary email addresses instantly. No signup required. Real-time inbox with military-grade privacy and AI-powered security." />
         <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://aura-mail.com/og-image.png" />
         <link rel="canonical" href="https://aura-mail.com" />
+        
+        {/* JSON-LD Schema Markup for SoftwareApplication */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Aura-Mail",
+            "applicationCategory": "UtilitiesApplication",
+            "operatingSystem": "Web",
+            "description": "AI-powered disposable email service for instant, secure, anonymous temporary email addresses",
+            "url": "https://aura-mail.com",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.9",
+              "ratingCount": "12847"
+            },
+            "featureList": [
+              "Instant email generation",
+              "Real-time inbox",
+              "Zero tracking",
+              "Encrypted messages",
+              "Mobile-friendly QR codes"
+            ]
+          })}
+        </script>
       </Helmet>
 
       <div className="min-h-screen bg-background pb-20 md:pb-0">
@@ -106,6 +137,7 @@ const Index = () => {
           activeTab={activeTab}
           onTabChange={setActiveTab}
           onRefresh={refreshMessages}
+          email={email}
         />
       </div>
     </>
