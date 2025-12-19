@@ -6,6 +6,7 @@ import { MessageCard } from './MessageCard';
 import { MessageModal } from './MessageModal';
 import { EmptyInbox } from './EmptyInbox';
 import { InboxSkeleton } from './InboxSkeleton';
+import { NativeAdCard } from './NativeAdCard';
 
 interface Message {
   id: string;
@@ -101,6 +102,9 @@ export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, getMessag
           animate={{ opacity: 1 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         >
+          {/* Native Ad as first item */}
+          <NativeAdCard />
+          
           <AnimatePresence mode="popLayout">
             {messages.map((message, index) => (
               <MessageCard
