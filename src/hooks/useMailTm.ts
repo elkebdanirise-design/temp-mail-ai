@@ -83,7 +83,7 @@ export const useMailTm = () => {
     return data.token;
   };
 
-  const generateEmail = useCallback(async () => {
+  const generateEmail = useCallback(async (customPrefix?: string) => {
     setLoading(true);
     setError(null);
     
@@ -94,7 +94,7 @@ export const useMailTm = () => {
       }
       
       const domain = domains[0].domain;
-      const username = generateRandomString(10);
+      const username = customPrefix || generateRandomString(10);
       const address = `${username}@${domain}`;
       const password = generateRandomString(16);
       

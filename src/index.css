@@ -200,4 +200,62 @@
   .animate-gradient-shift {
     animation: gradient-shift 3s ease-in-out infinite;
   }
+
+  /* Icon wave animation */
+  @keyframes icon-wave {
+    0%, 100% {
+      transform: scale(1) rotate(0deg);
+      box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4);
+    }
+    25% {
+      transform: scale(1.05) rotate(-2deg);
+    }
+    50% {
+      box-shadow: 0 0 20px 5px hsl(var(--primary) / 0.2);
+    }
+    75% {
+      transform: scale(1.05) rotate(2deg);
+    }
+  }
+
+  .animate-icon-wave {
+    animation: icon-wave 3s ease-in-out infinite;
+  }
+
+  /* Moving mesh gradient */
+  @keyframes mesh-gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .mesh-gradient-bg {
+    background: linear-gradient(
+      -45deg,
+      hsl(var(--primary) / 0.3),
+      hsl(190 95% 50% / 0.3),
+      hsl(var(--primary) / 0.2),
+      hsl(260 95% 60% / 0.2)
+    );
+    background-size: 400% 400%;
+    animation: mesh-gradient 8s ease infinite;
+  }
+
+  .mesh-gradient-btn {
+    background: linear-gradient(
+      -45deg,
+      hsl(240 60% 60%),
+      hsl(190 95% 50%),
+      hsl(240 60% 60%),
+      hsl(190 95% 50%)
+    );
+    background-size: 300% 300%;
+    animation: mesh-gradient 4s ease infinite;
+  }
 }

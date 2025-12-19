@@ -23,9 +23,9 @@ const Index = () => {
     refreshMessages,
   } = useMailTm();
 
-  const handleNewEmail = async () => {
+  const handleNewEmail = async (customPrefix?: string) => {
     await deleteAccount();
-    await generateEmail();
+    await generateEmail(customPrefix);
   };
 
   return (
@@ -42,6 +42,9 @@ const Index = () => {
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://aura-mail.com/og-image.png" />
         <link rel="canonical" href="https://aura-mail.com" />
+        
+        {/* Monetag Script Placeholder - Replace with actual Monetag scripts */}
+        {/* <script async src="https://alwingulla.com/88/tag.min.js" data-zone="YOUR_ZONE_ID" /> */}
         
         {/* JSON-LD Schema Markup for SoftwareApplication */}
         <script type="application/ld+json">
@@ -65,6 +68,7 @@ const Index = () => {
             },
             "featureList": [
               "Instant email generation",
+              "Custom email prefix",
               "Real-time inbox",
               "Zero tracking",
               "Encrypted messages",
@@ -77,7 +81,7 @@ const Index = () => {
       <div className="min-h-screen bg-background pb-20 md:pb-0">
         {/* Header Ad */}
         <div className="container mx-auto px-4 pt-4">
-          <AdPlaceholder variant="horizontal" className="hidden md:flex" />
+          <AdPlaceholder variant="horizontal" className="hidden md:flex" monetagId="header-728x90" />
         </div>
 
         <Header />
@@ -97,7 +101,7 @@ const Index = () => {
               </div>
 
               {/* Ad between email and inbox */}
-              <AdPlaceholder variant="horizontal" className="hidden md:flex" />
+              <AdPlaceholder variant="horizontal" className="hidden md:flex" monetagId="mid-728x90" />
 
               {/* Inbox */}
               <div className={`${activeTab === 'inbox' ? 'block' : 'hidden'} md:block`}>
@@ -114,7 +118,7 @@ const Index = () => {
             {/* Sidebar Ad - Desktop only */}
             <aside className="hidden lg:block w-[200px] flex-shrink-0">
               <div className="sticky top-6">
-                <AdPlaceholder variant="vertical" />
+                <AdPlaceholder variant="vertical" monetagId="sidebar-160x600" />
               </div>
             </aside>
           </div>
@@ -123,7 +127,7 @@ const Index = () => {
           <PrivacySolutionSection />
 
           {/* Ad Placeholder */}
-          <AdPlaceholder variant="horizontal" className="my-8" />
+          <AdPlaceholder variant="horizontal" className="my-8" monetagId="content-728x90" />
 
           {/* SEO Section */}
           <SEOSection />

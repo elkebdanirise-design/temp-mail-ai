@@ -56,7 +56,8 @@ export const PrivacySolutionSection = () => {
                 <motion.div
                   initial={{ scale: 1 }}
                   whileHover={{ scale: 1.1, rotate: 5 }}
-                  className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${feature.gradient} mb-6`}
+                  className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${feature.gradient} mb-6 animate-icon-wave`}
+                  style={{ animationDelay: `${index * 0.2}s` }}
                 >
                   <Icon className="w-8 h-8 text-white" />
                 </motion.div>
