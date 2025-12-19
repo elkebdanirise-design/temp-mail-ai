@@ -7,6 +7,13 @@ import { MessageModal } from './MessageModal';
 import { EmptyInbox } from './EmptyInbox';
 import { InboxSkeleton } from './InboxSkeleton';
 import { NativeAdCard } from './NativeAdCard';
+import { TrustBadge } from './TrustBadge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface Message {
   id: string;
@@ -79,16 +86,25 @@ export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, getMessag
           )}
         </div>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onRefresh}
-          className="text-muted-foreground hover:text-foreground"
-          disabled={isRefreshing}
-        >
-          <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-          Refresh
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onRefresh}
+                className="text-muted-foreground hover:text-foreground hover:scale-105 transition-all"
+                disabled={isRefreshing}
+              >
+                <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+                Refresh
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Check for new emails</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </motion.div>
 
       {/* Messages Grid */}
@@ -118,6 +134,9 @@ export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, getMessag
           </AnimatePresence>
         </motion.div>
       )}
+
+      {/* Trust Badge */}
+      <TrustBadge />
 
       {/* Message Modal */}
       <MessageModal
