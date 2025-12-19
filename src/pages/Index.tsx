@@ -16,6 +16,9 @@ const Index = () => {
     email,
     messages,
     loading,
+    domains,
+    selectedDomain,
+    setSelectedDomain,
     generateEmail,
     getMessageDetail,
     deleteMessage,
@@ -23,9 +26,9 @@ const Index = () => {
     refreshMessages,
   } = useMailTm();
 
-  const handleNewEmail = async (customPrefix?: string) => {
+  const handleNewEmail = async (customPrefix?: string, domain?: string) => {
     await deleteAccount();
-    await generateEmail(customPrefix);
+    await generateEmail(customPrefix, domain);
   };
 
   return (
@@ -72,7 +75,7 @@ const Index = () => {
               "Real-time inbox",
               "Zero tracking",
               "Encrypted messages",
-              "Mobile-friendly QR codes"
+              "Multi-domain support"
             ]
           })}
         </script>
@@ -95,6 +98,9 @@ const Index = () => {
                 <EmailDisplay
                   email={email}
                   loading={loading}
+                  domains={domains}
+                  selectedDomain={selectedDomain}
+                  onDomainChange={setSelectedDomain}
                   onRefresh={handleNewEmail}
                   onDelete={handleNewEmail}
                 />

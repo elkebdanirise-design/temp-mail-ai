@@ -42,17 +42,29 @@ export const useMailTm = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [domains, setDomains] = useState<Domain[]>([]);
+  const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
 
   const generateRandomString = (length: number) => {
     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
     return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
   };
 
-  const getDomains = async (): Promise<Domain[]> => {
-    const response = await fetch(`${API_BASE}/domains`);
-    const data = await response.json();
-    return data['hydra:member'] || [];
-  };
+  const fetchDomains = useCallback(async (): Promise<Domain[]> => {
+    try {
+      const response = await fetch(`${API_BASE}/domains`);
+      const data = await response.json();
+      const domainList = data['hydra:member'] || [];
+      setDomains(domainList);
+      if (domainList.length > 0 && !selectedDomain) {
+        setSelectedDomain(domainList[0].domain);
+      }
+      return domainList;
+    } catch (err) {
+      console.error('Error fetching domains:', err);
+      return [];
+    }
+  }, [selectedDomain]);
 
   const createAccount = async (address: string, password: string): Promise<Account> => {
     const response = await fetch(`${API_BASE}/accounts`, {
@@ -83,19 +95,23 @@ export const useMailTm = () => {
     return data.token;
   };
 
-  const generateEmail = useCallback(async (customPrefix?: string) => {
+  const generateEmail = useCallback(async (customPrefix?: string, domain?: string) => {
     setLoading(true);
     setError(null);
     
     try {
-      const domains = await getDomains();
-      if (domains.length === 0) {
+      let domainList = domains;
+      if (domainList.length === 0) {
+        domainList = await fetchDomains();
+      }
+      
+      if (domainList.length === 0) {
         throw new Error('No domains available');
       }
       
-      const domain = domains[0].domain;
+      const targetDomain = domain || selectedDomain || domainList[0].domain;
       const username = customPrefix || generateRandomString(10);
-      const address = `${username}@${domain}`;
+      const address = `${username}@${targetDomain}`;
       const password = generateRandomString(16);
       
       const account = await createAccount(address, password);
@@ -105,18 +121,20 @@ export const useMailTm = () => {
       setToken(authToken);
       setAccountId(account.id);
       setMessages([]);
+      setSelectedDomain(targetDomain);
       
       // Store in session for persistence
       sessionStorage.setItem('aura_email', address);
       sessionStorage.setItem('aura_token', authToken);
       sessionStorage.setItem('aura_password', password);
+      sessionStorage.setItem('aura_domain', targetDomain);
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate email');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [domains, selectedDomain, fetchDomains]);
 
   const fetchMessages = useCallback(async () => {
     if (!token) return;
@@ -183,6 +201,7 @@ export const useMailTm = () => {
       sessionStorage.removeItem('aura_email');
       sessionStorage.removeItem('aura_token');
       sessionStorage.removeItem('aura_password');
+      sessionStorage.removeItem('aura_domain');
       
       setEmail(null);
       setToken(null);
@@ -193,14 +212,21 @@ export const useMailTm = () => {
     }
   };
 
+  // Fetch domains on mount
+  useEffect(() => {
+    fetchDomains();
+  }, [fetchDomains]);
+
   // Auto-generate email on mount
   useEffect(() => {
     const savedEmail = sessionStorage.getItem('aura_email');
     const savedToken = sessionStorage.getItem('aura_token');
+    const savedDomain = sessionStorage.getItem('aura_domain');
     
     if (savedEmail && savedToken) {
       setEmail(savedEmail);
       setToken(savedToken);
+      if (savedDomain) setSelectedDomain(savedDomain);
     } else {
       generateEmail();
     }
@@ -221,6 +247,9 @@ export const useMailTm = () => {
     messages,
     loading,
     error,
+    domains,
+    selectedDomain,
+    setSelectedDomain,
     generateEmail,
     getMessageDetail,
     deleteMessage,
