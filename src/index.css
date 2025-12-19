@@ -157,6 +157,21 @@
     }
   }
 
+  @keyframes live-pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.2);
+    }
+  }
+
+  .animate-live-pulse {
+    animation: live-pulse 1.5s ease-in-out infinite;
+  }
+
   @keyframes spin-slow {
     from {
       transform: rotate(0deg);

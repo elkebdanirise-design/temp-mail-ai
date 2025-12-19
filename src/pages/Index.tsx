@@ -5,6 +5,8 @@ import { EmailDisplay } from '@/components/EmailDisplay';
 import { InboxComponent } from '@/components/Inbox';
 import { AdPlaceholder } from '@/components/AdPlaceholder';
 import { SEOSection } from '@/components/SEOSection';
+import { PrivacySolutionSection } from '@/components/PrivacySolutionSection';
+import { Footer } from '@/components/Footer';
 import { MobileNav } from '@/components/MobileNav';
 import { useMailTm } from '@/hooks/useMailTm';
 
@@ -73,6 +75,7 @@ const Index = () => {
                   onRefresh={refreshMessages}
                   onDeleteMessage={deleteMessage}
                   getMessageDetail={getMessageDetail}
+                  isRefreshing={loading}
                 />
               </div>
             </div>
@@ -85,23 +88,18 @@ const Index = () => {
             </aside>
           </div>
 
+          {/* Privacy Solution Section */}
+          <PrivacySolutionSection />
+
+          {/* Ad Placeholder */}
+          <AdPlaceholder variant="horizontal" className="my-8" />
+
           {/* SEO Section */}
           <SEOSection />
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-border py-8 mt-12">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-              <p>© 2026 Aura-Mail. All rights reserved.</p>
-              <div className="flex items-center gap-6">
-                <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
-                <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
-                <a href="#" className="hover:text-foreground transition-colors">Contact</a>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <Footer />
 
         {/* Mobile Navigation */}
         <MobileNav
