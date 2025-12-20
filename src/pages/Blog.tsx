@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { Search, Loader2 } from 'lucide-react';
+import { Search, Loader2, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ArticleCard } from '@/components/ArticleCard';
@@ -46,6 +47,23 @@ export default function Blog() {
           <Header />
 
           <main className="container mx-auto px-4 py-8 md:py-16">
+            {/* Back to Home Button */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
+              className="mb-6"
+            >
+              <Link
+                to="/"
+                className="inline-flex items-center gap-2 text-sm font-medium transition-all duration-300 hover:gap-3 group"
+                style={{ color: 'hsl(200 15% 55%)' }}
+              >
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                <span>Back to Home</span>
+              </Link>
+            </motion.div>
+
             {/* Hero Section */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
