@@ -94,20 +94,16 @@ export const Footer = () => {
               </a>
             </motion.div>
 
-            {/* Copyright */}
+            {/* Copyright - No duplicate branding */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.25 }}
-              className="flex flex-col items-center gap-2 text-center"
+              className="text-center"
             >
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-500" />
-                <span className="font-semibold neon-text">Aura-Mail</span>
-              </div>
               <p className="text-xs text-muted-foreground">
-                © 2026 Aura-Mail. All rights reserved. The fastest AI-powered disposable email service.
+                © 2026 Temp Mail Aura. All rights reserved. The fastest AI-powered disposable email service.
               </p>
             </motion.div>
           </div>

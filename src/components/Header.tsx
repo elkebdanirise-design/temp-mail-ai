@@ -40,12 +40,12 @@ export const Header = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="text-xl md:text-2xl font-bold tracking-tight">
-                    Aura<span className="neon-text">-Mail</span>
+                    Temp Mail <span className="neon-text">Aura</span>
                   </h1>
                   {isPremium && <VIPBadge />}
                 </div>
                 <p className="text-[10px] md:text-xs text-muted-foreground tracking-widest uppercase">
-                  Secure AI Mail
+                  Fast & Secure Disposable Email
                 </p>
               </div>
             </div>
@@ -67,14 +67,7 @@ export const Header = () => {
                 </span>
               </motion.div>
 
-              <nav className="hidden md:flex items-center gap-6">
-                <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Features
-                </a>
-                <a href="#privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Privacy
-                </a>
-              </nav>
+              {/* Nav links removed for clean design */}
 
               {isPremium ? (
                 <Button

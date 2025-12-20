@@ -24,15 +24,17 @@ export const PremiumModal = ({ isOpen, onClose, onActivate }: PremiumModalProps)
     setIsActivating(true);
     setError(null);
 
-    // Simulate activation check (will connect to Lemon Squeezy later)
+    // Simulate activation check
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    // For demo: any key with 16+ chars is "valid"
-    if (licenseKey.length >= 16) {
+    // Valid format: AURA-PRO-2026-XXXX (where XXXX is any 4 characters)
+    const validKeyPattern = /^AURA-PRO-2026-.{4}$/;
+    
+    if (validKeyPattern.test(licenseKey.toUpperCase())) {
       onActivate(licenseKey);
       onClose();
     } else {
-      setError('Invalid license key. Please check and try again.');
+      setError('Invalid license key format. Expected: AURA-PRO-2026-XXXX');
     }
 
     setIsActivating(false);

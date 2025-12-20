@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Header } from '@/components/Header';
 import { EmailDisplay } from '@/components/EmailDisplay';
@@ -6,6 +6,7 @@ import { InboxComponent } from '@/components/Inbox';
 import { AdPlaceholder } from '@/components/AdPlaceholder';
 import { SEOSection } from '@/components/SEOSection';
 import { PrivacySolutionSection } from '@/components/PrivacySolutionSection';
+import { BlogSection } from '@/components/BlogSection';
 import { Footer } from '@/components/Footer';
 import { MobileNav } from '@/components/MobileNav';
 import { useMailTm } from '@/hooks/useMailTm';
@@ -16,35 +17,44 @@ const Index = () => {
     email,
     messages,
     loading,
-    domains,
-    selectedDomain,
-    setSelectedDomain,
     generateEmail,
     getMessageDetail,
     deleteMessage,
     deleteAccount,
     refreshMessages,
+    setOnNewMessage,
   } = useMailTm();
 
-  const handleNewEmail = async (customPrefix?: string, domain?: string) => {
+  // Sound notification for new emails
+  useEffect(() => {
+    setOnNewMessage(() => {
+      const audio = new Audio('/notification.mp3');
+      audio.volume = 0.3;
+      audio.play().catch(() => {
+        // Audio play failed (likely autoplay policy)
+      });
+    });
+  }, [setOnNewMessage]);
+
+  const handleNewEmail = async (customPrefix?: string) => {
     await deleteAccount();
-    await generateEmail(customPrefix, domain);
+    await generateEmail(customPrefix);
   };
 
   return (
     <>
       <Helmet>
-        <title>Aura-Mail | Fastest AI-Powered Disposable Email Service 2026</title>
+        <title>Temp Mail Aura | Fast & Secure Disposable Email</title>
         <meta 
           name="description" 
-          content="Generate free disposable email addresses instantly. Aura-Mail provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest AI-powered temp mail service of 2026." 
+          content="Generate free disposable email addresses instantly. Temp Mail Aura provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest AI-powered temp mail service of 2026." 
         />
-        <meta name="keywords" content="disposable email, temp mail, temporary email, anonymous email, secure inbox, Temp Mail AI, free email, spam protection, AI email" />
-        <meta property="og:title" content="Aura-Mail | Fastest AI-Powered Disposable Email Service 2026" />
+        <meta name="keywords" content="temp mail, disposable email, temporary email, anonymous email, secure inbox, Temp Mail AI, free email, spam protection, AI email, aura mail" />
+        <meta property="og:title" content="Temp Mail Aura | Fast & Secure Disposable Email" />
         <meta property="og:description" content="Generate anonymous temporary email addresses instantly. No signup required. Real-time inbox with military-grade privacy and AI-powered security." />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://aura-mail.com/og-image.png" />
-        <link rel="canonical" href="https://aura-mail.com" />
+        <meta property="og:image" content="https://temp-mail-aura.com/og-image.png" />
+        <link rel="canonical" href="https://temp-mail-aura.com" />
         
         {/* Monetag Script Placeholder - Replace with actual Monetag scripts */}
         {/* <script async src="https://alwingulla.com/88/tag.min.js" data-zone="YOUR_ZONE_ID" /> */}
@@ -54,11 +64,11 @@ const Index = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Aura-Mail",
+            "name": "Temp Mail Aura",
             "applicationCategory": "UtilitiesApplication",
             "operatingSystem": "Web",
             "description": "AI-powered disposable email service for instant, secure, anonymous temporary email addresses",
-            "url": "https://aura-mail.com",
+            "url": "https://temp-mail-aura.com",
             "offers": {
               "@type": "Offer",
               "price": "0",
@@ -75,7 +85,7 @@ const Index = () => {
               "Real-time inbox",
               "Zero tracking",
               "Encrypted messages",
-              "Multi-domain support"
+              "Fast domain selection"
             ]
           })}
         </script>
@@ -98,9 +108,6 @@ const Index = () => {
                 <EmailDisplay
                   email={email}
                   loading={loading}
-                  domains={domains}
-                  selectedDomain={selectedDomain}
-                  onDomainChange={setSelectedDomain}
                   onRefresh={handleNewEmail}
                   onDelete={handleNewEmail}
                 />
@@ -137,6 +144,9 @@ const Index = () => {
 
           {/* SEO Section */}
           <SEOSection />
+
+          {/* Blog Section */}
+          <BlogSection />
         </main>
 
         {/* Footer */}
