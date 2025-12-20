@@ -9,6 +9,7 @@ import { PrivacySolutionSection } from '@/components/PrivacySolutionSection';
 import { BlogSection } from '@/components/BlogSection';
 import { Footer } from '@/components/Footer';
 import { MobileNav } from '@/components/MobileNav';
+import { AuroraBackground } from '@/components/AuroraBackground';
 import { useMailTm } from '@/hooks/useMailTm';
 
 const Index = () => {
@@ -87,7 +88,8 @@ const Index = () => {
         </script>
       </Helmet>
 
-      <div className="min-h-screen bg-background pb-20 md:pb-0">
+      <AuroraBackground />
+      <div className="relative z-10 min-h-screen pb-20 md:pb-0 ambient-breathe">
         {/* Header Ad */}
         <div className="container mx-auto px-4 pt-4">
           <AdPlaceholder variant="horizontal" className="hidden md:flex" monetagId="header-728x90" />

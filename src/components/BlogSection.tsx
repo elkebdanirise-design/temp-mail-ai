@@ -8,7 +8,7 @@ const blogPosts = [
     excerpt: 'Protect your primary inbox from spam and data harvesting when signing up for new social platforms.',
     date: 'Dec 18, 2026',
     icon: UserCheck,
-    gradient: 'from-cyan-500/20 to-blue-500/20',
+    gradient: 'from-[hsl(280,100%,60%)] to-[hsl(320,100%,60%)]',
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ const blogPosts = [
     excerpt: 'Learn how temporary email addresses keep your personal data safe from marketers and hackers.',
     date: 'Dec 15, 2026',
     icon: Shield,
-    gradient: 'from-emerald-500/20 to-teal-500/20',
+    gradient: 'from-[hsl(190,100%,50%)] to-[hsl(220,100%,60%)]',
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const blogPosts = [
     excerpt: 'Discover how AI is revolutionizing the way we protect our digital communications in 2026.',
     date: 'Dec 12, 2026',
     icon: Eye,
-    gradient: 'from-purple-500/20 to-pink-500/20',
+    gradient: 'from-[hsl(270,100%,55%)] to-[hsl(190,100%,50%)]',
   },
 ];
 
@@ -38,7 +38,7 @@ export const BlogSection = () => {
           viewport={{ once: true }}
           className="text-2xl md:text-3xl font-semibold tracking-tight mb-3"
         >
-          Latest Privacy Insights & <span className="neon-text">Temp Mail Aura News</span>
+          Latest Privacy Insights & <span className="aurora-gradient-text">Temp Mail Aura News</span>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -62,12 +62,12 @@ export const BlogSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="group glass-panel p-5 md:p-6 hover:border-primary/30 transition-all cursor-pointer"
+              className="group glass-panel p-5 md:p-6 cursor-pointer hover-lift"
             >
               {/* Placeholder Image Area */}
               <div className={`w-full h-32 md:h-40 rounded-xl bg-gradient-to-br ${post.gradient} mb-4 flex items-center justify-center overflow-hidden relative`}>
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-                <Icon className="w-12 h-12 text-foreground/30 group-hover:scale-110 transition-transform" />
+                <Icon className="w-12 h-12 text-white/40 group-hover:scale-110 group-hover:text-white/60 transition-all duration-500" />
               </div>
 
               {/* Date */}
@@ -77,7 +77,7 @@ export const BlogSection = () => {
               </div>
 
               {/* Title */}
-              <h3 className="font-semibold text-base md:text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
+              <h3 className="font-semibold text-base md:text-lg mb-2 group-hover:text-[hsl(280,100%,70%)] transition-colors line-clamp-2">
                 {post.title}
               </h3>
 
@@ -87,7 +87,7 @@ export const BlogSection = () => {
               </p>
 
               {/* Read More */}
-              <div className="flex items-center gap-1 text-sm text-primary font-medium group-hover:gap-2 transition-all">
+              <div className="flex items-center gap-1 text-sm font-medium group-hover:gap-2 transition-all aurora-gradient-text">
                 <span>Read More</span>
                 <ArrowRight className="w-4 h-4" />
               </div>

@@ -26,21 +26,30 @@ export const Header = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="py-6 md:py-8"
+        className="py-6 md:py-8 relative z-20"
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="absolute inset-0 bg-primary/30 rounded-lg blur-lg animate-pulse" />
-                <div className="relative p-1.5 rounded-lg bg-primary/10 border border-primary/30">
+                <div 
+                  className="absolute inset-0 rounded-lg blur-lg animate-pulse"
+                  style={{ background: 'hsl(280 100% 60% / 0.4)' }}
+                />
+                <div 
+                  className="relative p-1.5 rounded-lg"
+                  style={{
+                    background: 'hsl(280 80% 60% / 0.15)',
+                    border: '1px solid hsl(280 80% 60% / 0.3)',
+                  }}
+                >
                   <AuraLogo className="w-8 h-8" />
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl md:text-2xl font-bold tracking-tighter">
                   <span className="font-semibold">Temp Mail</span>{' '}
-                  <span className="neon-text font-bold">Aura</span>
+                  <span className="aurora-gradient-text font-bold">Aura</span>
                 </h1>
                 {isPremium && <VIPBadge />}
               </div>
@@ -50,7 +59,7 @@ export const Header = () => {
               {/* Blog Link */}
               <a
                 href="#blog-section"
-                className="hidden md:flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-primary hover:after:w-full after:transition-all"
+                className="hidden md:flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(280,100%,65%)] hover:after:w-full after:transition-all"
               >
                 Blog
               </a>
@@ -60,7 +69,11 @@ export const Header = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20"
+                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full"
+                style={{
+                  background: 'hsl(160 100% 40% / 0.1)',
+                  border: '1px solid hsl(160 100% 40% / 0.25)',
+                }}
               >
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-emerald-500 animate-live-pulse" />
@@ -84,7 +97,7 @@ export const Header = () => {
               ) : (
                 <Button
                   asChild
-                  className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-105 transition-transform text-white font-semibold shadow-lg shadow-cyan-500/30"
+                  className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-105 transition-transform text-white font-semibold"
                 >
                   <a href="#pro-systems" className="flex items-center gap-2">
                     <Zap className="w-4 h-4" />
