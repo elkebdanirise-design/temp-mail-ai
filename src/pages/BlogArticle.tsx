@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, Calendar, Clock, ChevronRight, Twitter, Linkedin, LinkIcon, Check } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, ChevronRight, Twitter, Linkedin, LinkIcon, Bookmark } from 'lucide-react';
 import { toast } from 'sonner';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ArticleCard } from '@/components/ArticleCard';
 import { AuroraBackground } from '@/components/AuroraBackground';
 import { getPostBySlug, getRelatedPosts } from '@/data/blogData';
+import { useBookmarks } from '@/hooks/useBookmarks';
 
 export default function BlogArticle() {
   const { slug } = useParams<{ slug: string }>();
@@ -38,6 +39,13 @@ export default function BlogArticle() {
 
   const relatedPosts = getRelatedPosts(post, 3);
   const Icon = post.icon;
+  const { isBookmarked, toggleBookmark } = useBookmarks();
+  const bookmarked = isBookmarked(post.id);
+
+  const handleBookmarkClick = () => {
+    const newState = toggleBookmark(post.id);
+    toast.success(newState ? 'Article bookmarked!' : 'Bookmark removed');
+  };
 
   // Share Button Component
   const ShareButton = ({ 
@@ -292,6 +300,26 @@ export default function BlogArticle() {
                       }}
                       glowColor="hsl(var(--aurora-purple) / 0.3)"
                     />
+                    
+                    {/* Bookmark Button */}
+                    <button
+                      onClick={handleBookmarkClick}
+                      aria-label={bookmarked ? 'Remove bookmark' : 'Bookmark article'}
+                      className="group relative p-2.5 rounded-full transition-all duration-300 hover:scale-110"
+                      style={{
+                        background: bookmarked 
+                          ? 'linear-gradient(135deg, hsl(45 90% 50%), hsl(35 85% 45%))'
+                          : 'linear-gradient(145deg, hsl(220 30% 10%), hsl(220 30% 6%))',
+                        border: '1px solid hsl(var(--glass-border))',
+                        boxShadow: bookmarked ? '0 0 16px hsl(45 90% 50% / 0.4)' : 'none',
+                      }}
+                    >
+                      <div 
+                        className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{ background: 'hsl(45 90% 50% / 0.3)', filter: 'blur(8px)' }}
+                      />
+                      <Bookmark className={`relative w-4 h-4 transition-colors ${bookmarked ? 'fill-white text-white' : 'text-muted-foreground group-hover:text-foreground'}`} />
+                    </button>
                   </div>
                 </motion.div>
 
