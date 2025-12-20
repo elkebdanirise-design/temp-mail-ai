@@ -141,13 +141,13 @@ const Index = () => {
           {/* Privacy Solution Section */}
           <PrivacySolutionSection />
 
-          {/* Blog Section - After Privacy */}
+          {/* Blog Section - Positioned before SEO for 'Latest Privacy Insights' first */}
           <BlogSection />
 
           {/* Ad Placeholder */}
           <AdPlaceholder variant="horizontal" className="my-8" monetagId="content-728x90" />
 
-          {/* SEO Section */}
+          {/* SEO Section - 'The Fastest Disposable Email' */}
           <SEOSection />
         </main>
 
