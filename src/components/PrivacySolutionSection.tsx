@@ -6,19 +6,19 @@ const features = [
     icon: Zap,
     title: 'Instant Generation',
     description: 'Get a fully functional email address in milliseconds. No forms, no waiting, no verification steps.',
-    gradient: 'from-[hsl(280,100%,60%)] to-[hsl(320,100%,65%)]',
+    gradient: 'from-[hsl(190,100%,55%)] to-[hsl(210,100%,60%)]',
   },
   {
     icon: EyeOff,
     title: 'Zero Tracking',
     description: 'We never log IPs, store cookies, or track your activity. Your privacy is absolute.',
-    gradient: 'from-[hsl(190,100%,50%)] to-[hsl(220,100%,60%)]',
+    gradient: 'from-[hsl(175,100%,45%)] to-[hsl(190,100%,50%)]',
   },
   {
     icon: ShieldCheck,
     title: 'Encrypted Inbox',
     description: 'All messages are encrypted in transit and at rest. Bank-level security for your temp mail.',
-    gradient: 'from-[hsl(270,100%,55%)] to-[hsl(280,100%,65%)]',
+    gradient: 'from-[hsl(210,100%,55%)] to-[hsl(220,100%,60%)]',
   },
 ];
 
@@ -58,13 +58,13 @@ export const PrivacySolutionSection = () => {
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${feature.gradient} mb-6`}
                   style={{
-                    boxShadow: '0 0 40px hsl(280 80% 60% / 0.3)',
+                    boxShadow: '0 0 40px hsl(190 100% 55% / 0.25)',
                   }}
                 >
                   <Icon className="w-8 h-8 text-white" />
                 </motion.div>
                 
-                <h3 className="text-xl font-semibold mb-3 group-hover:text-[hsl(280,100%,70%)] transition-colors">{feature.title}</h3>
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-[hsl(190,100%,60%)] transition-colors">{feature.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
                   {feature.description}
                 </p>
