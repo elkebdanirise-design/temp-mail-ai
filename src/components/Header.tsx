@@ -37,12 +37,12 @@ export const Header = () => {
         transition={{ duration: 0.5 }}
         className="py-6 md:py-8 relative z-20"
       >
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center justify-between">
-            {/* Logo & Brand */}
-            <div className="flex items-center gap-4">
-              {/* Logo - 25% larger, no background, aligned with text height */}
-              <AuraLogo className="w-[4.5rem] h-[4.5rem] md:w-[5.5rem] md:h-[5.5rem] lg:w-[6.25rem] lg:h-[6.25rem]" />
+            {/* Logo & Brand - shifted left on mobile with tighter padding */}
+            <div className="flex items-center gap-2 sm:gap-3 md:gap-4 -ml-1 sm:ml-0">
+              {/* Logo - significantly larger on mobile, perfectly aligned with text */}
+              <AuraLogo className="w-14 h-14 sm:w-[4.5rem] sm:h-[4.5rem] md:w-[5.5rem] md:h-[5.5rem] lg:w-[6.25rem] lg:h-[6.25rem]" />
               
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">

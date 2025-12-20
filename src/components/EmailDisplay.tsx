@@ -204,12 +204,12 @@ export const EmailDisplay = ({
           </AnimatePresence>
 
           {/* Inner Content - Fluid height with touch-friendly buttons */}
-          <div className="relative flex items-center h-12 xs:h-14 sm:h-16 px-1">
+          <div className="relative flex items-center h-14 sm:h-16 px-1.5 sm:px-1">
             {/* Copy Button - Left - Touch-friendly 44px+ hit area */}
             <button
               onClick={handleCopy}
               disabled={!email || loading}
-              className="relative flex items-center justify-center w-11 xs:w-12 sm:w-14 h-full min-h-[44px] transition-all disabled:opacity-30 disabled:cursor-not-allowed group rounded-l-full hover:bg-[hsl(330,60%,50%,0.06)] active:bg-[hsl(330,60%,50%,0.12)] active:scale-95"
+              className="relative flex items-center justify-center w-11 sm:w-14 h-full min-h-[44px] transition-all disabled:opacity-30 disabled:cursor-not-allowed group rounded-l-full hover:bg-[hsl(330,60%,50%,0.06)] active:bg-[hsl(330,60%,50%,0.12)] active:scale-95"
               aria-label="Copy email"
             >
               <motion.div
@@ -227,13 +227,13 @@ export const EmailDisplay = ({
 
             {/* Subtle divider */}
             <div 
-              className="w-px h-5 xs:h-6 opacity-30"
+              className="w-px h-6 opacity-30"
               style={{ background: 'linear-gradient(180deg, transparent, hsl(var(--aurora-orange) / 0.3), transparent)' }}
             />
 
-            {/* Email Address - Center - Fluid typography */}
+            {/* Email Address - Center - LARGER font on mobile, bold monospace */}
             <div 
-              className="flex-1 flex items-center justify-center px-2 xs:px-3 sm:px-4 cursor-pointer overflow-hidden min-w-0"
+              className="flex-1 flex items-center justify-center px-3 sm:px-4 cursor-pointer overflow-hidden min-w-0"
               onClick={handleCopy}
             >
               <AnimatePresence mode="wait">
@@ -246,10 +246,10 @@ export const EmailDisplay = ({
                     className="flex items-center gap-2"
                   >
                     <Loader2 
-                      className="w-3.5 h-3.5 xs:w-4 xs:h-4 animate-spin"
+                      className="w-4 h-4 animate-spin"
                       style={{ color: 'hsl(var(--aurora-orange))' }}
                     />
-                    <span className="text-[10px] xs:text-xs sm:text-sm text-muted-foreground/60 font-medium">
+                    <span className="text-xs sm:text-sm text-muted-foreground/60 font-medium">
                       Generating...
                     </span>
                   </motion.div>
@@ -260,12 +260,11 @@ export const EmailDisplay = ({
                     animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
                     exit={{ opacity: 0, filter: 'blur(8px)', scale: 0.98 }}
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-center truncate max-w-full"
+                    className="text-center truncate max-w-full text-[0.95rem] sm:text-base font-semibold"
                     style={{
                       fontFamily: "'JetBrains Mono', monospace",
-                      fontWeight: 500,
+                      fontWeight: 600,
                       letterSpacing: '0.01em',
-                      fontSize: 'clamp(0.625rem, 2.5vw, 1rem)',
                       background: 'linear-gradient(90deg, hsl(0 0% 85%) 0%, hsl(var(--aurora-orange) / 0.9) 25%, hsl(var(--aurora-sunset) / 0.9) 50%, hsl(var(--aurora-magenta) / 0.9) 75%, hsl(0 0% 80%) 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
