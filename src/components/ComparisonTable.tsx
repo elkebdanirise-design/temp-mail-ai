@@ -118,7 +118,7 @@ export const ComparisonTable = () => {
                 className="text-xs mt-0.5"
                 style={{ color: 'hsl(var(--aurora-orange) / 0.7)' }}
               >
-                $9.99/mo
+                $9.99/year
               </div>
               {/* Recommended badge */}
               <div 

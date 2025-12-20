@@ -82,7 +82,7 @@ export const ShootingStars = () => {
   }, [createShootingStar]);
 
   return (
-    <div className="fixed inset-0 z-[2] pointer-events-none overflow-hidden">
+    <div className="fixed inset-0 z-[2] pointer-events-none overflow-hidden will-change-transform" style={{ transform: 'translateZ(0)' }}>
       {/* Static twinkling stars */}
       {staticStars.map((star) => (
         <motion.div

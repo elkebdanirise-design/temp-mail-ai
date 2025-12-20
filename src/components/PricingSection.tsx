@@ -149,7 +149,7 @@ export const PricingSection = () => {
                 >
                   $9.99
                 </span>
-                <span className="text-muted-foreground text-sm">/month</span>
+                <span className="text-muted-foreground text-sm">/year</span>
               </div>
             </div>
 

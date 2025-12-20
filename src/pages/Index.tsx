@@ -1,23 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Header } from '@/components/Header';
 import { EmailDisplay } from '@/components/EmailDisplay';
 import { InboxComponent } from '@/components/Inbox';
 import { AdPlaceholder } from '@/components/AdPlaceholder';
-import { SEOSection } from '@/components/SEOSection';
-import { PrivacySolutionSection } from '@/components/PrivacySolutionSection';
-import { BlogSection } from '@/components/BlogSection';
-import { Footer } from '@/components/Footer';
-import { MobileNav } from '@/components/MobileNav';
 import { AuroraBackground } from '@/components/AuroraBackground';
 import { ParticleField } from '@/components/ParticleField';
 import { ShootingStars } from '@/components/ShootingStars';
-import { PricingSection } from '@/components/PricingSection';
-import { ComparisonTable } from '@/components/ComparisonTable';
-import { TestimonialsSection } from '@/components/TestimonialsSection';
-import { FastestEmailSection } from '@/components/FastestEmailSection';
+import { Footer } from '@/components/Footer';
+import { MobileNav } from '@/components/MobileNav';
 import ScrollToTop from '@/components/ScrollToTop';
 import { useMailTm } from '@/hooks/useMailTm';
+
+// Lazy load below-the-fold sections for faster initial load
+const SEOSection = lazy(() => import('@/components/SEOSection').then(m => ({ default: m.SEOSection })));
+const PrivacySolutionSection = lazy(() => import('@/components/PrivacySolutionSection').then(m => ({ default: m.PrivacySolutionSection })));
+const BlogSection = lazy(() => import('@/components/BlogSection').then(m => ({ default: m.BlogSection })));
+const PricingSection = lazy(() => import('@/components/PricingSection').then(m => ({ default: m.PricingSection })));
+const ComparisonTable = lazy(() => import('@/components/ComparisonTable').then(m => ({ default: m.ComparisonTable })));
+const TestimonialsSection = lazy(() => import('@/components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })));
+const FastestEmailSection = lazy(() => import('@/components/FastestEmailSection').then(m => ({ default: m.FastestEmailSection })));
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('email');
@@ -144,24 +146,27 @@ const Index = () => {
             </aside>
           </div>
 
-          {/* 1. Privacy Solution Section */}
-          <PrivacySolutionSection />
+          {/* Lazy loaded sections with minimal fallback */}
+          <Suspense fallback={<div className="min-h-[200px]" />}>
+            {/* 1. Privacy Solution Section */}
+            <PrivacySolutionSection />
 
-          {/* 2. Testimonials Section */}
-          <TestimonialsSection />
+            {/* 2. Testimonials Section */}
+            <TestimonialsSection />
 
-          {/* 3. SEO Section - Why Use Temp Mail AI */}
-          <SEOSection />
+            {/* 3. SEO Section - Why Use Temp Mail AI */}
+            <SEOSection />
 
-          {/* 4. Blog Section */}
-          <BlogSection />
+            {/* 4. Blog Section */}
+            <BlogSection />
 
-          {/* 5. Pricing & Comparison */}
-          <PricingSection />
-          <ComparisonTable />
+            {/* 5. Pricing & Comparison */}
+            <PricingSection />
+            <ComparisonTable />
 
-          {/* 6. The Fastest Disposable Email of 2026 - Before Footer */}
-          <FastestEmailSection />
+            {/* 6. The Fastest Disposable Email of 2026 - Before Footer */}
+            <FastestEmailSection />
+          </Suspense>
 
           {/* Ad Placeholder */}
           <AdPlaceholder variant="horizontal" className="my-8" monetagId="content-728x90" />
