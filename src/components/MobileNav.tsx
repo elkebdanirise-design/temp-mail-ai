@@ -39,40 +39,72 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
 
   return (
     <motion.nav
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ 
-        duration: 0.6, 
-        delay: 0.5,
-        type: 'spring',
-        stiffness: 100,
-        damping: 15
-      }}
-      className="fixed bottom-4 left-4 right-4 z-40 md:hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
-      <div className="bg-background/40 backdrop-blur-2xl rounded-2xl border border-white/10 px-1.5 py-2 shadow-2xl shadow-black/50">
-        <div className="flex items-center justify-around">
+      {/* Neon top border */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-[1.5px]"
+        style={{
+          background: 'linear-gradient(90deg, hsl(280 80% 55% / 0.6), hsl(190 90% 50% / 0.8), hsl(280 80% 55% / 0.6))',
+          boxShadow: '0 0 10px hsl(190 90% 50% / 0.4), 0 0 20px hsl(280 80% 55% / 0.2)',
+        }}
+      />
+      
+      {/* Glassmorphism background */}
+      <div 
+        className="px-4 py-3"
+        style={{
+          background: 'linear-gradient(180deg, hsl(220 30% 6% / 0.85) 0%, hsl(220 30% 4% / 0.95) 100%)',
+          backdropFilter: 'blur(24px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+        }}
+      >
+        <div className="flex items-center justify-around max-w-md mx-auto">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
             const isHighlight = tab.highlight;
 
             return (
-              <button
+              <motion.button
                 key={tab.id}
                 type="button"
                 onClick={() => handleTabClick(tab.id)}
-                className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg transition-all duration-150 touch-manipulation select-none ${
+                whileTap={{ scale: 0.9 }}
+                className={`relative flex flex-col items-center justify-center gap-1 min-w-[56px] min-h-[56px] rounded-xl transition-all duration-200 touch-manipulation select-none ${
                   isHighlight
-                    ? 'mesh-gradient-btn-intense text-white shadow-md shadow-cyan-500/30 scale-100 active:scale-90'
+                    ? 'text-white'
                     : isActive
-                    ? 'text-primary bg-primary/10 active:scale-95'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50 active:bg-secondary/70 active:scale-95'
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
                 }`}
+                style={isHighlight ? {
+                  background: 'linear-gradient(135deg, hsl(280 80% 55%) 0%, hsl(190 90% 50%) 100%)',
+                  boxShadow: '0 4px 20px hsl(190 90% 50% / 0.35), 0 0 30px hsl(280 80% 55% / 0.2)',
+                } : isActive ? {
+                  background: 'hsl(280 60% 50% / 0.15)',
+                  boxShadow: '0 0 20px hsl(280 60% 50% / 0.2)',
+                } : {}}
               >
-                <Icon className="w-4 h-4" />
-                <span className="text-[8px] font-medium">{tab.label}</span>
-              </button>
+                {/* Active indicator glow */}
+                {isActive && !isHighlight && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute inset-0 rounded-xl"
+                    style={{
+                      border: '1px solid hsl(280 60% 50% / 0.3)',
+                    }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                
+                <Icon className="w-5 h-5" />
+                <span className="text-[10px] font-medium tracking-wide">{tab.label}</span>
+              </motion.button>
             );
           })}
         </div>
