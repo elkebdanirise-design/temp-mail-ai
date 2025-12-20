@@ -8,7 +8,7 @@ const blogPosts = [
     excerpt: 'Protect your primary inbox from spam and data harvesting when signing up for new social platforms.',
     date: 'Dec 18, 2026',
     icon: UserCheck,
-    gradient: 'from-[hsl(280,100%,60%)] to-[hsl(320,100%,60%)]',
+    gradient: 'from-[hsl(190,100%,55%)] to-[hsl(210,100%,60%)]',
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ const blogPosts = [
     excerpt: 'Learn how temporary email addresses keep your personal data safe from marketers and hackers.',
     date: 'Dec 15, 2026',
     icon: Shield,
-    gradient: 'from-[hsl(190,100%,50%)] to-[hsl(220,100%,60%)]',
+    gradient: 'from-[hsl(175,100%,45%)] to-[hsl(190,100%,50%)]',
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const blogPosts = [
     excerpt: 'Discover how AI is revolutionizing the way we protect our digital communications in 2026.',
     date: 'Dec 12, 2026',
     icon: Eye,
-    gradient: 'from-[hsl(270,100%,55%)] to-[hsl(190,100%,50%)]',
+    gradient: 'from-[hsl(210,100%,55%)] to-[hsl(220,100%,60%)]',
   },
 ];
 
@@ -77,7 +77,7 @@ export const BlogSection = () => {
               </div>
 
               {/* Title */}
-              <h3 className="font-semibold text-base md:text-lg mb-2 group-hover:text-[hsl(280,100%,70%)] transition-colors line-clamp-2">
+              <h3 className="font-semibold text-base md:text-lg mb-2 group-hover:text-[hsl(190,100%,60%)] transition-colors line-clamp-2">
                 {post.title}
               </h3>
 

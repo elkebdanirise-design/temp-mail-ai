@@ -43,35 +43,34 @@ export const EmailDisplay = ({
       <div 
         className="absolute inset-0 rounded-2xl"
         style={{
-          background: 'linear-gradient(135deg, hsl(220 30% 8% / 0.9), hsl(220 25% 5% / 0.95))',
+          background: 'linear-gradient(135deg, hsl(210 30% 8% / 0.85), hsl(210 30% 5% / 0.95))',
           backdropFilter: 'blur(24px)',
         }}
       />
       
-      {/* Aurora glow effects */}
+      {/* Cyan aurora glow effects */}
       <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
         <motion.div
           animate={{
-            opacity: [0.3, 0.5, 0.3],
-            scale: [1, 1.1, 1],
+            opacity: [0.15, 0.25, 0.15],
+            scale: [1, 1.05, 1],
           }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-1/2 -left-1/4 w-3/4 h-full"
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-1/2 left-[10%] w-[80%] h-full"
           style={{
-            background: 'radial-gradient(ellipse, hsl(270 100% 55% / 0.2) 0%, transparent 60%)',
-            filter: 'blur(40px)',
+            background: 'radial-gradient(ellipse 60% 40% at center, hsl(190 100% 55% / 0.2) 0%, transparent 60%)',
+            filter: 'blur(30px)',
           }}
         />
         <motion.div
           animate={{
-            opacity: [0.2, 0.4, 0.2],
-            scale: [1, 1.05, 1],
+            opacity: [0.1, 0.2, 0.1],
           }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute -bottom-1/2 -right-1/4 w-3/4 h-full"
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+          className="absolute -bottom-1/3 right-[10%] w-[60%] h-2/3"
           style={{
-            background: 'radial-gradient(ellipse, hsl(190 100% 50% / 0.15) 0%, transparent 60%)',
-            filter: 'blur(40px)',
+            background: 'radial-gradient(ellipse, hsl(210 100% 55% / 0.1) 0%, transparent 60%)',
+            filter: 'blur(30px)',
           }}
         />
       </div>
@@ -80,8 +79,8 @@ export const EmailDisplay = ({
       <div 
         className="absolute inset-0 rounded-2xl pointer-events-none"
         style={{
-          border: '1px solid hsl(280 80% 60% / 0.3)',
-          boxShadow: 'inset 0 1px 0 hsl(0 0% 100% / 0.05)',
+          border: '1px solid hsl(190 80% 50% / 0.25)',
+          boxShadow: 'inset 0 1px 0 hsl(0 0% 100% / 0.03)',
         }}
       />
       
@@ -91,12 +90,12 @@ export const EmailDisplay = ({
           <div 
             className="p-2.5 rounded-xl"
             style={{
-              background: 'linear-gradient(135deg, hsl(280 80% 60% / 0.2), hsl(190 100% 50% / 0.1))',
-              border: '1px solid hsl(280 80% 60% / 0.3)',
-              boxShadow: '0 0 20px hsl(280 80% 60% / 0.2)',
+              background: 'linear-gradient(135deg, hsl(190 80% 50% / 0.15), hsl(210 100% 55% / 0.08))',
+              border: '1px solid hsl(190 80% 50% / 0.25)',
+              boxShadow: '0 0 20px hsl(190 100% 55% / 0.15)',
             }}
           >
-            <Mail className="w-5 h-5 text-[hsl(280,100%,70%)]" />
+            <Mail className="w-5 h-5 text-[hsl(190,100%,60%)]" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
@@ -106,7 +105,7 @@ export const EmailDisplay = ({
                   <TooltipTrigger asChild>
                     <Info className="w-3.5 h-3.5 text-muted-foreground/60 cursor-help shrink-0" />
                   </TooltipTrigger>
-                  <TooltipContent side="top" className="max-w-[260px] text-center glass-panel border-[hsl(280,80%,60%,0.3)]">
+                  <TooltipContent side="top" className="max-w-[260px] text-center glass-panel border-[hsl(190,80%,50%,0.25)]">
                     <p className="text-xs">
                       This is a temporary disposable address for privacy protection — not a permanent email account. Perfect for signups, trials, and avoiding spam.
                     </p>
@@ -132,17 +131,17 @@ export const EmailDisplay = ({
             className="w-full rounded-xl px-4 py-4 cursor-pointer transition-all duration-300 group relative overflow-hidden min-h-[56px] flex items-center"
             onClick={handleCopy}
             style={{
-              background: 'hsl(220 25% 8% / 0.8)',
-              border: '2px solid hsl(280 80% 60% / 0.4)',
-              boxShadow: '0 0 30px hsl(280 80% 60% / 0.1), inset 0 0 20px hsl(280 80% 60% / 0.05)',
+              background: 'hsl(210 30% 6% / 0.9)',
+              border: '1.5px solid hsl(190 80% 50% / 0.35)',
+              boxShadow: '0 0 25px hsl(190 100% 55% / 0.08), inset 0 0 15px hsl(190 100% 55% / 0.03)',
             }}
           >
             {/* Hover glow effect */}
             <div 
               className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
               style={{ 
-                boxShadow: '0 0 40px hsl(280 80% 60% / 0.3), inset 0 0 30px hsl(190 100% 50% / 0.1)',
-                border: '2px solid hsl(280 80% 60% / 0.6)',
+                boxShadow: '0 0 40px hsl(190 100% 55% / 0.2), inset 0 0 25px hsl(190 100% 55% / 0.05)',
+                border: '1.5px solid hsl(190 100% 55% / 0.5)',
               }} 
             />
             
@@ -155,7 +154,7 @@ export const EmailDisplay = ({
                   exit={{ opacity: 0 }}
                   className="flex items-center justify-center w-full gap-3"
                 >
-                  <Loader2 className="w-5 h-5 text-[hsl(280,100%,70%)] animate-spin" />
+                  <Loader2 className="w-5 h-5 text-[hsl(190,100%,60%)] animate-spin" />
                   <span className="text-muted-foreground font-medium">Creating secure mailbox...</span>
                 </motion.div>
               ) : (
@@ -184,8 +183,8 @@ export const EmailDisplay = ({
                   disabled={!email || loading}
                   className="flex-1 sm:flex-none h-12 rounded-xl font-medium transition-all duration-300 hover:scale-[1.02]"
                   style={{
-                    background: 'hsl(220 25% 10% / 0.8)',
-                    border: '1px solid hsl(280 80% 60% / 0.3)',
+                    background: 'hsl(210 30% 8% / 0.9)',
+                    border: '1px solid hsl(190 80% 50% / 0.25)',
                     backdropFilter: 'blur(12px)',
                   }}
                 >
@@ -216,7 +215,7 @@ export const EmailDisplay = ({
                   </AnimatePresence>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent className="glass-panel border-[hsl(280,80%,60%,0.3)]">
+              <TooltipContent className="glass-panel border-[hsl(190,80%,50%,0.25)]">
                 <p>Copy email to clipboard</p>
               </TooltipContent>
             </Tooltip>

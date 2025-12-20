@@ -34,13 +34,13 @@ export const Header = () => {
               <div className="relative">
                 <div 
                   className="absolute inset-0 rounded-lg blur-lg animate-pulse"
-                  style={{ background: 'hsl(280 100% 60% / 0.4)' }}
+                  style={{ background: 'hsl(190 100% 55% / 0.35)' }}
                 />
                 <div 
                   className="relative p-1.5 rounded-lg"
                   style={{
-                    background: 'hsl(280 80% 60% / 0.15)',
-                    border: '1px solid hsl(280 80% 60% / 0.3)',
+                    background: 'hsl(190 80% 50% / 0.1)',
+                    border: '1px solid hsl(190 80% 50% / 0.25)',
                   }}
                 >
                   <AuraLogo className="w-8 h-8" />
@@ -48,7 +48,7 @@ export const Header = () => {
               </div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl md:text-2xl font-bold tracking-tighter">
-                  <span className="font-semibold">Temp Mail</span>{' '}
+                  <span className="font-semibold text-foreground">Temp Mail</span>{' '}
                   <span className="aurora-gradient-text font-bold">Aura</span>
                 </h1>
                 {isPremium && <VIPBadge />}
@@ -59,7 +59,7 @@ export const Header = () => {
               {/* Blog Link */}
               <a
                 href="#blog-section"
-                className="hidden md:flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(280,100%,65%)] hover:after:w-full after:transition-all"
+                className="hidden md:flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(190,100%,55%)] hover:after:w-full after:transition-all"
               >
                 Blog
               </a>
@@ -71,8 +71,8 @@ export const Header = () => {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full"
                 style={{
-                  background: 'hsl(160 100% 40% / 0.1)',
-                  border: '1px solid hsl(160 100% 40% / 0.25)',
+                  background: 'hsl(160 100% 40% / 0.08)',
+                  border: '1px solid hsl(160 100% 40% / 0.2)',
                 }}
               >
                 <div className="flex items-center gap-1.5">
