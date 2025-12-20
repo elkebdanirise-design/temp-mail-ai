@@ -18,9 +18,11 @@ import { TestimonialsSection } from '@/components/TestimonialsSection';
 import { FastestEmailSection } from '@/components/FastestEmailSection';
 import ScrollToTop from '@/components/ScrollToTop';
 import { useMailTm } from '@/hooks/useMailTm';
+import { useNotificationSound } from '@/hooks/useNotificationSound';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('email');
+  const { playNotification } = useNotificationSound();
   const {
     email,
     messages,
@@ -36,13 +38,9 @@ const Index = () => {
   // Sound notification for new emails
   useEffect(() => {
     setOnNewMessage(() => {
-      const audio = new Audio('/notification.mp3');
-      audio.volume = 0.3;
-      audio.play().catch(() => {
-        // Audio play failed (likely autoplay policy)
-      });
+      playNotification();
     });
-  }, [setOnNewMessage]);
+  }, [setOnNewMessage, playNotification]);
 
   const handleNewEmail = async () => {
     await deleteAccount();
