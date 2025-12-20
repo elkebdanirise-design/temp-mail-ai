@@ -37,60 +37,62 @@ export const EmailDisplay = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="glass-panel p-4 sm:p-6 md:p-8 relative overflow-hidden"
+      className="relative overflow-hidden rounded-2xl border border-primary/20 bg-background/40 backdrop-blur-xl shadow-2xl shadow-primary/10"
     >
-      {/* Moving mesh gradient background */}
-      <div className="absolute inset-0 mesh-gradient-bg opacity-30 pointer-events-none" />
+      {/* Glassmorphism background layers */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none" />
+      <div className="absolute inset-0 mesh-gradient-bg opacity-20 pointer-events-none" />
       
-      {/* Neon glow effect */}
-      <div className="absolute inset-0 animate-pulse-neon rounded-xl pointer-events-none" />
+      {/* Neon glow border effect */}
+      <div className="absolute inset-0 rounded-2xl border border-primary/30 animate-pulse-neon pointer-events-none" />
       
-      {/* Background gradient orb */}
-      <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl animate-float" />
-      <div className="absolute -bottom-20 -left-20 w-32 h-32 bg-[hsl(var(--neon-glow-secondary))]/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '-3s' }} />
+      {/* Floating gradient orbs */}
+      <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/20 rounded-full blur-3xl animate-float" />
+      <div className="absolute -bottom-24 -left-24 w-40 h-40 bg-[hsl(var(--neon-glow-secondary))]/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '-3s' }} />
       
-      <div className="relative z-10">
+      <div className="relative z-10 p-5 sm:p-6 md:p-8">
         {/* Header Section */}
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
+        <div className="flex items-center gap-3 mb-5">
+          <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/30 shadow-lg shadow-primary/20">
             <Mail className="w-5 h-5 text-primary" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-medium text-muted-foreground">Your Disposable Email</h2>
+              <h2 className="text-base font-semibold text-foreground tracking-tight">Your Disposable Email</h2>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Info className="w-3.5 h-3.5 text-muted-foreground/60 cursor-help shrink-0" />
                   </TooltipTrigger>
-                  <TooltipContent side="top" className="max-w-[260px] text-center">
+                  <TooltipContent side="top" className="max-w-[260px] text-center backdrop-blur-xl bg-background/90 border-primary/20">
                     <p className="text-xs">
-                      This is a temporary disposable address for privacy protection — not a permanent Gmail account. Perfect for signups, trials, and avoiding spam.
+                      This is a temporary disposable address for privacy protection — not a permanent email account. Perfect for signups, trials, and avoiding spam.
                     </p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>
-            <div className="flex items-center gap-2">
-              <p className="text-xs text-muted-foreground/60">Auto-refreshes every 5 seconds</p>
+            <div className="flex items-center gap-2 mt-0.5">
+              <p className="text-xs text-muted-foreground">Auto-refreshes every 5 seconds</p>
               {/* Live Pulse Dot */}
               <div className="relative flex items-center">
-                <span className="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-green-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+                <span className="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </div>
             </div>
           </div>
         </div>
 
         {/* Current Email Display */}
-        <div className="mb-4">
-          <label className="text-xs text-muted-foreground mb-1.5 block">Current Email Address</label>
+        <div className="mb-5">
+          <label className="text-xs font-medium text-muted-foreground mb-2 block tracking-wide uppercase">Current Email Address</label>
           <div 
-            className="w-full bg-secondary/50 rounded-lg px-3 sm:px-4 py-3 border border-border cursor-pointer hover:border-primary/50 transition-colors group relative overflow-hidden min-h-[52px] flex items-center"
+            className="w-full rounded-xl px-4 py-4 cursor-pointer transition-all duration-300 group relative overflow-hidden min-h-[56px] flex items-center bg-secondary/30 border-2 border-primary/40 hover:border-primary/70 hover:shadow-lg hover:shadow-primary/20"
             onClick={handleCopy}
           >
-            {/* Subtle mesh gradient on hover */}
-            <div className="absolute inset-0 mesh-gradient-bg opacity-0 group-hover:opacity-20 transition-opacity pointer-events-none" />
+            {/* Neon border glow on hover */}
+            <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" 
+                 style={{ boxShadow: '0 0 20px hsl(var(--primary) / 0.3), inset 0 0 20px hsl(var(--primary) / 0.1)' }} />
             
             <AnimatePresence mode="wait">
               {loading ? (
@@ -110,7 +112,7 @@ export const EmailDisplay = ({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="text-sm sm:text-base md:text-lg font-mono neon-text block group-hover:scale-[1.01] transition-transform relative z-10 break-all"
+                  className="text-base sm:text-lg md:text-xl font-mono neon-text block group-hover:scale-[1.01] transition-transform relative z-10 break-all tracking-wide"
                 >
                   {email || 'No email generated'}
                 </motion.span>
@@ -119,8 +121,8 @@ export const EmailDisplay = ({
           </div>
         </div>
 
-        {/* Action Buttons - Simplified */}
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+        {/* Action Buttons - Responsive Layout */}
+        <div className="flex flex-col sm:flex-row gap-3">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -128,7 +130,7 @@ export const EmailDisplay = ({
                   variant="outline"
                   onClick={handleCopy}
                   disabled={!email || loading}
-                  className="flex-1 sm:flex-none border-border hover:border-primary/50 hover:bg-primary/10 transition-all hover:scale-105 h-11"
+                  className="flex-1 sm:flex-none border-2 border-border hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 hover:scale-[1.02] h-12 rounded-xl font-medium backdrop-blur-sm"
                 >
                   <AnimatePresence mode="wait">
                     {copied ? (
@@ -139,8 +141,8 @@ export const EmailDisplay = ({
                         exit={{ scale: 0 }}
                         className="flex items-center gap-2"
                       >
-                        <Check className="w-4 h-4 text-green-400" />
-                        <span className="text-green-400">Copied!</span>
+                        <Check className="w-4 h-4 text-emerald-400" />
+                        <span className="text-emerald-400 font-semibold">Copied!</span>
                       </motion.div>
                     ) : (
                       <motion.div
@@ -157,7 +159,7 @@ export const EmailDisplay = ({
                   </AnimatePresence>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent className="backdrop-blur-xl bg-background/90 border-primary/20">
                 <p>Copy email to clipboard</p>
               </TooltipContent>
             </Tooltip>
@@ -166,12 +168,12 @@ export const EmailDisplay = ({
           <Button
             onClick={onRefresh}
             disabled={loading}
-            className="flex-1 mesh-gradient-btn-intense text-white font-semibold h-11 shadow-lg shadow-cyan-500/30"
+            className="flex-1 mesh-gradient-btn-intense text-white font-bold h-12 shadow-xl shadow-cyan-500/40 rounded-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-cyan-500/50 tracking-wide"
           >
             {loading ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
             ) : (
-              <RefreshCw className="w-4 h-4 mr-2" />
+              <RefreshCw className="w-5 h-5 mr-2" />
             )}
             <span>Generate New Email</span>
           </Button>

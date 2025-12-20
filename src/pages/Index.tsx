@@ -132,11 +132,11 @@ const Index = () => {
             </aside>
           </div>
 
-          {/* Blog Section - Above SEO */}
-          <BlogSection />
-
           {/* Privacy Solution Section */}
           <PrivacySolutionSection />
+
+          {/* Blog Section - After Privacy */}
+          <BlogSection />
 
           {/* Ad Placeholder */}
           <AdPlaceholder variant="horizontal" className="my-8" monetagId="content-728x90" />
