@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, RefreshCw, Trash2, Mail, Info, Loader2 } from 'lucide-react';
+import { Copy, Check, RefreshCw, Mail, Info, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Tooltip,
   TooltipContent,
@@ -13,7 +12,7 @@ import {
 interface EmailDisplayProps {
   email: string | null;
   loading: boolean;
-  onRefresh: (customPrefix?: string) => void;
+  onRefresh: () => void;
   onDelete: () => void;
 }
 
@@ -24,7 +23,6 @@ export const EmailDisplay = ({
   onDelete 
 }: EmailDisplayProps) => {
   const [copied, setCopied] = useState(false);
-  const [customPrefix, setCustomPrefix] = useState('');
 
   const handleCopy = async () => {
     if (!email) return;
@@ -32,12 +30,6 @@ export const EmailDisplay = ({
     await navigator.clipboard.writeText(email);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleGenerateWithCustomPrefix = () => {
-    const prefix = customPrefix.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-    onRefresh(prefix || undefined);
-    setCustomPrefix('');
   };
 
   return (
@@ -90,41 +82,6 @@ export const EmailDisplay = ({
           </div>
         </div>
 
-        {/* Custom Username Input */}
-        <div className="mb-4">
-          <label className="text-xs text-muted-foreground mb-1.5 block">Custom Email ID (optional)</label>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <div className="flex-1 flex items-center gap-0">
-              <Input
-                type="text"
-                placeholder="your-custom-id"
-                value={customPrefix}
-                onChange={(e) => setCustomPrefix(e.target.value.toLowerCase().replace(/[^a-z0-9]/g, ''))}
-                className="flex-1 bg-secondary/50 border-border text-sm rounded-r-none focus:z-10"
-                maxLength={20}
-              />
-              <span className="px-3 py-2 bg-secondary/30 border border-l-0 border-border text-muted-foreground text-sm rounded-r-lg">
-                @domain
-              </span>
-            </div>
-            <Button
-              onClick={handleGenerateWithCustomPrefix}
-              disabled={loading}
-              className="mesh-gradient-btn-intense text-white font-medium h-10 px-4 whitespace-nowrap"
-            >
-              {loading ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              ) : (
-                <RefreshCw className="w-4 h-4 mr-2" />
-              )}
-              Generate
-            </Button>
-          </div>
-          <p className="text-[10px] text-muted-foreground/50 mt-1.5">
-            Leave empty for random ID • Only lowercase letters and numbers • Domain auto-selected
-          </p>
-        </div>
-
         {/* Current Email Display */}
         <div className="mb-4">
           <label className="text-xs text-muted-foreground mb-1.5 block">Current Email Address</label>
@@ -162,7 +119,7 @@ export const EmailDisplay = ({
           </div>
         </div>
 
-        {/* Action Buttons - Stacked on mobile */}
+        {/* Action Buttons - Simplified */}
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <TooltipProvider>
             <Tooltip>
@@ -206,47 +163,18 @@ export const EmailDisplay = ({
             </Tooltip>
           </TooltipProvider>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  onClick={() => onRefresh(undefined)}
-                  disabled={loading}
-                  className="flex-1 sm:flex-none border-border hover:border-primary/50 hover:bg-primary/10 transition-all hover:scale-105 h-11"
-                >
-                  {loading ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <RefreshCw className="w-4 h-4 mr-2" />
-                  )}
-                  <span>New Random</span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Generate new random email</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  onClick={onDelete}
-                  disabled={!email || loading}
-                  className="flex-1 sm:flex-none border-border hover:border-destructive/50 hover:bg-destructive/10 transition-all hover:scale-105 h-11"
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  <span>Delete</span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Delete current mailbox</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Button
+            onClick={onRefresh}
+            disabled={loading}
+            className="flex-1 mesh-gradient-btn-intense text-white font-semibold h-11 shadow-lg shadow-cyan-500/30"
+          >
+            {loading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <RefreshCw className="w-4 h-4 mr-2" />
+            )}
+            <span>Generate New Email</span>
+          </Button>
         </div>
       </div>
     </motion.div>

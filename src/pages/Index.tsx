@@ -36,39 +36,36 @@ const Index = () => {
     });
   }, [setOnNewMessage]);
 
-  const handleNewEmail = async (customPrefix?: string) => {
+  const handleNewEmail = async () => {
     await deleteAccount();
-    await generateEmail(customPrefix);
+    await generateEmail();
   };
 
   return (
     <>
       <Helmet>
-        <title>Aura Mail | Fast & Secure Disposable Email</title>
+        <title>Temp Mail Aura | #1 Fastest Disposable Email Service 2026</title>
         <meta 
           name="description" 
-          content="Generate free disposable email addresses instantly. Aura Mail provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest AI-powered temp mail service of 2026." 
+          content="Generate free disposable email addresses instantly. Temp Mail Aura provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest AI-powered temp mail service of 2026." 
         />
-        <meta name="keywords" content="aura mail, temp mail, disposable email, temporary email, anonymous email, secure inbox, free email, spam protection, AI email" />
-        <meta property="og:title" content="Aura Mail | Fast & Secure Disposable Email" />
+        <meta name="keywords" content="temp mail aura, temp mail, disposable email, temporary email, anonymous email, secure inbox, free email, spam protection, AI email" />
+        <meta property="og:title" content="Temp Mail Aura | #1 Fastest Disposable Email Service 2026" />
         <meta property="og:description" content="Generate anonymous temporary email addresses instantly. No signup required. Real-time inbox with military-grade privacy and AI-powered security." />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://aura-mail.com/og-image.png" />
-        <link rel="canonical" href="https://aura-mail.com" />
-        
-        {/* Monetag Script Placeholder - Replace with actual Monetag scripts */}
-        {/* <script async src="https://alwingulla.com/88/tag.min.js" data-zone="YOUR_ZONE_ID" /> */}
+        <meta property="og:image" content="https://tempmail-aura.com/og-image.png" />
+        <link rel="canonical" href="https://tempmail-aura.com" />
         
         {/* JSON-LD Schema Markup for SoftwareApplication */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Aura Mail",
+            "name": "Temp Mail Aura",
             "applicationCategory": "UtilitiesApplication",
             "operatingSystem": "Web",
             "description": "AI-powered disposable email service for instant, secure, anonymous temporary email addresses",
-            "url": "https://aura-mail.com",
+            "url": "https://tempmail-aura.com",
             "offers": {
               "@type": "Offer",
               "price": "0",
@@ -81,11 +78,10 @@ const Index = () => {
             },
             "featureList": [
               "Instant email generation",
-              "Custom email prefix",
               "Real-time inbox",
               "Zero tracking",
               "Encrypted messages",
-              "Fast domain selection"
+              "Automatic domain selection"
             ]
           })}
         </script>
@@ -136,11 +132,11 @@ const Index = () => {
             </aside>
           </div>
 
+          {/* Blog Section - Above SEO */}
+          <BlogSection />
+
           {/* Privacy Solution Section */}
           <PrivacySolutionSection />
-
-          {/* Blog Section - Moved above SEO */}
-          <BlogSection />
 
           {/* Ad Placeholder */}
           <AdPlaceholder variant="horizontal" className="my-8" monetagId="content-728x90" />
@@ -156,7 +152,7 @@ const Index = () => {
         <MobileNav
           activeTab={activeTab}
           onTabChange={setActiveTab}
-          onRefresh={refreshMessages}
+          onRefresh={handleNewEmail}
           email={email}
         />
       </div>
