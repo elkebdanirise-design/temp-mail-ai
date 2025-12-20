@@ -10,6 +10,7 @@ import { BlogSection } from '@/components/BlogSection';
 import { Footer } from '@/components/Footer';
 import { MobileNav } from '@/components/MobileNav';
 import { AuroraBackground } from '@/components/AuroraBackground';
+import { ParticleField } from '@/components/ParticleField';
 import { useMailTm } from '@/hooks/useMailTm';
 
 const Index = () => {
@@ -89,6 +90,7 @@ const Index = () => {
       </Helmet>
 
       <AuroraBackground />
+      <ParticleField />
       <div className="relative z-10 min-h-screen pb-20 md:pb-0 ambient-breathe">
         {/* Header Ad */}
         <div className="container mx-auto px-4 pt-4">
