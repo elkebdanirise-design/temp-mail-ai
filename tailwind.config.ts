@@ -73,7 +73,7 @@ export default {
       },
       fontFamily: {
         sans: ['Geist', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        display: ['Clash Display', 'Geist', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'Geist', 'sans-serif'],
         mono: ['JetBrains Mono', 'SF Mono', 'Consolas', 'monospace'],
       },
       keyframes: {
