@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, Calendar, Clock, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, ChevronRight, Twitter, Linkedin, LinkIcon, Check } from 'lucide-react';
+import { toast } from 'sonner';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ArticleCard } from '@/components/ArticleCard';
@@ -37,6 +38,35 @@ export default function BlogArticle() {
 
   const relatedPosts = getRelatedPosts(post, 3);
   const Icon = post.icon;
+
+  // Share Button Component
+  const ShareButton = ({ 
+    icon: IconComponent, 
+    label, 
+    onClick, 
+    glowColor 
+  }: { 
+    icon: React.ElementType; 
+    label: string; 
+    onClick: () => void; 
+    glowColor: string;
+  }) => (
+    <button
+      onClick={onClick}
+      aria-label={label}
+      className="group relative p-2.5 rounded-full transition-all duration-300 hover:scale-110"
+      style={{
+        background: 'linear-gradient(145deg, hsl(220 30% 10%), hsl(220 30% 6%))',
+        border: '1px solid hsl(var(--glass-border))',
+      }}
+    >
+      <div 
+        className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: glowColor, filter: 'blur(8px)' }}
+      />
+      <IconComponent className="relative w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+    </button>
+  );
 
   // Convert markdown-like content to HTML
   const renderContent = (content: string) => {
@@ -214,21 +244,54 @@ export default function BlogArticle() {
                   </div>
                 </motion.div>
 
-                {/* Article Meta */}
+                {/* Article Meta & Share Buttons */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1, duration: 0.5 }}
-                  className="flex flex-wrap items-center gap-4 mb-6"
-                  style={{ color: 'hsl(200 12% 50%)' }}
+                  className="flex flex-wrap items-center justify-between gap-4 mb-6"
                 >
-                  <div className="flex items-center gap-2 text-sm">
-                    <Calendar className="w-4 h-4" />
-                    <span>{post.date}</span>
+                  <div className="flex items-center gap-4" style={{ color: 'hsl(200 12% 50%)' }}>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Calendar className="w-4 h-4" />
+                      <span>{post.date}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Clock className="w-4 h-4" />
+                      <span>{post.readTime}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Clock className="w-4 h-4" />
-                    <span>{post.readTime}</span>
+
+                  {/* Social Share Buttons */}
+                  <div className="flex items-center gap-2">
+                    <ShareButton
+                      icon={Twitter}
+                      label="Share on Twitter"
+                      onClick={() => {
+                        const url = window.location.href;
+                        const text = `Check out: ${post.title}`;
+                        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+                      }}
+                      glowColor="hsl(200 90% 50% / 0.3)"
+                    />
+                    <ShareButton
+                      icon={Linkedin}
+                      label="Share on LinkedIn"
+                      onClick={() => {
+                        const url = window.location.href;
+                        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+                      }}
+                      glowColor="hsl(210 80% 50% / 0.3)"
+                    />
+                    <ShareButton
+                      icon={LinkIcon}
+                      label="Copy Link"
+                      onClick={() => {
+                        navigator.clipboard.writeText(window.location.href);
+                        toast.success('Link copied to clipboard!');
+                      }}
+                      glowColor="hsl(var(--aurora-purple) / 0.3)"
+                    />
                   </div>
                 </motion.div>
 
