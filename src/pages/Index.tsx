@@ -13,6 +13,7 @@ import { AuroraBackground } from '@/components/AuroraBackground';
 import { ParticleField } from '@/components/ParticleField';
 import { ShootingStars } from '@/components/ShootingStars';
 import { PricingSection } from '@/components/PricingSection';
+import { TestimonialsSection } from '@/components/TestimonialsSection';
 import { useMailTm } from '@/hooks/useMailTm';
 
 const Index = () => {
@@ -148,6 +149,9 @@ const Index = () => {
 
           {/* Pricing Section */}
           <PricingSection />
+
+          {/* Testimonials Section */}
+          <TestimonialsSection />
 
           {/* Ad Placeholder */}
           <AdPlaceholder variant="horizontal" className="my-8" monetagId="content-728x90" />
