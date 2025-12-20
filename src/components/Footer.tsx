@@ -18,20 +18,24 @@ export const Footer = () => {
 
   return (
     <>
-      <footer className="border-t border-border py-12 mt-16">
+      <footer 
+        className="py-12 mt-16"
+        style={{ borderTop: '1px solid hsl(190 50% 35% / 0.1)' }}
+      >
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center gap-8">
             {/* Pro Button */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               <Button
                 asChild
                 size="lg"
-                className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-105 transition-transform text-white font-semibold shadow-lg shadow-cyan-500/30"
+                className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-105 transition-transform text-white font-semibold shadow-lg rounded-xl"
+                style={{ boxShadow: '0 0 30px hsl(190 80% 50% / 0.2)' }}
               >
                 <a 
                   href="#pro-systems" 
@@ -47,75 +51,87 @@ export const Footer = () => {
 
             {/* Status Indicator */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.15 }}
               className="flex items-center gap-2 text-sm"
             >
-              <CheckCircle className="w-4 h-4 text-emerald-500" />
-              <span className="text-emerald-400 font-medium">Status: All Systems Operational</span>
+              <CheckCircle className="w-4 h-4" style={{ color: 'hsl(150 70% 50%)' }} />
+              <span className="font-medium" style={{ color: 'hsl(150 65% 50%)' }}>Status: All Systems Operational</span>
             </motion.div>
 
-            {/* Links */}
+            {/* Links - Geist typography, consistent alignment */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex flex-wrap items-center justify-center gap-6 md:gap-8 text-sm"
+              style={{ fontFamily: "'Geist', sans-serif" }}
             >
-              <a 
-                href="#blog-section"
-                onClick={(e) => handleAnchorClick(e, '#blog-section')}
-                className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-primary hover:after:w-full after:transition-all"
-              >
-                Blog
-              </a>
-              <button 
-                onClick={handleLinkClick('terms')}
-                className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-primary hover:after:w-full after:transition-all"
-              >
-                Terms of Service
-              </button>
-              <button 
-                onClick={handleLinkClick('privacy')}
-                className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-primary hover:after:w-full after:transition-all"
-              >
-                Privacy Policy
-              </button>
-              <button 
-                onClick={handleLinkClick('contact')}
-                className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-primary hover:after:w-full after:transition-all"
-              >
-                Contact
-              </button>
-              <button 
-                onClick={handleLinkClick('faq')}
-                className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-primary hover:after:w-full after:transition-all"
-              >
-                FAQ
-              </button>
+              {[
+                { label: 'Blog', href: '#blog-section', isAnchor: true },
+                { label: 'Terms of Service', type: 'terms' as LegalType },
+                { label: 'Privacy Policy', type: 'privacy' as LegalType },
+                { label: 'Contact', type: 'contact' as LegalType },
+                { label: 'FAQ', type: 'faq' as LegalType },
+              ].map((link) => (
+                link.isAnchor ? (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={(e) => handleAnchorClick(e as React.MouseEvent<HTMLAnchorElement>, link.href!)}
+                    className="relative transition-colors"
+                    style={{ color: 'hsl(200 12% 50%)' }}
+                  >
+                    <span className="hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(190,80%,50%)] hover:after:w-full after:transition-all">
+                      {link.label}
+                    </span>
+                  </a>
+                ) : (
+                  <button
+                    key={link.label}
+                    onClick={handleLinkClick(link.type!)}
+                    className="relative transition-colors"
+                    style={{ color: 'hsl(200 12% 50%)' }}
+                  >
+                    <span className="hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(190,80%,50%)] hover:after:w-full after:transition-all">
+                      {link.label}
+                    </span>
+                  </button>
+                )
+              ))}
               <a 
                 href="/sitemap.xml"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-primary hover:after:w-full after:transition-all flex items-center gap-1"
+                className="flex items-center gap-1 transition-colors"
+                style={{ color: 'hsl(200 12% 50%)' }}
               >
-                <Map className="w-3 h-3" />
-                Sitemap
+                <span className="hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(190,80%,50%)] hover:after:w-full after:transition-all flex items-center gap-1">
+                  <Map className="w-3 h-3" />
+                  Sitemap
+                </span>
               </a>
             </motion.div>
 
             {/* Copyright */}
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              initial={{ opacity: 0, filter: 'blur(4px)' }}
+              whileInView={{ opacity: 1, filter: 'blur(0px)' }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.25 }}
               className="text-center"
             >
-              <p className="text-xs text-muted-foreground font-medium tracking-wide">
+              <p 
+                className="text-xs font-medium"
+                style={{ 
+                  color: 'hsl(200 12% 45%)',
+                  letterSpacing: '0.02em',
+                  fontFamily: "'Geist', sans-serif",
+                }}
+              >
                 © 2026 Temp Mail Aura. All rights reserved. The fastest AI-powered disposable email service.
               </p>
             </motion.div>

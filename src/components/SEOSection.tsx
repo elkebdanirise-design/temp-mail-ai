@@ -6,50 +6,97 @@ const features = [
     icon: Shield,
     title: 'Military-Grade Privacy',
     description: 'Your temporary email is encrypted and completely anonymous. No personal data required.',
+    glowColor: 'hsl(270 70% 55% / 0.3)',
+    gradient: 'from-[hsl(270,70%,55%)] to-[hsl(280,65%,50%)]',
   },
   {
     icon: Zap,
     title: 'Instant Generation',
     description: 'Get a working email address in milliseconds. No signup, no waiting, no hassle.',
+    glowColor: 'hsl(190 90% 55% / 0.3)',
+    gradient: 'from-[hsl(185,90%,55%)] to-[hsl(195,85%,50%)]',
   },
   {
     icon: Lock,
     title: 'Spam Protection',
     description: 'Keep your real inbox clean. Use disposable emails for signups and trials.',
+    glowColor: 'hsl(320 70% 55% / 0.3)',
+    gradient: 'from-[hsl(320,70%,55%)] to-[hsl(330,65%,50%)]',
   },
   {
     icon: Globe,
     title: 'Works Everywhere',
     description: 'Compatible with any service that requires email verification. 100% deliverability.',
+    glowColor: 'hsl(190 90% 55% / 0.3)',
+    gradient: 'from-[hsl(185,90%,55%)] to-[hsl(195,85%,50%)]',
   },
   {
     icon: Clock,
     title: 'Auto-Refresh Inbox',
     description: 'Real-time message delivery. See new emails appear instantly without refreshing.',
+    glowColor: 'hsl(270 70% 55% / 0.3)',
+    gradient: 'from-[hsl(270,70%,55%)] to-[hsl(280,65%,50%)]',
   },
   {
     icon: Eye,
     title: 'Zero Tracking',
     description: 'We don\'t track, store, or sell your data. True privacy by design.',
+    glowColor: 'hsl(320 70% 55% / 0.3)',
+    gradient: 'from-[hsl(320,70%,55%)] to-[hsl(330,65%,50%)]',
   },
 ];
 
 export const SEOSection = () => {
   return (
-    <section className="py-16 md:py-24">
-      <div className="container mx-auto px-4">
+    <section className="py-16 md:py-24 relative overflow-hidden">
+      {/* Subtle neon fog background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div
+          animate={{
+            x: [0, 20, -30, 0],
+            y: [0, -15, 20, 0],
+            opacity: [0.1, 0.18, 0.12, 0.1],
+          }}
+          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full blur-[150px]"
+          style={{ background: 'hsl(270 60% 50% / 0.05)' }}
+        />
+        <motion.div
+          animate={{
+            x: [0, -25, 35, 0],
+            y: [0, 25, -10, 0],
+            opacity: [0.08, 0.15, 0.1, 0.08],
+          }}
+          transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute bottom-1/3 left-1/4 w-[400px] h-[400px] rounded-full blur-[120px]"
+          style={{ background: 'hsl(190 80% 50% / 0.05)' }}
+        />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         {/* Main SEO Content */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-6">
-            Why Use <span className="neon-text">Aura Mail</span> for Privacy?
+            <span className="text-foreground">Why Use </span>
+            <span 
+              style={{
+                background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(190 50% 75%) 60%, hsl(0 0% 90%) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Aura Mail
+            </span>
+            <span className="text-foreground"> for Privacy?</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: 'hsl(200 15% 55%)' }}>
             In a world where your data is currency, Aura Mail gives you back control. 
             Generate unlimited temporary email addresses to protect your identity online.
           </p>
@@ -62,17 +109,72 @@ export const SEOSection = () => {
             return (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="glass-panel p-6 group"
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="group relative"
               >
-                <div className="p-3 rounded-lg bg-primary/10 border border-primary/20 w-fit mb-4 group-hover:scale-110 transition-transform">
-                  <Icon className="w-6 h-6 text-primary" />
+                <div 
+                  className="relative rounded-2xl p-6 transition-all duration-500 overflow-hidden"
+                  style={{
+                    background: 'linear-gradient(145deg, hsl(220 30% 5% / 0.95), hsl(220 30% 3% / 0.98))',
+                    border: '1px solid hsl(var(--glass-border))',
+                  }}
+                >
+                  {/* Border trace on hover */}
+                  <div 
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                      background: `linear-gradient(90deg, transparent, ${feature.glowColor}, transparent)`,
+                      backgroundSize: '200% 100%',
+                      animation: 'border-trace 2s linear infinite',
+                      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                      WebkitMaskComposite: 'xor',
+                      maskComposite: 'exclude',
+                      padding: '1px',
+                    }}
+                  />
+
+                  {/* Cyber-glass icon pedestal */}
+                  <div 
+                    className="relative inline-flex p-3 rounded-xl mb-4 group-hover:scale-105 transition-all duration-500"
+                    style={{
+                      background: `linear-gradient(145deg, hsl(220 30% 8% / 0.9), hsl(220 30% 4% / 0.95))`,
+                      border: '1px solid hsl(0 0% 100% / 0.05)',
+                      boxShadow: `
+                        0 4px 16px hsl(220 30% 0% / 0.3),
+                        inset 0 1px 0 hsl(0 0% 100% / 0.02)
+                      `,
+                    }}
+                  >
+                    {/* Neon aura */}
+                    <div 
+                      className="absolute inset-[-3px] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"
+                      style={{ background: feature.glowColor }}
+                    />
+                    <div className={`relative p-2 rounded-lg bg-gradient-to-br ${feature.gradient}`}>
+                      <Icon className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
+
+                  {/* Chrome title */}
+                  <h3 
+                    className="text-sm font-semibold mb-2 uppercase"
+                    style={{
+                      letterSpacing: '0.08em',
+                      background: 'linear-gradient(135deg, hsl(0 0% 75%) 0%, hsl(0 0% 92%) 40%, hsl(190 40% 80%) 70%, hsl(0 0% 85%) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm" style={{ color: 'hsl(200 12% 50%)', lineHeight: '1.65' }}>
+                    {feature.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
               </motion.div>
             );
           })}
@@ -80,64 +182,80 @@ export const SEOSection = () => {
 
         {/* Secondary SEO Block */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="glass-panel p-8 md:p-12"
+          transition={{ duration: 0.8 }}
+          className="relative rounded-2xl p-8 md:p-12 overflow-hidden"
+          style={{
+            background: 'linear-gradient(145deg, hsl(220 30% 5% / 0.95), hsl(220 30% 3% / 0.98))',
+            border: '1px solid hsl(var(--glass-border))',
+          }}
         >
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-6 text-center">
+          <h2 
+            className="text-xl md:text-2xl font-semibold tracking-tight mb-6 text-center uppercase"
+            style={{
+              letterSpacing: '0.06em',
+              background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(190 50% 75%) 60%, hsl(0 0% 90%) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
             The Fastest Disposable Email of 2026
           </h2>
           
           <div className="prose prose-invert max-w-none">
-            <p className="text-muted-foreground leading-relaxed mb-4">
+            <p className="leading-relaxed mb-4" style={{ color: 'hsl(200 12% 50%)' }}>
               Aura Mail represents the next generation of disposable email technology. Built with a focus on 
               speed, security, and simplicity, our service generates temporary email addresses instantly, 
               allowing you to maintain your privacy without sacrificing convenience.
             </p>
             
-            <p className="text-muted-foreground leading-relaxed mb-4">
+            <p className="leading-relaxed mb-4" style={{ color: 'hsl(200 12% 50%)' }}>
               Whether you're signing up for a new service, testing an application, or simply want to avoid 
               spam in your primary inbox, Aura Mail provides a seamless solution. Our real-time message 
               delivery ensures you never miss important verification emails, while our clean interface 
               makes managing your temporary inbox effortless.
             </p>
 
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="leading-relaxed" style={{ color: 'hsl(200 12% 50%)' }}>
               Unlike traditional email providers, Aura Mail requires no personal information. No phone 
               number verification, no identity documents, no strings attached. Just pure, anonymous 
               email functionality when you need it most.
             </p>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-border">
-            <h3 className="text-lg font-semibold mb-4">Common Use Cases:</h3>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                Free trial signups without spam
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                Online shopping with privacy
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                Testing email workflows
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                Avoiding newsletter spam
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                Anonymous account creation
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-primary rounded-full" />
-                Protecting your real identity
-              </li>
+          <div className="mt-8 pt-8" style={{ borderTop: '1px solid hsl(190 50% 35% / 0.1)' }}>
+            <h3 
+              className="text-sm font-semibold mb-4 uppercase"
+              style={{
+                letterSpacing: '0.1em',
+                background: 'linear-gradient(135deg, hsl(0 0% 75%) 0%, hsl(0 0% 90%) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Common Use Cases
+            </h3>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm" style={{ color: 'hsl(200 12% 50%)' }}>
+              {[
+                'Free trial signups without spam',
+                'Online shopping with privacy',
+                'Testing email workflows',
+                'Avoiding newsletter spam',
+                'Anonymous account creation',
+                'Protecting your real identity',
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-2">
+                  <span 
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ background: 'hsl(190 85% 50%)' }}
+                  />
+                  {item}
+                </li>
+              ))}
             </ul>
           </div>
         </motion.div>
