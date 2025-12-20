@@ -30,7 +30,7 @@ const blogPosts = [
 
 export const BlogSection = () => {
   return (
-    <section className="py-12 md:py-16">
+    <section id="blog-section" className="py-12 md:py-16">
       <div className="text-center mb-8 md:mb-12">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -38,7 +38,7 @@ export const BlogSection = () => {
           viewport={{ once: true }}
           className="text-2xl md:text-3xl font-semibold tracking-tight mb-3"
         >
-          Latest Privacy Insights & <span className="neon-text">Aura Mail News</span>
+          Latest Privacy Insights & <span className="neon-text">Temp Mail Aura News</span>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}

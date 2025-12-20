@@ -59,6 +59,12 @@ export const Footer = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex flex-wrap items-center justify-center gap-6 md:gap-8 text-sm"
             >
+              <a 
+                href="#blog-section"
+                className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-primary hover:after:w-full after:transition-all"
+              >
+                Blog
+              </a>
               <button 
                 onClick={handleLinkClick('terms')}
                 className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-primary hover:after:w-full after:transition-all"

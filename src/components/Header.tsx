@@ -47,6 +47,14 @@ export const Header = () => {
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4">
+              {/* Blog Link */}
+              <a
+                href="#blog-section"
+                className="hidden md:flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-primary hover:after:w-full after:transition-all"
+              >
+                Blog
+              </a>
+
               {/* Live Users Counter */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
