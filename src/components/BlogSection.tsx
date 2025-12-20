@@ -36,9 +36,9 @@ export const BlogSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-2xl md:text-3xl font-bold mb-3"
+          className="text-2xl md:text-3xl font-semibold tracking-tight mb-3"
         >
-          Latest Privacy Insights & <span className="neon-text">Temp Mail News</span>
+          Latest Privacy Insights & <span className="neon-text">Aura Mail News</span>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}

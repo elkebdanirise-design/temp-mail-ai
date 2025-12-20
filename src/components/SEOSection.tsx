@@ -46,11 +46,11 @@ export const SEOSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            Why Use <span className="neon-text">Aura-Mail</span> for Privacy?
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-6">
+            Why Use <span className="neon-text">Aura Mail</span> for Privacy?
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            In a world where your data is currency, Aura-Mail gives you back control. 
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            In a world where your data is currency, Aura Mail gives you back control. 
             Generate unlimited temporary email addresses to protect your identity online.
           </p>
         </motion.div>
@@ -86,26 +86,26 @@ export const SEOSection = () => {
           transition={{ duration: 0.6 }}
           className="glass-panel p-8 md:p-12"
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-6 text-center">
             The Fastest Disposable Email of 2026
           </h2>
           
           <div className="prose prose-invert max-w-none">
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Aura-Mail represents the next generation of disposable email technology. Built with a focus on 
+              Aura Mail represents the next generation of disposable email technology. Built with a focus on 
               speed, security, and simplicity, our service generates temporary email addresses instantly, 
               allowing you to maintain your privacy without sacrificing convenience.
             </p>
             
             <p className="text-muted-foreground leading-relaxed mb-4">
               Whether you're signing up for a new service, testing an application, or simply want to avoid 
-              spam in your primary inbox, Aura-Mail provides a seamless solution. Our real-time message 
+              spam in your primary inbox, Aura Mail provides a seamless solution. Our real-time message 
               delivery ensures you never miss important verification emails, while our clean interface 
               makes managing your temporary inbox effortless.
             </p>
 
             <p className="text-muted-foreground leading-relaxed">
-              Unlike traditional email providers, Aura-Mail requires no personal information. No phone 
+              Unlike traditional email providers, Aura Mail requires no personal information. No phone 
               number verification, no identity documents, no strings attached. Just pure, anonymous 
               email functionality when you need it most.
             </p>
