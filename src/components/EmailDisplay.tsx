@@ -24,6 +24,12 @@ export const EmailDisplay = ({
     if (!email || loading) return;
     
     await navigator.clipboard.writeText(email);
+    
+    // Haptic feedback for mobile devices
+    if ('vibrate' in navigator) {
+      navigator.vibrate(50); // Short 50ms vibration for tactile feedback
+    }
+    
     setCopied(true);
     setShowCopiedOverlay(true);
     
