@@ -86,15 +86,23 @@ export const PricingSection = () => {
 
           {/* Pro Plan - Featured */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            initial={{ opacity: 0, x: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ 
+              duration: 0.6, 
+              delay: 0.25,
+              type: "spring",
+              stiffness: 100,
+              damping: 15
+            }}
+            whileHover={{ scale: 1.02 }}
             className="relative p-6 md:p-8 flex flex-col rounded-2xl"
             style={{
               background: 'linear-gradient(135deg, hsl(0 0% 6% / 0.95), hsl(0 0% 4% / 0.98))',
               border: '2px solid transparent',
               backgroundClip: 'padding-box',
+              boxShadow: '0 0 40px hsl(var(--aurora-orange) / 0.15), 0 0 80px hsl(var(--aurora-magenta) / 0.08)',
             }}
           >
             {/* Glowing border effect */}
