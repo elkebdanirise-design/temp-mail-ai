@@ -18,7 +18,7 @@ export const BlogSection = () => {
           }}
           transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
           className="absolute top-1/2 left-1/3 w-80 h-80 rounded-full blur-[100px]"
-          style={{ background: 'hsl(320 60% 50% / 0.05)' }}
+          style={{ background: 'hsl(var(--aurora-magenta) / 0.05)' }}
         />
       </div>
 
@@ -34,7 +34,7 @@ export const BlogSection = () => {
             <span className="text-foreground">Latest Privacy Insights & </span>
             <span 
               style={{
-                background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(190 50% 75%) 60%, hsl(0 0% 90%) 100%)',
+                background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(var(--aurora-orange) / 0.7) 60%, hsl(0 0% 90%) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -149,14 +149,14 @@ export const BlogSection = () => {
                     <div 
                       className="flex items-center gap-1 text-sm font-medium group-hover:gap-2 transition-all"
                       style={{
-                        background: 'linear-gradient(135deg, hsl(190 80% 55%), hsl(210 85% 60%))',
+                        background: 'linear-gradient(135deg, hsl(var(--aurora-magenta)), hsl(var(--aurora-orange)))',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
                       }}
                     >
                       <span>Read More</span>
-                      <ArrowRight className="w-4 h-4" style={{ color: 'hsl(190 80% 55%)' }} />
+                      <ArrowRight className="w-4 h-4" style={{ color: 'hsl(var(--aurora-orange))' }} />
                     </div>
                   </div>
                 </Link>
@@ -186,11 +186,11 @@ export const BlogSection = () => {
             <div 
               className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
               style={{
-                background: 'linear-gradient(135deg, hsl(var(--aurora-purple) / 0.2), hsl(190 80% 50% / 0.2))',
+                background: 'linear-gradient(135deg, hsl(var(--aurora-magenta) / 0.2), hsl(var(--aurora-orange) / 0.2))',
               }}
             />
             <span className="relative">View All Articles</span>
-            <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" style={{ color: 'hsl(190 80% 55%)' }} />
+            <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" style={{ color: 'hsl(var(--aurora-orange))' }} />
           </Link>
         </motion.div>
       </div>

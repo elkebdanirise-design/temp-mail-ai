@@ -36,13 +36,13 @@ export const Header = () => {
               <div className="relative">
                 <div 
                   className="absolute inset-0 rounded-xl blur-md"
-                  style={{ background: 'hsl(190 80% 50% / 0.1)' }}
+                  style={{ background: 'hsl(var(--aurora-magenta) / 0.1)' }}
                 />
                 <div 
                   className="relative p-2 rounded-xl"
                   style={{
-                    background: 'hsl(210 30% 4% / 0.9)',
-                    border: '1px solid hsl(190 60% 45% / 0.15)',
+                    background: 'hsl(0 0% 4% / 0.9)',
+                    border: '1px solid hsl(var(--aurora-magenta) / 0.15)',
                   }}
                 >
                   <AuraLogo className="w-8 h-8" />
@@ -55,7 +55,7 @@ export const Header = () => {
                     <span 
                       className="font-display"
                       style={{
-                        background: 'linear-gradient(135deg, hsl(0 0% 85%) 0%, hsl(0 0% 95%) 25%, hsl(190 40% 75%) 50%, hsl(200 50% 70%) 75%, hsl(0 0% 90%) 100%)',
+                        background: 'linear-gradient(135deg, hsl(0 0% 85%) 0%, hsl(0 0% 95%) 25%, hsl(0 0% 90%) 50%, hsl(0 0% 95%) 75%, hsl(0 0% 90%) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
@@ -67,11 +67,11 @@ export const Header = () => {
                     <span 
                       className="font-display font-bold"
                       style={{
-                        background: 'linear-gradient(135deg, hsl(185 80% 65%) 0%, hsl(190 90% 55%) 40%, hsl(200 85% 60%) 70%, hsl(210 80% 65%) 100%)',
+                        background: 'linear-gradient(135deg, hsl(var(--aurora-magenta)) 0%, hsl(var(--aurora-crimson)) 40%, hsl(var(--aurora-orange)) 70%, hsl(var(--aurora-sunset)) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
-                        filter: 'drop-shadow(0 0 6px hsl(190 80% 55% / 0.3))',
+                        filter: 'drop-shadow(0 0 6px hsl(var(--aurora-magenta) / 0.3))',
                       }}
                     >
                       Aura
@@ -81,22 +81,22 @@ export const Header = () => {
                       <span 
                         className="w-[3px] h-[3px] rounded-full"
                         style={{ 
-                          background: 'hsl(190 90% 60%)',
-                          boxShadow: '0 0 4px hsl(190 90% 60% / 0.6)',
+                          background: 'hsl(var(--aurora-magenta))',
+                          boxShadow: '0 0 4px hsl(var(--aurora-magenta) / 0.6)',
                         }}
                       />
                       <span 
                         className="w-[3px] h-[4px] rounded-full"
                         style={{ 
-                          background: 'hsl(190 85% 55%)',
-                          boxShadow: '0 0 6px hsl(190 85% 55% / 0.7)',
+                          background: 'hsl(var(--aurora-crimson))',
+                          boxShadow: '0 0 6px hsl(var(--aurora-crimson) / 0.7)',
                         }}
                       />
                       <span 
                         className="w-[3px] h-[3px] rounded-full"
                         style={{ 
-                          background: 'hsl(200 80% 60%)',
-                          boxShadow: '0 0 4px hsl(200 80% 60% / 0.6)',
+                          background: 'hsl(var(--aurora-orange))',
+                          boxShadow: '0 0 4px hsl(var(--aurora-orange) / 0.6)',
                         }}
                       />
                     </span>
@@ -108,7 +108,7 @@ export const Header = () => {
                   className="text-[9px] sm:text-[10px] font-medium uppercase mt-1"
                   style={{
                     letterSpacing: '0.25em',
-                    background: 'linear-gradient(90deg, hsl(0 0% 50%) 0%, hsl(190 30% 55%) 50%, hsl(0 0% 45%) 100%)',
+                    background: 'linear-gradient(90deg, hsl(0 0% 50%) 0%, hsl(var(--aurora-orange) / 0.7) 50%, hsl(0 0% 45%) 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
@@ -124,7 +124,7 @@ export const Header = () => {
               <a
                 href="#blog-section"
                 onClick={(e) => handleAnchorClick(e, '#blog-section')}
-                className="hidden md:flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(190,80%,50%)] hover:after:w-full after:transition-all"
+                className="hidden md:flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-aurora-magenta hover:after:w-full after:transition-all"
               >
                 Blog
               </a>

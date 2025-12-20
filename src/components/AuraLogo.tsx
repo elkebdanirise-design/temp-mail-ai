@@ -12,18 +12,18 @@ export const AuraLogo = ({ className = '' }: { className?: string }) => {
       transition={{ duration: 0.5 }}
     >
       <defs>
-        {/* Gradient for shield stroke - Cyan to Deep Indigo */}
+        {/* Gradient for shield stroke - Magenta to Orange */}
         <linearGradient id="shieldStrokeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="hsl(185, 95%, 55%)" />
-          <stop offset="50%" stopColor="hsl(var(--primary))" />
-          <stop offset="100%" stopColor="hsl(260, 80%, 50%)" />
+          <stop offset="0%" stopColor="hsl(330, 85%, 55%)" />
+          <stop offset="50%" stopColor="hsl(350, 80%, 50%)" />
+          <stop offset="100%" stopColor="hsl(25, 95%, 55%)" />
         </linearGradient>
         
         {/* Gradient for inner aura glow */}
         <radialGradient id="auraGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="hsl(185, 95%, 60%)" stopOpacity="1" />
-          <stop offset="60%" stopColor="hsl(var(--primary))" stopOpacity="0.5" />
-          <stop offset="100%" stopColor="hsl(260, 80%, 50%)" stopOpacity="0" />
+          <stop offset="0%" stopColor="hsl(330, 85%, 60%)" stopOpacity="1" />
+          <stop offset="60%" stopColor="hsl(350, 80%, 50%)" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="hsl(25, 95%, 55%)" stopOpacity="0" />
         </radialGradient>
         
         {/* Glow filter */}
@@ -84,7 +84,7 @@ export const AuraLogo = ({ className = '' }: { className?: string }) => {
         cx="24"
         cy="24"
         r="4"
-        fill="hsl(185, 95%, 60%)"
+        fill="hsl(330, 85%, 60%)"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.6, duration: 0.3, type: "spring" }}
@@ -96,11 +96,11 @@ export const AuraLogo = ({ className = '' }: { className?: string }) => {
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
       >
-        <circle cx="24" cy="14" r="1.5" fill="hsl(185, 95%, 55%)" />
-        <circle cx="15" cy="20" r="1.5" fill="hsl(var(--primary))" />
-        <circle cx="33" cy="20" r="1.5" fill="hsl(var(--primary))" />
-        <circle cx="18" cy="30" r="1.5" fill="hsl(260, 80%, 55%)" />
-        <circle cx="30" cy="30" r="1.5" fill="hsl(260, 80%, 55%)" />
+        <circle cx="24" cy="14" r="1.5" fill="hsl(330, 85%, 55%)" />
+        <circle cx="15" cy="20" r="1.5" fill="hsl(350, 80%, 50%)" />
+        <circle cx="33" cy="20" r="1.5" fill="hsl(350, 80%, 50%)" />
+        <circle cx="18" cy="30" r="1.5" fill="hsl(25, 95%, 55%)" />
+        <circle cx="30" cy="30" r="1.5" fill="hsl(25, 95%, 55%)" />
       </motion.g>
     </motion.svg>
   );

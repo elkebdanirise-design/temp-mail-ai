@@ -103,11 +103,11 @@ export const ArticleCard = ({ post, index }: ArticleCardProps) => {
               className="absolute top-3 right-3 p-2 rounded-full transition-all duration-300 hover:scale-110 z-10"
               style={{
                 background: bookmarked 
-                  ? 'linear-gradient(135deg, hsl(var(--aurora-purple)), hsl(190 80% 50%))'
+                  ? 'linear-gradient(135deg, hsl(var(--aurora-magenta)), hsl(var(--aurora-orange)))'
                   : 'hsl(0 0% 0% / 0.6)',
                 backdropFilter: 'blur(8px)',
                 border: '1px solid hsl(0 0% 100% / 0.1)',
-                boxShadow: bookmarked ? '0 0 16px hsl(var(--aurora-purple) / 0.5)' : 'none',
+                boxShadow: bookmarked ? '0 0 16px hsl(var(--aurora-magenta) / 0.5)' : 'none',
               }}
               aria-label={bookmarked ? 'Remove bookmark' : 'Bookmark article'}
             >
@@ -159,7 +159,7 @@ export const ArticleCard = ({ post, index }: ArticleCardProps) => {
             >
               <span
                 style={{
-                  background: 'linear-gradient(135deg, hsl(190 80% 55%), hsl(210 85% 60%))',
+                  background: 'linear-gradient(135deg, hsl(var(--aurora-magenta)), hsl(var(--aurora-orange)))',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -169,7 +169,7 @@ export const ArticleCard = ({ post, index }: ArticleCardProps) => {
               </span>
               <ArrowRight 
                 className="w-4 h-4 transition-all duration-300 group-hover:translate-x-1" 
-                style={{ color: 'hsl(190 80% 55%)' }} 
+                style={{ color: 'hsl(var(--aurora-orange))' }} 
               />
             </div>
           </div>

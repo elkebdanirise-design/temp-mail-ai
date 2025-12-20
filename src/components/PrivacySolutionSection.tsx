@@ -6,25 +6,25 @@ const features = [
     icon: Zap,
     title: 'Instant Generation',
     description: 'Get a fully functional email address in milliseconds. No forms, no waiting, no verification steps.',
-    auraColor: 'cyan',
-    gradient: 'from-[hsl(185,90%,55%)] to-[hsl(195,85%,50%)]',
-    glowColor: 'hsl(190 90% 55% / 0.35)',
+    auraColor: 'magenta',
+    gradient: 'from-[hsl(330,85%,55%)] to-[hsl(350,80%,50%)]',
+    glowColor: 'hsl(var(--aurora-magenta) / 0.35)',
   },
   {
     icon: EyeOff,
     title: 'Zero Tracking',
     description: 'We never log IPs, store cookies, or track your activity. Your privacy is absolute.',
-    auraColor: 'purple',
-    gradient: 'from-[hsl(270,70%,55%)] to-[hsl(280,65%,50%)]',
-    glowColor: 'hsl(270 70% 55% / 0.35)',
+    auraColor: 'crimson',
+    gradient: 'from-[hsl(350,80%,50%)] to-[hsl(10,85%,50%)]',
+    glowColor: 'hsl(var(--aurora-crimson) / 0.35)',
   },
   {
     icon: ShieldCheck,
     title: 'Encrypted Inbox',
     description: 'All messages are encrypted in transit and at rest. Bank-level security for your temp mail.',
-    auraColor: 'magenta',
-    gradient: 'from-[hsl(320,70%,55%)] to-[hsl(330,65%,50%)]',
-    glowColor: 'hsl(320 70% 55% / 0.35)',
+    auraColor: 'orange',
+    gradient: 'from-[hsl(25,95%,55%)] to-[hsl(35,90%,60%)]',
+    glowColor: 'hsl(var(--aurora-orange) / 0.35)',
   },
 ];
 
@@ -41,7 +41,7 @@ export const PrivacySolutionSection = () => {
           }}
           transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
           className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-[120px]"
-          style={{ background: 'hsl(190 80% 50% / 0.08)' }}
+          style={{ background: 'hsl(var(--aurora-magenta) / 0.08)' }}
         />
         <motion.div
           animate={{
@@ -51,7 +51,7 @@ export const PrivacySolutionSection = () => {
           }}
           transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
           className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-[100px]"
-          style={{ background: 'hsl(270 60% 50% / 0.06)' }}
+          style={{ background: 'hsl(var(--aurora-orange) / 0.06)' }}
         />
       </div>
 
@@ -68,7 +68,7 @@ export const PrivacySolutionSection = () => {
             <span className="text-foreground">The Ultimate </span>
             <span 
               style={{
-                background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(190 50% 75%) 60%, hsl(0 0% 90%) 100%)',
+                background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(var(--aurora-orange) / 0.7) 60%, hsl(0 0% 90%) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -168,7 +168,7 @@ export const PrivacySolutionSection = () => {
                     style={{
                       letterSpacing: '0.1em',
                       fontSize: 'clamp(0.75rem, 2.5vw, 1rem)',
-                      background: 'linear-gradient(135deg, hsl(0 0% 75%) 0%, hsl(0 0% 92%) 40%, hsl(190 40% 80%) 70%, hsl(0 0% 85%) 100%)',
+                      background: 'linear-gradient(135deg, hsl(0 0% 75%) 0%, hsl(0 0% 92%) 40%, hsl(var(--aurora-orange) / 0.8) 70%, hsl(0 0% 85%) 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
