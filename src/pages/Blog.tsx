@@ -1,0 +1,201 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
+import { Search, Loader2 } from 'lucide-react';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
+import { ArticleCard } from '@/components/ArticleCard';
+import { AuroraBackground } from '@/components/AuroraBackground';
+import { blogPosts, blogCategories, BlogCategory, getPostsByCategory } from '@/data/blogData';
+
+const POSTS_PER_PAGE = 6;
+
+export default function Blog() {
+  const [activeCategory, setActiveCategory] = useState<BlogCategory>('All');
+  const [visiblePosts, setVisiblePosts] = useState(POSTS_PER_PAGE);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const filteredPosts = getPostsByCategory(activeCategory);
+  const displayedPosts = filteredPosts.slice(0, visiblePosts);
+  const hasMorePosts = visiblePosts < filteredPosts.length;
+
+  const handleCategoryChange = (category: BlogCategory) => {
+    setActiveCategory(category);
+    setVisiblePosts(POSTS_PER_PAGE);
+  };
+
+  const handleLoadMore = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setVisiblePosts(prev => prev + POSTS_PER_PAGE);
+      setIsLoading(false);
+    }, 500);
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>Privacy Insights & Cyber Security Blog | Temp Mail Aura</title>
+        <meta name="description" content="Stay informed about online privacy, security tips, and the latest updates in disposable email technology. Expert insights on protecting your digital identity." />
+      </Helmet>
+
+      <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+        <AuroraBackground />
+        
+        <div className="relative z-10">
+          <Header />
+
+          <main className="container mx-auto px-4 py-8 md:py-16">
+            {/* Hero Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="text-center mb-10 md:mb-14"
+            >
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
+                <span className="text-foreground">Privacy </span>
+                <span 
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 98%) 30%, hsl(190 60% 70%) 60%, hsl(0 0% 92%) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Insights
+                </span>
+              </h1>
+              <p 
+                className="text-base md:text-lg max-w-2xl mx-auto"
+                style={{ color: 'hsl(200 15% 55%)' }}
+              >
+                Expert guides on protecting your digital identity, security best practices, and the latest in privacy technology.
+              </p>
+            </motion.div>
+
+            {/* Search Bar (Visual Only) */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="max-w-xl mx-auto mb-8"
+            >
+              <div 
+                className="relative flex items-center rounded-full overflow-hidden"
+                style={{
+                  background: 'linear-gradient(145deg, hsl(220 30% 8% / 0.95), hsl(220 30% 5% / 0.98))',
+                  border: '1px solid hsl(var(--glass-border))',
+                }}
+              >
+                <Search className="absolute left-4 w-5 h-5" style={{ color: 'hsl(200 15% 45%)' }} />
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  className="w-full bg-transparent py-3.5 pl-12 pr-4 text-sm focus:outline-none placeholder:text-muted-foreground/50"
+                  style={{ color: 'hsl(0 0% 90%)' }}
+                />
+              </div>
+            </motion.div>
+
+            {/* Category Tabs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="mb-10 overflow-x-auto scrollbar-hide"
+            >
+              <div className="flex gap-2 md:justify-center min-w-max pb-2 px-1">
+                {blogCategories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => handleCategoryChange(category)}
+                    className={`
+                      px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap
+                      ${activeCategory === category ? 'scale-105' : 'hover:scale-102'}
+                    `}
+                    style={{
+                      background: activeCategory === category 
+                        ? 'linear-gradient(135deg, hsl(var(--aurora-purple)), hsl(190 80% 50%))'
+                        : 'hsl(220 30% 8% / 0.8)',
+                      border: `1px solid ${activeCategory === category ? 'transparent' : 'hsl(var(--glass-border))'}`,
+                      color: activeCategory === category ? 'hsl(0 0% 100%)' : 'hsl(200 15% 60%)',
+                      boxShadow: activeCategory === category 
+                        ? '0 4px 20px hsl(var(--aurora-purple) / 0.3)'
+                        : 'none',
+                    }}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Article Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mb-12">
+              <AnimatePresence mode="popLayout">
+                {displayedPosts.map((post, index) => (
+                  <ArticleCard key={post.id} post={post} index={index} />
+                ))}
+              </AnimatePresence>
+            </div>
+
+            {/* Load More Button */}
+            {hasMorePosts && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex justify-center"
+              >
+                <button
+                  onClick={handleLoadMore}
+                  disabled={isLoading}
+                  className="relative px-8 py-3.5 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 disabled:hover:scale-100"
+                  style={{
+                    background: 'linear-gradient(145deg, hsl(220 30% 10%), hsl(220 30% 6%))',
+                    border: '1px solid hsl(var(--glass-border))',
+                    color: 'hsl(0 0% 85%)',
+                  }}
+                >
+                  {/* Pulsing glow */}
+                  <div 
+                    className="absolute inset-0 rounded-full animate-pulse"
+                    style={{
+                      background: 'linear-gradient(135deg, hsl(var(--aurora-purple) / 0.15), hsl(190 80% 50% / 0.15))',
+                    }}
+                  />
+                  
+                  <span className="relative flex items-center gap-2">
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      'Load More Articles'
+                    )}
+                  </span>
+                </button>
+              </motion.div>
+            )}
+
+            {/* No Results */}
+            {filteredPosts.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-16"
+              >
+                <p style={{ color: 'hsl(200 15% 55%)' }}>
+                  No articles found in this category.
+                </p>
+              </motion.div>
+            )}
+          </main>
+
+          <Footer />
+        </div>
+      </div>
+    </>
+  );
+}
