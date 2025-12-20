@@ -10,10 +10,8 @@ import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 
 const navItems = [
   { label: 'Home', href: '#' },
-  { label: 'Solutions', href: '#solutions' },
-  { label: 'Features', href: '#features' },
-  { label: 'Resources', href: '#blog-section' },
-  { label: 'Pricing', href: '#pro-systems' },
+  { label: 'Blog', href: '#blog-section' },
+  { label: 'Pricing', href: '#pricing' },
 ];
 
 export const Header = () => {
@@ -42,19 +40,22 @@ export const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             {/* Logo & Brand */}
-            <div className="flex items-center gap-4">
-              {/* Logo - no border, larger size with subtle glow */}
+            <div className="flex items-center gap-3">
+              {/* Logo - refined size with matching orange neon glow */}
               <div className="relative">
                 <div 
-                  className="absolute inset-0 blur-lg"
-                  style={{ background: 'hsl(var(--aurora-orange) / 0.25)' }}
+                  className="absolute inset-0 blur-xl"
+                  style={{ 
+                    background: 'hsl(25 95% 55% / 0.4)',
+                    filter: 'drop-shadow(0 0 15px hsl(25 95% 55% / 0.6))',
+                  }}
                 />
-                <AuraLogo className="w-11 h-11 md:w-12 md:h-12 relative" />
+                <AuraLogo className="w-10 h-10 md:w-11 md:h-11 relative" />
               </div>
               
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <h1 className="font-display text-2xl md:text-[1.7rem] font-extrabold" style={{ letterSpacing: '-0.02em' }}>
+                  <h1 className="font-display text-2xl md:text-[1.65rem] font-extrabold" style={{ letterSpacing: '-0.02em' }}>
                     <span 
                       style={{
                         background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 85%) 100%)',
@@ -65,15 +66,15 @@ export const Header = () => {
                     >
                       Temp Mail
                     </span>
-                    <span className="mx-1.5" />
+                    <span className="mx-1" />
                     <span 
                       className="font-extrabold"
                       style={{
-                        background: 'linear-gradient(135deg, hsl(var(--aurora-orange)) 0%, hsl(35 95% 60%) 50%, hsl(var(--aurora-orange)) 100%)',
+                        background: 'linear-gradient(135deg, hsl(25 95% 55%) 0%, hsl(35 95% 60%) 50%, hsl(25 95% 55%) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
-                        filter: 'drop-shadow(0 0 10px hsl(var(--aurora-orange) / 0.5))',
+                        filter: 'drop-shadow(0 0 12px hsl(25 95% 55% / 0.7)) drop-shadow(0 0 25px hsl(25 95% 55% / 0.4))',
                       }}
                     >
                       AI
