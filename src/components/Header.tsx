@@ -6,11 +6,13 @@ import { AuraLogo } from './AuraLogo';
 import { VIPBadge } from './VIPBadge';
 import { PremiumModal } from './PremiumModal';
 import { usePremium } from '@/contexts/PremiumContext';
+import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 
 export const Header = () => {
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const { isPremium, activatePremium } = usePremium();
   const [liveUsers, setLiveUsers] = useState(1247);
+  const { handleAnchorClick } = useSmoothScroll();
 
   // Simulate live users fluctuation
   useEffect(() => {
@@ -59,6 +61,7 @@ export const Header = () => {
               {/* Blog Link */}
               <a
                 href="#blog-section"
+                onClick={(e) => handleAnchorClick(e, '#blog-section')}
                 className="hidden md:flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(190,100%,55%)] hover:after:w-full after:transition-all"
               >
                 Blog
@@ -99,7 +102,11 @@ export const Header = () => {
                   asChild
                   className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-105 transition-transform text-white font-semibold"
                 >
-                  <a href="#pro-systems" className="flex items-center gap-2">
+                  <a 
+                    href="#pro-systems" 
+                    onClick={(e) => handleAnchorClick(e, '#pro-systems')}
+                    className="flex items-center gap-2"
+                  >
                     <Zap className="w-4 h-4" />
                     <span className="hidden sm:inline">Get Pro Systems</span>
                     <span className="sm:hidden">Pro</span>

@@ -3,11 +3,13 @@ import { motion } from 'framer-motion';
 import { Sparkles, ExternalLink, CheckCircle, Map } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LegalPanel } from './LegalPanel';
+import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 
 type LegalType = 'privacy' | 'terms' | 'faq' | 'contact' | null;
 
 export const Footer = () => {
   const [legalPanel, setLegalPanel] = useState<LegalType>(null);
+  const { handleAnchorClick } = useSmoothScroll();
 
   const handleLinkClick = (type: LegalType) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -31,7 +33,11 @@ export const Footer = () => {
                 size="lg"
                 className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-105 transition-transform text-white font-semibold shadow-lg shadow-cyan-500/30"
               >
-                <a href="#pro-systems" className="flex items-center gap-2">
+                <a 
+                  href="#pro-systems" 
+                  onClick={(e) => handleAnchorClick(e, '#pro-systems')}
+                  className="flex items-center gap-2"
+                >
                   <Sparkles className="w-5 h-5" />
                   <span className="font-semibold">Upgrade to Pro Systems</span>
                   <ExternalLink className="w-4 h-4" />
@@ -61,6 +67,7 @@ export const Footer = () => {
             >
               <a 
                 href="#blog-section"
+                onClick={(e) => handleAnchorClick(e, '#blog-section')}
                 className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-primary hover:after:w-full after:transition-all"
               >
                 Blog
