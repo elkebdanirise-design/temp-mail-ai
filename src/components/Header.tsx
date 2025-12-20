@@ -40,13 +40,15 @@ export const Header = () => {
         <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center justify-between">
             {/* Logo & Brand - shifted left on mobile with tighter padding */}
-            <div className="flex items-center gap-2 sm:gap-3 md:gap-4 -ml-1 sm:ml-0">
-              {/* Logo - significantly larger on mobile, perfectly aligned with text */}
+            {/* Unified brand unit - tighter gap between logo and text */}
+            <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 -ml-1 sm:ml-0">
+              {/* Logo - with synchronized neon orange glow */}
               <AuraLogo className="w-14 h-14 sm:w-[4.5rem] sm:h-[4.5rem] md:w-[5.5rem] md:h-[5.5rem] lg:w-[6.25rem] lg:h-[6.25rem]" />
               
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <h1 className="font-display text-2xl md:text-[1.65rem] font-extrabold" style={{ letterSpacing: '-0.02em' }}>
+                    {/* Premium silver/white "Temp Mail" */}
                     <span 
                       style={{
                         background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 85%) 100%)',
@@ -57,15 +59,16 @@ export const Header = () => {
                     >
                       Temp Mail
                     </span>
-                    <span className="mx-1" />
+                    <span className="mx-0.5" />
+                    {/* Vibrant neon orange "AI" with intense bloom - synced with logo */}
                     <span 
-                      className="font-extrabold"
+                      className="font-extrabold relative"
                       style={{
-                        background: 'linear-gradient(135deg, hsl(25 95% 55%) 0%, hsl(35 100% 60%) 50%, hsl(30 95% 55%) 100%)',
+                        background: 'linear-gradient(135deg, #FF4D00 0%, #FF8C00 50%, #FF6A00 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
-                        filter: 'drop-shadow(0 0 16px hsl(25 95% 55% / 0.9)) drop-shadow(0 0 32px hsl(25 95% 55% / 0.6)) drop-shadow(0 0 48px hsl(30 100% 55% / 0.3))',
+                        filter: 'drop-shadow(0 0 8px rgba(255, 77, 0, 1)) drop-shadow(0 0 20px rgba(255, 140, 0, 0.9)) drop-shadow(0 0 40px rgba(255, 106, 0, 0.7)) drop-shadow(0 0 60px rgba(255, 77, 0, 0.4))',
                       }}
                     >
                       AI
