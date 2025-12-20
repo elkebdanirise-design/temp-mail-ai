@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
-import { Calendar, ArrowRight, Clock } from 'lucide-react';
+import { Calendar, ArrowRight, Clock, Bookmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BlogPost } from '@/data/blogData';
+import { useBookmarks } from '@/hooks/useBookmarks';
+import { toast } from 'sonner';
 
 interface ArticleCardProps {
   post: BlogPost;
@@ -10,6 +12,15 @@ interface ArticleCardProps {
 
 export const ArticleCard = ({ post, index }: ArticleCardProps) => {
   const Icon = post.icon;
+  const { isBookmarked, toggleBookmark } = useBookmarks();
+  const bookmarked = isBookmarked(post.id);
+
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const newState = toggleBookmark(post.id);
+    toast.success(newState ? 'Article bookmarked!' : 'Bookmark removed');
+  };
 
   return (
     <motion.article
@@ -85,6 +96,26 @@ export const ArticleCard = ({ post, index }: ArticleCardProps) => {
             >
               {post.category}
             </div>
+
+            {/* Bookmark Button */}
+            <button
+              onClick={handleBookmarkClick}
+              className="absolute top-3 right-3 p-2 rounded-full transition-all duration-300 hover:scale-110 z-10"
+              style={{
+                background: bookmarked 
+                  ? 'linear-gradient(135deg, hsl(var(--aurora-purple)), hsl(190 80% 50%))'
+                  : 'hsl(0 0% 0% / 0.6)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid hsl(0 0% 100% / 0.1)',
+                boxShadow: bookmarked ? '0 0 16px hsl(var(--aurora-purple) / 0.5)' : 'none',
+              }}
+              aria-label={bookmarked ? 'Remove bookmark' : 'Bookmark article'}
+            >
+              <Bookmark 
+                className={`w-4 h-4 transition-all duration-300 ${bookmarked ? 'fill-white' : ''}`}
+                style={{ color: 'hsl(0 0% 100%)' }}
+              />
+            </button>
           </div>
 
           {/* Content */}

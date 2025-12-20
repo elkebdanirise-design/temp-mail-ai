@@ -1,13 +1,14 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { Search, Loader2, ArrowLeft, X } from 'lucide-react';
+import { Search, Loader2, ArrowLeft, X, Bookmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ArticleCard } from '@/components/ArticleCard';
 import { AuroraBackground } from '@/components/AuroraBackground';
 import { blogPosts, blogCategories, BlogCategory, getPostsByCategory } from '@/data/blogData';
+import { useBookmarks } from '@/hooks/useBookmarks';
 
 const POSTS_PER_PAGE = 6;
 const MAX_SEARCH_LENGTH = 100;
@@ -17,10 +18,18 @@ export default function Blog() {
   const [visiblePosts, setVisiblePosts] = useState(POSTS_PER_PAGE);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
+  
+  const { bookmarks, bookmarkCount } = useBookmarks();
 
-  // Filter posts by category and search query
+  // Filter posts by category, search query, and bookmarks
   const filteredPosts = useMemo(() => {
     let posts = getPostsByCategory(activeCategory);
+    
+    // Filter by bookmarks if enabled
+    if (showBookmarksOnly) {
+      posts = posts.filter(post => bookmarks.includes(post.id));
+    }
     
     const trimmedQuery = searchQuery.trim().toLowerCase();
     if (trimmedQuery) {
@@ -33,13 +42,19 @@ export default function Blog() {
     }
     
     return posts;
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, showBookmarksOnly, bookmarks]);
 
   const displayedPosts = filteredPosts.slice(0, visiblePosts);
   const hasMorePosts = visiblePosts < filteredPosts.length;
 
   const handleCategoryChange = (category: BlogCategory) => {
     setActiveCategory(category);
+    setVisiblePosts(POSTS_PER_PAGE);
+    setShowBookmarksOnly(false);
+  };
+
+  const toggleBookmarksFilter = () => {
+    setShowBookmarksOnly(prev => !prev);
     setVisiblePosts(POSTS_PER_PAGE);
   };
 
@@ -176,21 +191,55 @@ export default function Blog() {
               className="mb-10 overflow-x-auto scrollbar-hide"
             >
               <div className="flex gap-2 md:justify-center min-w-max pb-2 px-1">
+                {/* Bookmarks Filter Button */}
+                <button
+                  onClick={toggleBookmarksFilter}
+                  className={`
+                    px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap flex items-center gap-2
+                    ${showBookmarksOnly ? 'scale-105' : 'hover:scale-102'}
+                  `}
+                  style={{
+                    background: showBookmarksOnly 
+                      ? 'linear-gradient(135deg, hsl(45 90% 50%), hsl(35 85% 45%))'
+                      : 'hsl(220 30% 8% / 0.8)',
+                    border: `1px solid ${showBookmarksOnly ? 'transparent' : 'hsl(var(--glass-border))'}`,
+                    color: showBookmarksOnly ? 'hsl(0 0% 100%)' : 'hsl(200 15% 60%)',
+                    boxShadow: showBookmarksOnly 
+                      ? '0 4px 20px hsl(45 90% 50% / 0.3)'
+                      : 'none',
+                  }}
+                >
+                  <Bookmark className={`w-4 h-4 ${showBookmarksOnly ? 'fill-white' : ''}`} />
+                  <span>Saved</span>
+                  {bookmarkCount > 0 && (
+                    <span 
+                      className="px-1.5 py-0.5 rounded-full text-xs"
+                      style={{
+                        background: showBookmarksOnly ? 'hsl(0 0% 100% / 0.2)' : 'hsl(var(--aurora-purple) / 0.3)',
+                        color: 'hsl(0 0% 100%)',
+                      }}
+                    >
+                      {bookmarkCount}
+                    </span>
+                  )}
+                </button>
+
+                {/* Category Buttons */}
                 {blogCategories.map((category) => (
                   <button
                     key={category}
                     onClick={() => handleCategoryChange(category)}
                     className={`
                       px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap
-                      ${activeCategory === category ? 'scale-105' : 'hover:scale-102'}
+                      ${activeCategory === category && !showBookmarksOnly ? 'scale-105' : 'hover:scale-102'}
                     `}
                     style={{
-                      background: activeCategory === category 
+                      background: activeCategory === category && !showBookmarksOnly
                         ? 'linear-gradient(135deg, hsl(var(--aurora-purple)), hsl(190 80% 50%))'
                         : 'hsl(220 30% 8% / 0.8)',
-                      border: `1px solid ${activeCategory === category ? 'transparent' : 'hsl(var(--glass-border))'}`,
-                      color: activeCategory === category ? 'hsl(0 0% 100%)' : 'hsl(200 15% 60%)',
-                      boxShadow: activeCategory === category 
+                      border: `1px solid ${activeCategory === category && !showBookmarksOnly ? 'transparent' : 'hsl(var(--glass-border))'}`,
+                      color: activeCategory === category && !showBookmarksOnly ? 'hsl(0 0% 100%)' : 'hsl(200 15% 60%)',
+                      boxShadow: activeCategory === category && !showBookmarksOnly
                         ? '0 4px 20px hsl(var(--aurora-purple) / 0.3)'
                         : 'none',
                     }}
