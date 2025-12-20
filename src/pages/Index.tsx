@@ -93,8 +93,8 @@ const Index = () => {
       <AuroraBackground />
       <ParticleField />
       <ShootingStars />
-      {/* Increased bottom padding on mobile for fixed nav bar */}
-      <div className="relative z-10 min-h-screen pb-24 md:pb-0 ambient-breathe">
+      {/* Increased bottom padding on mobile for fixed nav bar (includes safe-area) */}
+      <div className="relative z-10 min-h-screen pb-[calc(96px+env(safe-area-inset-bottom,0px))] md:pb-0 ambient-breathe">
         {/* Header Ad */}
         <div className="container mx-auto px-4 pt-4">
           <AdPlaceholder variant="horizontal" className="hidden md:flex" monetagId="header-728x90" />
@@ -154,15 +154,15 @@ const Index = () => {
 
         {/* Footer */}
         <Footer />
-
-        {/* Mobile Navigation */}
-        <MobileNav
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          onRefresh={handleNewEmail}
-          email={email}
-        />
       </div>
+
+      {/* Mobile Navigation (mounted outside filtered container for true viewport-fixed positioning) */}
+      <MobileNav
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onRefresh={handleNewEmail}
+        email={email}
+      />
     </>
   );
 };

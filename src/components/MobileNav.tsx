@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Inbox, RefreshCw, Copy } from 'lucide-react';
 import { toast } from 'sonner';
@@ -10,6 +11,18 @@ interface MobileNavProps {
 }
 
 export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNavProps) => {
+  const [pressedId, setPressedId] = useState<string | null>(null);
+
+  const tabs = useMemo(
+    () => [
+      { id: 'email', icon: Mail, label: 'Email' },
+      { id: 'copy', icon: Copy, label: 'Copy', highlight: true },
+      { id: 'inbox', icon: Inbox, label: 'Inbox' },
+      { id: 'refresh', icon: RefreshCw, label: 'Refresh' },
+    ],
+    []
+  );
+
   const handleCopyEmail = async () => {
     if (email) {
       await navigator.clipboard.writeText(email);
@@ -19,94 +32,121 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
     }
   };
 
-  const tabs = [
-    { id: 'email', icon: Mail, label: 'Email' },
-    { id: 'copy', icon: Copy, label: 'Copy', highlight: true },
-    { id: 'inbox', icon: Inbox, label: 'Inbox' },
-    { id: 'refresh', icon: RefreshCw, label: 'Refresh' },
-  ];
-
   const handleTabClick = (tabId: string) => {
     if (tabId === 'refresh') {
       onRefresh();
       toast.success('Generating new email...');
-    } else if (tabId === 'copy') {
-      handleCopyEmail();
-    } else {
-      onTabChange(tabId);
+      return;
     }
+
+    if (tabId === 'copy') {
+      handleCopyEmail();
+      return;
+    }
+
+    onTabChange(tabId);
   };
 
   return (
     <motion.nav
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-      className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
-      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+      transition={{ duration: 0.25 }}
+      className="md:hidden"
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        zIndex: 9999,
+        paddingBottom: 'env(safe-area-inset-bottom)',
+      }}
+      aria-label="Mobile navigation"
     >
-      {/* Neon top border */}
-      <div 
-        className="absolute top-0 left-0 right-0 h-[1.5px]"
+      {/* Deep obsidian glass surface */}
+      <div
+        className="relative px-4 py-3"
         style={{
-          background: 'linear-gradient(90deg, hsl(280 80% 55% / 0.6), hsl(190 90% 50% / 0.8), hsl(280 80% 55% / 0.6))',
-          boxShadow: '0 0 10px hsl(190 90% 50% / 0.4), 0 0 20px hsl(280 80% 55% / 0.2)',
-        }}
-      />
-      
-      {/* Glassmorphism background */}
-      <div 
-        className="px-4 py-3"
-        style={{
-          background: 'linear-gradient(180deg, hsl(220 30% 6% / 0.85) 0%, hsl(220 30% 4% / 0.95) 100%)',
-          backdropFilter: 'blur(24px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          background: `linear-gradient(180deg, hsl(var(--background) / 0.72) 0%, hsl(var(--background) / 0.92) 100%)`,
+          backdropFilter: 'blur(12px) saturate(160%)',
+          WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+          borderTop: '1px solid hsl(var(--border))',
         }}
       >
-        <div className="flex items-center justify-around max-w-md mx-auto">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            const isHighlight = tab.highlight;
+        {/* Neon top accent */}
+        <div
+          className="absolute top-0 left-0 right-0 h-[1.5px]"
+          style={{
+            background: `linear-gradient(90deg, hsl(var(--aurora-purple) / 0.55), hsl(var(--aurora-cyan) / 0.85), hsl(var(--aurora-purple) / 0.55))`,
+            boxShadow: `0 0 10px hsl(var(--aurora-cyan) / 0.35), 0 0 18px hsl(var(--aurora-purple) / 0.18)`,
+          }}
+        />
 
-            return (
-              <motion.button
-                key={tab.id}
-                type="button"
-                onClick={() => handleTabClick(tab.id)}
-                whileTap={{ scale: 0.9 }}
-                className={`relative flex flex-col items-center justify-center gap-1 min-w-[56px] min-h-[56px] rounded-xl transition-all duration-200 touch-manipulation select-none ${
-                  isHighlight
-                    ? 'text-white'
-                    : isActive
-                    ? 'text-primary'
-                    : 'text-muted-foreground'
-                }`}
-                style={isHighlight ? {
-                  background: 'linear-gradient(135deg, hsl(280 80% 55%) 0%, hsl(190 90% 50%) 100%)',
-                  boxShadow: '0 4px 20px hsl(190 90% 50% / 0.35), 0 0 30px hsl(280 80% 55% / 0.2)',
-                } : isActive ? {
-                  background: 'hsl(280 60% 50% / 0.15)',
-                  boxShadow: '0 0 20px hsl(280 60% 50% / 0.2)',
-                } : {}}
-              >
-                {/* Active indicator glow */}
-                {isActive && !isHighlight && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute inset-0 rounded-xl"
-                    style={{
-                      border: '1px solid hsl(280 60% 50% / 0.3)',
-                    }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                  />
-                )}
-                
-                <Icon className="w-5 h-5" />
-                <span className="text-[10px] font-medium tracking-wide">{tab.label}</span>
-              </motion.button>
-            );
-          })}
+        <div className="mx-auto w-full max-w-md">
+          <div className="grid grid-cols-4 items-center">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              const isHighlight = !!tab.highlight;
+              const isPressed = pressedId === tab.id;
+
+              const baseGlow = isHighlight
+                ? `0 10px 28px hsl(var(--aurora-cyan) / 0.22), 0 0 34px hsl(var(--aurora-purple) / 0.18)`
+                : isActive
+                  ? `0 0 24px hsl(var(--aurora-cyan) / 0.18)`
+                  : 'none';
+
+              const pressGlow = isHighlight
+                ? `0 12px 34px hsl(var(--aurora-cyan) / 0.35), 0 0 46px hsl(var(--aurora-purple) / 0.25)`
+                : isActive
+                  ? `0 0 32px hsl(var(--aurora-cyan) / 0.3)`
+                  : `0 0 16px hsl(var(--aurora-cyan) / 0.12)`;
+
+              return (
+                <motion.button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => handleTabClick(tab.id)}
+                  onPointerDown={() => setPressedId(tab.id)}
+                  onPointerUp={() => setPressedId(null)}
+                  onPointerCancel={() => setPressedId(null)}
+                  whileTap={{ scale: 0.92 }}
+                  className="relative flex flex-col items-center justify-center gap-1 min-h-[56px] rounded-xl transition-all duration-150 touch-manipulation select-none"
+                  style={{
+                    color: isHighlight
+                      ? 'hsl(var(--primary-foreground))'
+                      : isActive
+                        ? 'hsl(var(--primary))'
+                        : 'hsl(var(--muted-foreground))',
+                    background: isHighlight
+                      ? `linear-gradient(135deg, hsl(var(--aurora-purple)) 0%, hsl(var(--aurora-cyan)) 100%)`
+                      : isActive
+                        ? 'hsl(var(--primary) / 0.12)'
+                        : 'transparent',
+                    boxShadow: isPressed ? pressGlow : baseGlow,
+                    filter: isPressed ? 'brightness(1.08)' : 'none',
+                  }}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {/* Persistent active indicator */}
+                  {isActive && !isHighlight && (
+                    <motion.div
+                      layoutId="mobileNavActive"
+                      className="absolute -top-0.5 left-1/2 -translate-x-1/2 h-1 w-8 rounded-full"
+                      style={{
+                        background: `linear-gradient(90deg, transparent, hsl(var(--aurora-cyan) / 0.9), transparent)`,
+                        boxShadow: `0 0 16px hsl(var(--aurora-cyan) / 0.35)`,
+                      }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 40 }}
+                    />
+                  )}
+
+                  <Icon className="w-5 h-5" />
+                  <span className="text-[10px] font-medium tracking-wide">{tab.label}</span>
+                </motion.button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </motion.nav>
