@@ -35,14 +35,14 @@ export const Header = () => {
             <div className="flex items-center gap-3">
               <div className="relative">
                 <div 
-                  className="absolute inset-0 rounded-lg blur-md"
-                  style={{ background: 'hsl(190 100% 55% / 0.15)' }}
+                  className="absolute inset-0 rounded-xl blur-md"
+                  style={{ background: 'hsl(190 80% 50% / 0.1)' }}
                 />
                 <div 
-                  className="relative p-1.5 rounded-lg"
+                  className="relative p-2 rounded-xl"
                   style={{
-                    background: 'hsl(190 80% 50% / 0.08)',
-                    border: '1px solid hsl(190 80% 50% / 0.2)',
+                    background: 'hsl(210 30% 4% / 0.9)',
+                    border: '1px solid hsl(190 60% 45% / 0.15)',
                   }}
                 >
                   <AuraLogo className="w-8 h-8" />
@@ -50,34 +50,71 @@ export const Header = () => {
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <h1 className="text-xl md:text-2xl font-bold tracking-tighter relative">
-                    <span className="font-semibold text-foreground">Temp Mail</span>{' '}
-                    <span className="aurora-gradient-text font-bold">Aura</span>
-                    {/* High-tech ornamental element */}
-                    <span className="hidden sm:inline-flex items-center ml-2 relative">
-                      <svg viewBox="0 0 32 12" className="w-8 h-3" fill="none">
-                        <rect x="0" y="4" width="6" height="4" rx="1" fill="hsl(190 80% 50% / 0.4)" />
-                        <rect x="8" y="3" width="4" height="6" rx="1" fill="hsl(190 80% 50% / 0.3)" />
-                        <rect x="14" y="2" width="2" height="8" rx="0.5" fill="hsl(190 80% 50% / 0.25)" />
-                        <rect x="18" y="4" width="8" height="4" rx="1" fill="hsl(190 80% 50% / 0.35)" />
-                        <rect x="28" y="5" width="4" height="2" rx="0.5" fill="hsl(190 80% 50% / 0.2)" />
-                        <line x1="0" y1="6" x2="32" y2="6" stroke="hsl(190 80% 50% / 0.15)" strokeWidth="0.5" />
-                      </svg>
+                  {/* Luxury Brand Title with Clash Display */}
+                  <h1 className="font-display text-xl md:text-2xl font-semibold relative flex items-center" style={{ letterSpacing: '-0.04em' }}>
+                    <span 
+                      className="font-display"
+                      style={{
+                        background: 'linear-gradient(135deg, hsl(0 0% 85%) 0%, hsl(0 0% 95%) 25%, hsl(190 40% 75%) 50%, hsl(200 50% 70%) 75%, hsl(0 0% 90%) 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                      }}
+                    >
+                      Temp Mail
+                    </span>
+                    <span className="mx-1.5" />
+                    <span 
+                      className="font-display font-bold"
+                      style={{
+                        background: 'linear-gradient(135deg, hsl(185 80% 65%) 0%, hsl(190 90% 55%) 40%, hsl(200 85% 60%) 70%, hsl(210 80% 65%) 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                        filter: 'drop-shadow(0 0 6px hsl(190 80% 55% / 0.3))',
+                      }}
+                    >
+                      Aura
+                    </span>
+                    {/* AI Precision Symbol - Three glowing dots */}
+                    <span className="hidden sm:inline-flex items-center ml-2 gap-[3px]">
+                      <span 
+                        className="w-[3px] h-[3px] rounded-full"
+                        style={{ 
+                          background: 'hsl(190 90% 60%)',
+                          boxShadow: '0 0 4px hsl(190 90% 60% / 0.6)',
+                        }}
+                      />
+                      <span 
+                        className="w-[3px] h-[4px] rounded-full"
+                        style={{ 
+                          background: 'hsl(190 85% 55%)',
+                          boxShadow: '0 0 6px hsl(190 85% 55% / 0.7)',
+                        }}
+                      />
+                      <span 
+                        className="w-[3px] h-[3px] rounded-full"
+                        style={{ 
+                          background: 'hsl(200 80% 60%)',
+                          boxShadow: '0 0 4px hsl(200 80% 60% / 0.6)',
+                        }}
+                      />
                     </span>
                   </h1>
                   {isPremium && <VIPBadge />}
                 </div>
-                {/* Subtitle tagline */}
+                {/* Premium Cinematic Tagline */}
                 <span 
-                  className="text-[10px] sm:text-xs font-medium tracking-widest uppercase mt-0.5"
+                  className="text-[9px] sm:text-[10px] font-medium uppercase mt-1"
                   style={{
-                    background: 'linear-gradient(90deg, hsl(190 60% 55% / 0.7), hsl(210 60% 60% / 0.5))',
+                    letterSpacing: '0.25em',
+                    background: 'linear-gradient(90deg, hsl(0 0% 50%) 0%, hsl(190 30% 55%) 50%, hsl(0 0% 45%) 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
                   }}
                 >
-                  Instant Privacy. Infinite Shield.
+                  INSTANT PRIVACY. INFINITE SHIELD.
                 </span>
               </div>
             </div>
@@ -87,7 +124,7 @@ export const Header = () => {
               <a
                 href="#blog-section"
                 onClick={(e) => handleAnchorClick(e, '#blog-section')}
-                className="hidden md:flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(190,100%,55%)] hover:after:w-full after:transition-all"
+                className="hidden md:flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(190,80%,50%)] hover:after:w-full after:transition-all"
               >
                 Blog
               </a>
@@ -97,17 +134,17 @@ export const Header = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full"
+                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl"
                 style={{
-                  background: 'hsl(160 100% 40% / 0.08)',
-                  border: '1px solid hsl(160 100% 40% / 0.2)',
+                  background: 'hsl(160 60% 35% / 0.06)',
+                  border: '1px solid hsl(160 60% 40% / 0.12)',
                 }}
               >
                 <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-live-pulse" />
-                  <Users className="w-3.5 h-3.5 text-emerald-400" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-live-pulse" />
+                  <Users className="w-3.5 h-3.5 text-emerald-400/80" />
                 </div>
-                <span className="text-xs font-medium text-emerald-400">
+                <span className="text-xs font-medium text-emerald-400/80">
                   {liveUsers.toLocaleString()} online
                 </span>
               </motion.div>
@@ -116,7 +153,7 @@ export const Header = () => {
                 <Button
                   variant="outline"
                   onClick={() => setShowPremiumModal(true)}
-                  className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+                  className="border-amber-500/20 text-amber-400/90 hover:bg-amber-500/8 rounded-xl"
                 >
                   <Key className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Manage License</span>
@@ -125,7 +162,7 @@ export const Header = () => {
               ) : (
                 <Button
                   asChild
-                  className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-105 transition-transform text-white font-semibold"
+                  className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-xl"
                 >
                   <a 
                     href="#pro-systems" 

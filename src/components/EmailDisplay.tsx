@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, RefreshCw, Loader2, Shield, Cpu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Copy, Check, RefreshCw, Loader2 } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -23,6 +22,22 @@ export const EmailDisplay = ({
   onDelete 
 }: EmailDisplayProps) => {
   const [copied, setCopied] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [displayEmail, setDisplayEmail] = useState(email);
+
+  // Blur-to-clear transition effect when email changes
+  useEffect(() => {
+    if (email !== displayEmail && email) {
+      setIsTransitioning(true);
+      const timer = setTimeout(() => {
+        setDisplayEmail(email);
+        setIsTransitioning(false);
+      }, 150);
+      return () => clearTimeout(timer);
+    } else if (email) {
+      setDisplayEmail(email);
+    }
+  }, [email, displayEmail]);
 
   const handleCopy = async () => {
     if (!email) return;
@@ -37,234 +52,218 @@ export const EmailDisplay = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="relative overflow-hidden rounded-3xl"
+      className="relative"
     >
-      {/* Outer container with sophisticated border */}
-      <div 
-        className="relative p-[1px] rounded-3xl overflow-hidden"
-        style={{
-          background: 'linear-gradient(135deg, hsl(190 60% 45% / 0.3) 0%, hsl(210 60% 40% / 0.15) 50%, hsl(190 60% 45% / 0.25) 100%)',
-        }}
-      >
-        {/* Inner glass panel */}
-        <div 
-          className="relative rounded-3xl overflow-hidden"
-          style={{
-            background: 'linear-gradient(165deg, hsl(210 30% 7% / 0.97), hsl(210 35% 4% / 0.99))',
-          }}
-        >
-          {/* Subtle ambient glow - top */}
+      {/* Section Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
           <div 
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-32 pointer-events-none"
-            style={{
-              background: 'radial-gradient(ellipse 100% 100% at center top, hsl(190 80% 50% / 0.08) 0%, transparent 70%)',
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ 
+              background: 'hsl(190 80% 55%)',
+              boxShadow: '0 0 6px hsl(190 80% 55% / 0.5)',
             }}
           />
-          
-          {/* Tech circuit pattern overlay */}
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-            <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern id="circuit" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
-                  <path d="M0 30 H20 M40 30 H60 M30 0 V20 M30 40 V60" stroke="hsl(190 100% 60%)" strokeWidth="0.5" fill="none"/>
-                  <circle cx="30" cy="30" r="2" fill="hsl(190 100% 60%)" />
-                  <circle cx="20" cy="30" r="1" fill="hsl(190 100% 60%)" />
-                  <circle cx="40" cy="30" r="1" fill="hsl(190 100% 60%)" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#circuit)" />
-            </svg>
-          </div>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+            Secure Address
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-40" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+          </span>
+          <span className="text-[10px] font-medium text-emerald-400/70 uppercase tracking-wider">
+            Live Sync
+          </span>
+        </div>
+      </div>
 
-          <div className="relative z-10 p-6 sm:p-8">
-            {/* Header with icon and status */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div 
-                  className="relative p-2.5 rounded-xl"
-                  style={{
-                    background: 'linear-gradient(135deg, hsl(190 60% 45% / 0.12), hsl(210 60% 45% / 0.06))',
-                    border: '1px solid hsl(190 60% 50% / 0.2)',
-                  }}
-                >
-                  <Shield className="w-5 h-5 text-[hsl(190,80%,55%)]" />
-                </div>
-                <div>
-                  <h2 className="text-sm font-semibold text-foreground tracking-tight">Secure Disposable Address</h2>
-                  <p className="text-[11px] text-muted-foreground/70 mt-0.5">Auto-syncs • End-to-end protected</p>
-                </div>
-              </div>
-              
-              {/* Status indicator */}
-              <div 
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full"
-                style={{
-                  background: 'hsl(160 50% 40% / 0.08)',
-                  border: '1px solid hsl(160 50% 40% / 0.15)',
-                }}
-              >
-                <div className="relative flex items-center">
-                  <span className="absolute inline-flex h-1.5 w-1.5 animate-ping rounded-full bg-emerald-400 opacity-60" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                </div>
-                <span className="text-[10px] font-medium text-emerald-400/80 uppercase tracking-wider">Live</span>
-              </div>
-            </div>
+      {/* Unified Tech Module - Elongated Pill Container */}
+      <div 
+        className="relative rounded-2xl overflow-hidden"
+        style={{
+          background: 'hsl(220 25% 2%)',
+        }}
+      >
+        {/* Dynamic Glowing Border */}
+        <div 
+          className="absolute inset-0 rounded-2xl pointer-events-none"
+          style={{
+            background: 'linear-gradient(135deg, hsl(190 70% 45% / 0.2) 0%, hsl(210 60% 40% / 0.1) 50%, hsl(190 70% 45% / 0.15) 100%)',
+            padding: '1px',
+            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+            WebkitMaskComposite: 'xor',
+            maskComposite: 'exclude',
+          }}
+        />
 
-            {/* Main email display - the hero element */}
-            <div className="relative mb-6">
-              {/* Email container with unified design */}
-              <div 
-                className="relative rounded-2xl overflow-hidden"
-                style={{
-                  background: 'linear-gradient(135deg, hsl(210 35% 6% / 0.95), hsl(210 30% 4% / 0.98))',
-                  border: '1px solid hsl(190 50% 45% / 0.18)',
-                }}
-              >
-                {/* Inner glow */}
-                <div 
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    boxShadow: 'inset 0 1px 0 hsl(0 0% 100% / 0.03), inset 0 0 30px hsl(190 80% 50% / 0.03)',
-                  }}
-                />
-                
-                <div className="relative flex flex-col sm:flex-row items-stretch">
-                  {/* Email text area */}
-                  <div 
-                    className="flex-1 px-5 py-4 sm:py-5 flex items-center justify-center sm:justify-start cursor-pointer group"
+        {/* Digital Scanning Light Effect */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-2xl">
+          <motion.div
+            animate={{
+              x: ['-100%', '200%'],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              repeatDelay: 4,
+              ease: 'easeInOut',
+            }}
+            className="absolute inset-y-0 w-24"
+            style={{
+              background: 'linear-gradient(90deg, transparent, hsl(190 80% 55% / 0.08), transparent)',
+            }}
+          />
+        </div>
+
+        {/* Inner Container */}
+        <div 
+          className="relative rounded-2xl m-[1px] overflow-hidden"
+          style={{
+            background: 'linear-gradient(165deg, hsl(220 30% 4%), hsl(220 35% 2%))',
+          }}
+        >
+          {/* Subtle top edge highlight */}
+          <div 
+            className="absolute top-0 inset-x-0 h-px pointer-events-none"
+            style={{
+              background: 'linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.04), transparent)',
+            }}
+          />
+
+          <div className="relative flex items-center">
+            {/* Copy Icon - Left Edge */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
                     onClick={handleCopy}
+                    disabled={!email || loading}
+                    className="relative px-5 py-5 flex items-center justify-center transition-all hover:bg-[hsl(190,60%,50%,0.04)] disabled:opacity-30 disabled:cursor-not-allowed group"
                   >
                     <AnimatePresence mode="wait">
-                      {loading ? (
+                      {copied ? (
                         <motion.div
-                          key="loading"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="flex items-center gap-3"
+                          key="check"
+                          initial={{ scale: 0, rotate: -90 }}
+                          animate={{ scale: 1, rotate: 0 }}
+                          exit={{ scale: 0, rotate: 90 }}
+                          transition={{ duration: 0.2 }}
                         >
-                          <Loader2 className="w-5 h-5 text-[hsl(190,80%,55%)] animate-spin" />
-                          <span className="text-muted-foreground font-medium text-sm">Generating secure mailbox...</span>
+                          <Check className="w-4 h-4 text-emerald-400" />
                         </motion.div>
                       ) : (
                         <motion.div
-                          key="email"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="flex items-center gap-3 w-full"
+                          key="copy"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          exit={{ scale: 0 }}
+                          transition={{ duration: 0.2 }}
                         >
-                          <Cpu className="w-4 h-4 text-[hsl(190,60%,50%)] shrink-0 hidden sm:block" />
-                          <span 
-                            className="text-base sm:text-lg md:text-xl font-mono tracking-wide break-all transition-all group-hover:opacity-80"
-                            style={{
-                              background: 'linear-gradient(90deg, hsl(185 90% 65%) 0%, hsl(190 85% 55%) 50%, hsl(205 80% 60%) 100%)',
-                              WebkitBackgroundClip: 'text',
-                              WebkitTextFillColor: 'transparent',
-                              backgroundClip: 'text',
-                            }}
-                          >
-                            {email || 'No email generated'}
-                          </span>
+                          <Copy className="w-4 h-4 text-[hsl(190,50%,50%)] group-hover:text-[hsl(190,60%,60%)] transition-colors" />
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </div>
-                  
-                  {/* Divider */}
-                  <div 
-                    className="hidden sm:block w-px self-stretch my-3"
-                    style={{ background: 'hsl(190 50% 45% / 0.15)' }}
-                  />
-                  
-                  {/* Integrated action buttons */}
-                  <div className="flex sm:flex-col border-t sm:border-t-0 border-[hsl(190,50%,45%,0.1)]">
-                    {/* Copy button */}
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button
-                            onClick={handleCopy}
-                            disabled={!email || loading}
-                            className="flex-1 sm:flex-none px-5 py-3 sm:py-4 flex items-center justify-center gap-2 transition-all hover:bg-[hsl(190,50%,50%,0.06)] disabled:opacity-40 disabled:cursor-not-allowed group"
-                          >
-                            <AnimatePresence mode="wait">
-                              {copied ? (
-                                <motion.div
-                                  key="check"
-                                  initial={{ scale: 0 }}
-                                  animate={{ scale: 1 }}
-                                  exit={{ scale: 0 }}
-                                  className="flex items-center gap-2"
-                                >
-                                  <Check className="w-4 h-4 text-emerald-400" />
-                                  <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wide">Copied</span>
-                                </motion.div>
-                              ) : (
-                                <motion.div
-                                  key="copy"
-                                  initial={{ scale: 0 }}
-                                  animate={{ scale: 1 }}
-                                  exit={{ scale: 0 }}
-                                  className="flex items-center gap-2"
-                                >
-                                  <Copy className="w-4 h-4 text-[hsl(190,60%,55%)] group-hover:text-[hsl(190,70%,60%)] transition-colors" />
-                                  <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground/80 transition-colors uppercase tracking-wide">Copy</span>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent className="glass-panel border-[hsl(190,50%,45%,0.2)]">
-                          <p className="text-xs">Copy to clipboard</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                    
-                    {/* Horizontal divider on mobile, vertical on desktop */}
-                    <div 
-                      className="w-px sm:w-auto sm:h-px self-stretch sm:mx-3"
-                      style={{ background: 'hsl(190 50% 45% / 0.1)' }}
-                    />
-                    
-                    {/* Generate button */}
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button
-                            onClick={onRefresh}
-                            disabled={loading}
-                            className="flex-1 sm:flex-none px-5 py-3 sm:py-4 flex items-center justify-center gap-2 transition-all hover:bg-[hsl(190,50%,50%,0.06)] disabled:opacity-40 disabled:cursor-not-allowed group"
-                          >
-                            {loading ? (
-                              <Loader2 className="w-4 h-4 text-[hsl(190,60%,55%)] animate-spin" />
-                            ) : (
-                              <RefreshCw className="w-4 h-4 text-[hsl(190,60%,55%)] group-hover:text-[hsl(190,70%,60%)] transition-colors" />
-                            )}
-                            <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground/80 transition-colors uppercase tracking-wide">New</span>
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent className="glass-panel border-[hsl(190,50%,45%,0.2)]">
-                          <p className="text-xs">Generate new email</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                </div>
-              </div>
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent 
+                  side="bottom" 
+                  className="rounded-xl border-[hsl(190,40%,35%,0.15)]"
+                  style={{ background: 'hsl(220 30% 5%)' }}
+                >
+                  <p className="text-xs">{copied ? 'Copied!' : 'Copy to clipboard'}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            {/* Vertical Divider */}
+            <div 
+              className="w-px h-8 self-center"
+              style={{ background: 'hsl(190 50% 40% / 0.1)' }}
+            />
+
+            {/* Email Address - Center */}
+            <div 
+              className="flex-1 px-5 py-5 flex items-center justify-center cursor-pointer group"
+              onClick={handleCopy}
+            >
+              <AnimatePresence mode="wait">
+                {loading ? (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex items-center gap-3"
+                  >
+                    <Loader2 className="w-4 h-4 text-[hsl(190,60%,50%)] animate-spin" />
+                    <span className="text-sm text-muted-foreground/70 font-medium">Generating...</span>
+                  </motion.div>
+                ) : (
+                  <motion.span
+                    key={displayEmail || 'empty'}
+                    initial={{ opacity: 0, filter: 'blur(8px)' }}
+                    animate={{ 
+                      opacity: isTransitioning ? 0.3 : 1, 
+                      filter: isTransitioning ? 'blur(4px)' : 'blur(0px)' 
+                    }}
+                    exit={{ opacity: 0, filter: 'blur(8px)' }}
+                    transition={{ duration: 0.3 }}
+                    className="font-mono text-sm sm:text-base md:text-lg tracking-wide text-center break-all transition-all group-hover:opacity-70"
+                    style={{
+                      background: 'linear-gradient(90deg, hsl(0 0% 90%) 0%, hsl(185 70% 70%) 35%, hsl(190 80% 60%) 65%, hsl(0 0% 85%) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
+                    {displayEmail || 'Awaiting generation...'}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </div>
 
-            {/* Bottom subtle info bar */}
-            <div className="flex items-center justify-center gap-2 text-[10px] text-muted-foreground/50 uppercase tracking-widest">
-              <div className="w-8 h-px bg-[hsl(190,50%,50%,0.1)]" />
-              <span>Click email to copy</span>
-              <span className="text-[hsl(190,60%,50%,0.4)]">•</span>
-              <span>Tap New to refresh</span>
-              <div className="w-8 h-px bg-[hsl(190,50%,50%,0.1)]" />
-            </div>
+            {/* Vertical Divider */}
+            <div 
+              className="w-px h-8 self-center"
+              style={{ background: 'hsl(190 50% 40% / 0.1)' }}
+            />
+
+            {/* Refresh Icon - Right Edge */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={onRefresh}
+                    disabled={loading}
+                    className="relative px-5 py-5 flex items-center justify-center transition-all hover:bg-[hsl(190,60%,50%,0.04)] disabled:opacity-30 disabled:cursor-not-allowed group"
+                  >
+                    {loading ? (
+                      <Loader2 className="w-4 h-4 text-[hsl(190,50%,50%)] animate-spin" />
+                    ) : (
+                      <RefreshCw className="w-4 h-4 text-[hsl(190,50%,50%)] group-hover:text-[hsl(190,60%,60%)] transition-colors" />
+                    )}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent 
+                  side="bottom" 
+                  className="rounded-xl border-[hsl(190,40%,35%,0.15)]"
+                  style={{ background: 'hsl(220 30% 5%)' }}
+                >
+                  <p className="text-xs">Generate new address</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
+      </div>
+
+      {/* Minimal Info Footer */}
+      <div className="flex items-center justify-center gap-3 mt-4 text-[9px] text-muted-foreground/40 uppercase tracking-[0.2em]">
+        <span>Click to copy</span>
+        <span className="w-1 h-1 rounded-full bg-muted-foreground/20" />
+        <span>Auto-refresh enabled</span>
       </div>
     </motion.div>
   );
