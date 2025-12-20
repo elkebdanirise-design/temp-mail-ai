@@ -1,35 +1,9 @@
 import { motion } from 'framer-motion';
-import { Calendar, ArrowRight, Shield, Eye, UserCheck } from 'lucide-react';
+import { Calendar, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { blogPosts as allBlogPosts } from '@/data/blogData';
 
-const blogPosts = [
-  {
-    id: 1,
-    title: 'Why You Need a Temp Mail for Social Media',
-    excerpt: 'Protect your primary inbox from spam and data harvesting when signing up for new social platforms.',
-    date: 'Dec 18, 2026',
-    icon: UserCheck,
-    gradient: 'from-[hsl(185,90%,55%)] to-[hsl(195,85%,50%)]',
-    glowColor: 'hsl(190 90% 55% / 0.3)',
-  },
-  {
-    id: 2,
-    title: 'How Disposable Email Protects Your Privacy',
-    excerpt: 'Learn how temporary email addresses keep your personal data safe from marketers and hackers.',
-    date: 'Dec 15, 2026',
-    icon: Shield,
-    gradient: 'from-[hsl(270,70%,55%)] to-[hsl(280,65%,50%)]',
-    glowColor: 'hsl(270 70% 55% / 0.3)',
-  },
-  {
-    id: 3,
-    title: 'The Rise of AI-Powered Email Security',
-    excerpt: 'Discover how AI is revolutionizing the way we protect our digital communications in 2026.',
-    date: 'Dec 12, 2026',
-    icon: Eye,
-    gradient: 'from-[hsl(320,70%,55%)] to-[hsl(330,65%,50%)]',
-    glowColor: 'hsl(320 70% 55% / 0.3)',
-  },
-];
+const blogPosts = allBlogPosts.slice(0, 3);
 
 export const BlogSection = () => {
   return (
