@@ -28,8 +28,11 @@ export const PricingSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold silver-gradient-text mb-4">
-            Choose Your Plan
+          <h2 
+            className="text-3xl md:text-5xl font-bold mb-4 italic"
+            style={{ color: '#FFFFFF' }}
+          >
+            𝘾𝙝𝙤𝙤𝙨𝙚 𝙔𝙤𝙪𝙧 𝙋𝙡𝙖𝙣
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Start free or unlock elite features with Pro

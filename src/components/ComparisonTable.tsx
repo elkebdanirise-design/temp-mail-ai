@@ -75,8 +75,11 @@ export const ComparisonTable = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-8 md:mb-12"
         >
-          <h3 className="text-2xl md:text-3xl font-bold silver-gradient-text mb-3">
-            Compare Plans
+          <h3 
+            className="text-2xl md:text-3xl font-bold mb-3 italic"
+            style={{ color: '#FFFFFF' }}
+          >
+            𝘾𝙤𝙢𝙥𝙖𝙧𝙚 𝙋𝙡𝙖𝙣𝙨
           </h3>
           <p className="text-muted-foreground text-sm md:text-base">
             See exactly what you get with each plan

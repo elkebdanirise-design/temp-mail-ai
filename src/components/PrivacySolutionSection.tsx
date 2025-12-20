@@ -91,19 +91,12 @@ export const PrivacySolutionSection = () => {
             />
           </div>
 
-          {/* Chrome gradient title */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-4 relative inline-block">
-            <span className="text-foreground">The Ultimate </span>
-            <span 
-              style={{
-                background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(var(--aurora-orange) / 0.7) 60%, hsl(0 0% 90%) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Privacy Solution
-            </span>
+          {/* Decorative bold-italic pure white title */}
+          <h2 
+            className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 relative inline-block italic"
+            style={{ color: '#FFFFFF' }}
+          >
+            𝙏𝙝𝙚 𝙐𝙡𝙩𝙞𝙢𝙖𝙩𝙚 𝙋𝙧𝙞𝙫𝙖𝙘𝙮 𝙎𝙤𝙡𝙪𝙩𝙞𝙤𝙣
             
             {/* Animated underline */}
             <motion.div

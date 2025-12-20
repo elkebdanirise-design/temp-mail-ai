@@ -110,19 +110,11 @@ export const SEOSection = () => {
             />
           </div>
 
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-6 relative inline-block">
-            <span className="text-foreground">Why Use </span>
-            <span 
-              style={{
-                background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(var(--aurora-orange) / 0.7) 60%, hsl(0 0% 90%) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Aura Mail
-            </span>
-            <span className="text-foreground"> for Privacy?</span>
+          <h2 
+            className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6 relative inline-block italic"
+            style={{ color: '#FFFFFF' }}
+          >
+            𝙒𝙝𝙮 𝙐𝙨𝙚 𝙏𝙚𝙢𝙥 𝙈𝙖𝙞𝙡 𝘼𝙄 𝙛𝙤𝙧 𝙋𝙧𝙞𝙫𝙖𝙘𝙮?
             
             {/* Animated underline */}
             <motion.div
@@ -137,7 +129,7 @@ export const SEOSection = () => {
             />
           </h2>
           <p className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed mt-6" style={{ color: 'hsl(200 15% 55%)' }}>
-            In a world where your data is currency, Aura Mail gives you back control. 
+            In a world where your data is currency, Temp Mail AI gives you back control. 
             Generate unlimited temporary email addresses to protect your identity online.
           </p>
         </motion.div>
@@ -219,86 +211,6 @@ export const SEOSection = () => {
             );
           })}
         </div>
-
-        {/* Secondary SEO Block */}
-        <motion.div
-          initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="relative rounded-2xl p-8 md:p-12 overflow-hidden"
-          style={{
-            background: 'linear-gradient(145deg, hsl(220 30% 5% / 0.95), hsl(220 30% 3% / 0.98))',
-            border: '1px solid hsl(var(--glass-border))',
-          }}
-        >
-          <h2 
-            className="text-xl md:text-2xl font-semibold tracking-tight mb-6 text-center uppercase"
-            style={{
-              letterSpacing: '0.06em',
-              background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(var(--aurora-orange) / 0.7) 60%, hsl(0 0% 90%) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
-          >
-            The Fastest Disposable Email of 2026
-          </h2>
-          
-          <div className="prose prose-invert max-w-none">
-            <p className="leading-relaxed mb-4" style={{ color: 'hsl(200 12% 50%)' }}>
-              Aura Mail represents the next generation of disposable email technology. Built with a focus on 
-              speed, security, and simplicity, our service generates temporary email addresses instantly, 
-              allowing you to maintain your privacy without sacrificing convenience.
-            </p>
-            
-            <p className="leading-relaxed mb-4" style={{ color: 'hsl(200 12% 50%)' }}>
-              Whether you're signing up for a new service, testing an application, or simply want to avoid 
-              spam in your primary inbox, Aura Mail provides a seamless solution. Our real-time message 
-              delivery ensures you never miss important verification emails, while our clean interface 
-              makes managing your temporary inbox effortless.
-            </p>
-
-            <p className="leading-relaxed" style={{ color: 'hsl(200 12% 50%)' }}>
-              Unlike traditional email providers, Aura Mail requires no personal information. No phone 
-              number verification, no identity documents, no strings attached. Just pure, anonymous 
-              email functionality when you need it most.
-            </p>
-          </div>
-
-          <div className="mt-8 pt-8" style={{ borderTop: '1px solid hsl(var(--aurora-magenta) / 0.1)' }}>
-            <h3 
-              className="text-sm font-semibold mb-4 uppercase"
-              style={{
-                letterSpacing: '0.1em',
-                background: 'linear-gradient(135deg, hsl(0 0% 75%) 0%, hsl(0 0% 90%) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Common Use Cases
-            </h3>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm" style={{ color: 'hsl(200 12% 50%)' }}>
-              {[
-                'Free trial signups without spam',
-                'Online shopping with privacy',
-                'Testing email workflows',
-                'Avoiding newsletter spam',
-                'Anonymous account creation',
-                'Protecting your real identity',
-              ].map((item) => (
-                <li key={item} className="flex items-center gap-2">
-                  <span 
-                    className="w-1.5 h-1.5 rounded-full"
-                    style={{ background: 'hsl(var(--aurora-orange))' }}
-                  />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

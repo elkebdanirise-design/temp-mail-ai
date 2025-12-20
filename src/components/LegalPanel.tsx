@@ -12,12 +12,12 @@ const legalContent = {
   privacy: {
     title: 'Privacy Policy',
     content: `
-## Privacy Policy for Aura-Mail
+## Privacy Policy for Temp Mail AI
 
 **Last updated: January 2026**
 
 ### 1. Information We Collect
-Aura-Mail is designed with privacy as our core principle. We collect minimal information:
+Temp Mail AI is designed with privacy as our core principle. We collect minimal information:
 - **Temporary Email Data**: Messages received are stored temporarily and automatically deleted after 24 hours.
 - **No Personal Information**: We do not require registration, names, or permanent email addresses.
 
@@ -44,15 +44,15 @@ For privacy inquiries, please contact us through our website.
   terms: {
     title: 'Terms of Service',
     content: `
-## Terms of Service for Aura-Mail
+## Terms of Service for Temp Mail AI
 
 **Last updated: January 2026**
 
 ### 1. Acceptance of Terms
-By using Aura-Mail, you agree to these terms. If you disagree, please do not use our service.
+By using Temp Mail AI, you agree to these terms. If you disagree, please do not use our service.
 
 ### 2. Service Description
-Aura-Mail provides temporary, disposable email addresses for privacy protection. Emails are automatically deleted after 24 hours.
+Temp Mail AI provides temporary, disposable email addresses for privacy protection. Emails are automatically deleted after 24 hours.
 
 ### 3. Acceptable Use
 You agree NOT to:
@@ -65,7 +65,7 @@ You agree NOT to:
 The service is provided "as is" without warranties. We do not guarantee uptime or message delivery.
 
 ### 5. Limitation of Liability
-Aura-Mail is not liable for any damages arising from use of this service.
+Temp Mail AI is not liable for any damages arising from use of this service.
 
 ### 6. Service Modifications
 We reserve the right to modify or discontinue the service at any time.
@@ -79,8 +79,8 @@ These terms are governed by applicable laws. Disputes will be resolved through a
     content: `
 ## Frequently Asked Questions
 
-### What is Aura-Mail?
-Aura-Mail is a free, AI-powered disposable email service that lets you create temporary email addresses instantly for privacy protection.
+### What is Temp Mail AI?
+Temp Mail AI is a free, AI-powered disposable email service that lets you create temporary email addresses instantly for privacy protection.
 
 ### How long do emails last?
 All emails are automatically deleted after 24 hours. Your temporary mailbox is also cleared when you generate a new address.
@@ -98,7 +98,7 @@ Use the domain dropdown next to your email address to select from available doma
 Absolutely. We use encrypted connections, no tracking, and automatic data deletion. Your privacy is our priority.
 
 ### Can I use this for permanent accounts?
-No. Aura-Mail is designed for temporary use—signups, trials, and spam protection. For permanent accounts, use a regular email provider.
+No. Temp Mail AI is designed for temporary use—signups, trials, and spam protection. For permanent accounts, use a regular email provider.
 
 ### Why did my email disappear?
 Emails are automatically deleted after 24 hours. If you need to keep a message, copy its content before it expires.
@@ -110,7 +110,7 @@ Click the "Get Pro Systems" button to unlock premium features including ad-free 
   contact: {
     title: 'Contact Us',
     content: `
-## Contact Aura-Mail
+## Contact Temp Mail AI
 
 ### General Inquiries
 For general questions about our service, please visit our FAQ section first.
@@ -125,7 +125,7 @@ If you're experiencing technical issues:
 For business partnerships, API access, or enterprise solutions, please reach out through our official channels.
 
 ### Feedback
-We love hearing from our users! Your feedback helps us improve Aura-Mail.
+We love hearing from our users! Your feedback helps us improve Temp Mail AI.
 
 ### Report Abuse
 If you notice any misuse of our service, please report it immediately.

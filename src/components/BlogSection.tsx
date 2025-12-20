@@ -62,19 +62,10 @@ export const BlogSection = () => {
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="text-2xl md:text-3xl font-semibold tracking-tight mb-3 relative inline-block"
+            className="text-2xl md:text-3xl font-bold tracking-tight mb-3 relative inline-block italic"
+            style={{ color: '#FFFFFF' }}
           >
-            <span className="text-foreground">Latest Privacy Insights & </span>
-            <span 
-              style={{
-                background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(var(--aurora-orange) / 0.7) 60%, hsl(0 0% 90%) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Temp Mail Aura News
-            </span>
+            𝙇𝙖𝙩𝙚𝙨𝙩 𝙋𝙧𝙞𝙫𝙖𝙘𝙮 𝙄𝙣𝙨𝙞𝙜𝙝𝙩𝙨
             
             {/* Animated underline */}
             <motion.div
