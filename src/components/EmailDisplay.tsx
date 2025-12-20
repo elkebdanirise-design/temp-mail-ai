@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, RefreshCw, Loader2 } from 'lucide-react';
+import { Copy, Check, RefreshCw, Loader2, ShieldCheck } from 'lucide-react';
 
 interface EmailDisplayProps {
   email: string | null;
@@ -44,23 +44,45 @@ export const EmailDisplay = ({
           <div 
             className="w-1 h-1 rounded-full"
             style={{ 
-              background: 'hsl(var(--aurora-magenta))',
-              boxShadow: '0 0 6px hsl(var(--aurora-magenta) / 0.6)',
+              background: 'hsl(var(--aurora-orange))',
+              boxShadow: '0 0 6px hsl(var(--aurora-orange) / 0.6)',
             }}
           />
           <span className="text-[10px] font-medium text-muted-foreground/60 uppercase tracking-[0.2em]">
             Secure Address
           </span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-50" />
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+        {/* AI Smart Shield Badge */}
+        <motion.div 
+          className="flex items-center gap-1.5 px-2 py-1 rounded-full"
+          style={{
+            background: 'hsl(var(--aurora-orange) / 0.08)',
+            border: '1px solid hsl(var(--aurora-orange) / 0.2)',
+          }}
+          animate={{
+            boxShadow: [
+              '0 0 8px hsl(var(--aurora-orange) / 0.2)',
+              '0 0 16px hsl(var(--aurora-orange) / 0.35)',
+              '0 0 8px hsl(var(--aurora-orange) / 0.2)',
+            ],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        >
+          <ShieldCheck 
+            className="w-3 h-3" 
+            style={{ color: 'hsl(var(--aurora-orange))' }}
+          />
+          <span 
+            className="text-[8px] font-semibold uppercase tracking-[0.1em]"
+            style={{ color: 'hsl(var(--aurora-orange))' }}
+          >
+            AI-Verified
           </span>
-          <span className="text-[9px] font-medium text-emerald-400/60 uppercase tracking-[0.15em]">
-            Live
-          </span>
-        </div>
+        </motion.div>
       </div>
 
       {/* Cyber-Capsule Container */}
@@ -197,7 +219,7 @@ export const EmailDisplay = ({
                 <Copy 
                   className="w-4 h-4 sm:w-[18px] sm:h-[18px] transition-colors"
                   style={{ 
-                    color: isHovered ? 'hsl(var(--aurora-magenta))' : 'hsl(var(--aurora-crimson) / 0.7)',
+                    color: isHovered ? 'hsl(var(--aurora-orange))' : 'hsl(var(--aurora-sunset) / 0.7)',
                   }}
                 />
               </motion.div>
@@ -206,7 +228,7 @@ export const EmailDisplay = ({
             {/* Subtle divider */}
             <div 
               className="w-px h-5 xs:h-6 opacity-30"
-              style={{ background: 'linear-gradient(180deg, transparent, hsl(var(--aurora-magenta) / 0.3), transparent)' }}
+              style={{ background: 'linear-gradient(180deg, transparent, hsl(var(--aurora-orange) / 0.3), transparent)' }}
             />
 
             {/* Email Address - Center - Fluid typography */}
@@ -225,7 +247,7 @@ export const EmailDisplay = ({
                   >
                     <Loader2 
                       className="w-3.5 h-3.5 xs:w-4 xs:h-4 animate-spin"
-                      style={{ color: 'hsl(var(--aurora-magenta))' }}
+                      style={{ color: 'hsl(var(--aurora-orange))' }}
                     />
                     <span className="text-[10px] xs:text-xs sm:text-sm text-muted-foreground/60 font-medium">
                       Generating...
@@ -244,7 +266,7 @@ export const EmailDisplay = ({
                       fontWeight: 500,
                       letterSpacing: '0.01em',
                       fontSize: 'clamp(0.625rem, 2.5vw, 1rem)',
-                      background: 'linear-gradient(90deg, hsl(0 0% 85%) 0%, hsl(var(--aurora-magenta) / 0.9) 25%, hsl(var(--aurora-orange) / 0.9) 50%, hsl(var(--aurora-sunset) / 0.9) 75%, hsl(0 0% 80%) 100%)',
+                      background: 'linear-gradient(90deg, hsl(0 0% 85%) 0%, hsl(var(--aurora-orange) / 0.9) 25%, hsl(var(--aurora-sunset) / 0.9) 50%, hsl(var(--aurora-magenta) / 0.9) 75%, hsl(0 0% 80%) 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
@@ -291,7 +313,7 @@ export const EmailDisplay = ({
       <div className="flex items-center justify-center gap-3 mt-3 text-[8px] text-muted-foreground/30 uppercase tracking-[0.25em]">
         <span>Click to copy</span>
         <span className="w-0.5 h-0.5 rounded-full bg-muted-foreground/20" />
-        <span>Sync enabled</span>
+        <span>AI Sync enabled</span>
       </div>
 
       {/* Gradient border animation keyframes - injected via style */}

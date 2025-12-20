@@ -1,4 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
+import aiChipLogo from '@/assets/ai-chip-logo.png';
 
 export const AuroraBackground = () => {
   const { scrollY } = useScroll();
@@ -8,6 +9,8 @@ export const AuroraBackground = () => {
   const y2 = useTransform(scrollY, [0, 1000], [0, -150]);
   const y3 = useTransform(scrollY, [0, 1000], [0, -80]);
   const y4 = useTransform(scrollY, [0, 1000], [0, -50]);
+  const chipScale = useTransform(scrollY, [0, 500], [1, 1.1]);
+  const chipOpacity = useTransform(scrollY, [0, 800], [0.08, 0.03]);
 
   return (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
@@ -15,9 +18,24 @@ export const AuroraBackground = () => {
       <div 
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(180deg, hsl(0 0% 3%) 0%, hsl(0 0% 5%) 50%, hsl(0 0% 4%) 100%)',
+          background: 'linear-gradient(180deg, hsl(0 0% 2%) 0%, hsl(0 0% 4%) 50%, hsl(0 0% 3%) 100%)',
         }}
       />
+
+      {/* Large faint AI Chip Logo - Center background */}
+      <motion.div
+        style={{ scale: chipScale, opacity: chipOpacity }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px]"
+      >
+        <img 
+          src={aiChipLogo} 
+          alt="" 
+          className="w-full h-full object-contain"
+          style={{
+            filter: 'blur(2px) saturate(0.8)',
+          }}
+        />
+      </motion.div>
       
       {/* Main flowing wave - deep magenta */}
       <motion.div
@@ -39,7 +57,7 @@ export const AuroraBackground = () => {
           className="w-full h-full"
           style={{
             transform: 'translateX(-50%)',
-            background: 'radial-gradient(ellipse 80% 50% at center, hsl(330 85% 45% / 0.25) 0%, hsl(330 80% 40% / 0.1) 40%, transparent 70%)',
+            background: 'radial-gradient(ellipse 80% 50% at center, hsl(330 85% 45% / 0.3) 0%, hsl(330 80% 40% / 0.12) 40%, transparent 70%)',
             filter: 'blur(80px)',
           }}
         />
@@ -63,7 +81,7 @@ export const AuroraBackground = () => {
           }}
           className="w-full h-full"
           style={{
-            background: 'radial-gradient(ellipse 70% 60% at center, hsl(350 80% 45% / 0.2) 0%, hsl(10 85% 40% / 0.08) 50%, transparent 70%)',
+            background: 'radial-gradient(ellipse 70% 60% at center, hsl(350 80% 45% / 0.25) 0%, hsl(10 85% 40% / 0.1) 50%, transparent 70%)',
             filter: 'blur(100px)',
           }}
         />
@@ -78,7 +96,7 @@ export const AuroraBackground = () => {
           animate={{
             x: [0, -60, -30, 0],
             y: [0, 50, 10, 0],
-            opacity: [0.25, 0.45, 0.35, 0.25],
+            opacity: [0.3, 0.5, 0.4, 0.3],
           }}
           transition={{
             duration: 18,
@@ -88,7 +106,7 @@ export const AuroraBackground = () => {
           }}
           className="w-full h-full"
           style={{
-            background: 'radial-gradient(ellipse 60% 50% at center, hsl(25 95% 50% / 0.18) 0%, hsl(35 90% 45% / 0.06) 50%, transparent 70%)',
+            background: 'radial-gradient(ellipse 60% 50% at center, hsl(25 95% 50% / 0.25) 0%, hsl(35 90% 45% / 0.08) 50%, transparent 70%)',
             filter: 'blur(90px)',
           }}
         />
@@ -113,7 +131,7 @@ export const AuroraBackground = () => {
           }}
           className="w-full h-full"
           style={{
-            background: 'radial-gradient(ellipse 90% 60% at center bottom, hsl(340 75% 50% / 0.15) 0%, hsl(25 90% 50% / 0.05) 50%, transparent 70%)',
+            background: 'radial-gradient(ellipse 90% 60% at center bottom, hsl(340 75% 50% / 0.2) 0%, hsl(25 90% 50% / 0.06) 50%, transparent 70%)',
             filter: 'blur(70px)',
           }}
         />
@@ -137,33 +155,8 @@ export const AuroraBackground = () => {
           }}
           className="w-full h-full"
           style={{
-            background: 'radial-gradient(circle, hsl(330 85% 55% / 0.12) 0%, hsl(25 95% 55% / 0.05) 40%, transparent 60%)',
+            background: 'radial-gradient(circle, hsl(330 85% 55% / 0.15) 0%, hsl(25 95% 55% / 0.06) 40%, transparent 60%)',
             filter: 'blur(50px)',
-          }}
-        />
-      </motion.div>
-
-      {/* Soft pink accent wave */}
-      <motion.div
-        className="absolute top-[60%] left-[60%] w-[50%] h-[40%]"
-      >
-        <motion.div
-          animate={{
-            x: [0, -40, 0],
-            y: [0, -30, 0],
-            opacity: [0.15, 0.28, 0.15],
-            scale: [1, 1.08, 1],
-          }}
-          transition={{
-            duration: 16,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 5,
-          }}
-          className="w-full h-full"
-          style={{
-            background: 'radial-gradient(circle, hsl(340 75% 55% / 0.15) 0%, transparent 60%)',
-            filter: 'blur(60px)',
           }}
         />
       </motion.div>
@@ -180,7 +173,7 @@ export const AuroraBackground = () => {
       <div 
         className="absolute top-0 left-0 right-0 h-40"
         style={{
-          background: 'linear-gradient(180deg, hsl(0 0% 4% / 0.9) 0%, transparent 100%)',
+          background: 'linear-gradient(180deg, hsl(0 0% 3% / 0.95) 0%, transparent 100%)',
         }}
       />
     </div>

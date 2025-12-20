@@ -73,12 +73,12 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
           borderTop: '1px solid hsl(var(--border))',
         }}
       >
-        {/* Neon top accent */}
+        {/* Neon top accent - Orange to Magenta */}
         <div
           className="absolute top-0 left-0 right-0 h-[1.5px]"
           style={{
-            background: `linear-gradient(90deg, hsl(var(--aurora-purple) / 0.55), hsl(var(--aurora-cyan) / 0.85), hsl(var(--aurora-purple) / 0.55))`,
-            boxShadow: `0 0 10px hsl(var(--aurora-cyan) / 0.35), 0 0 18px hsl(var(--aurora-purple) / 0.18)`,
+            background: `linear-gradient(90deg, hsl(var(--aurora-magenta) / 0.55), hsl(var(--aurora-orange) / 0.85), hsl(var(--aurora-magenta) / 0.55))`,
+            boxShadow: `0 0 10px hsl(var(--aurora-orange) / 0.35), 0 0 18px hsl(var(--aurora-magenta) / 0.18)`,
           }}
         />
 
@@ -91,16 +91,16 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
               const isPressed = pressedId === tab.id;
 
               const baseGlow = isHighlight
-                ? `0 10px 28px hsl(var(--aurora-cyan) / 0.22), 0 0 34px hsl(var(--aurora-purple) / 0.18)`
+                ? `0 10px 28px hsl(var(--aurora-orange) / 0.22), 0 0 34px hsl(var(--aurora-magenta) / 0.18)`
                 : isActive
-                  ? `0 0 24px hsl(var(--aurora-cyan) / 0.18)`
+                  ? `0 0 24px hsl(var(--aurora-orange) / 0.18)`
                   : 'none';
 
               const pressGlow = isHighlight
-                ? `0 12px 34px hsl(var(--aurora-cyan) / 0.35), 0 0 46px hsl(var(--aurora-purple) / 0.25)`
+                ? `0 12px 34px hsl(var(--aurora-orange) / 0.35), 0 0 46px hsl(var(--aurora-magenta) / 0.25)`
                 : isActive
-                  ? `0 0 32px hsl(var(--aurora-cyan) / 0.3)`
-                  : `0 0 16px hsl(var(--aurora-cyan) / 0.12)`;
+                  ? `0 0 32px hsl(var(--aurora-orange) / 0.3)`
+                  : `0 0 16px hsl(var(--aurora-orange) / 0.12)`;
 
               return (
                 <motion.button
@@ -119,7 +119,7 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
                         ? 'hsl(var(--primary))'
                         : 'hsl(var(--muted-foreground))',
                     background: isHighlight
-                      ? `linear-gradient(135deg, hsl(var(--aurora-purple)) 0%, hsl(var(--aurora-cyan)) 100%)`
+                      ? `linear-gradient(135deg, hsl(var(--aurora-magenta)) 0%, hsl(var(--aurora-orange)) 100%)`
                       : isActive
                         ? 'hsl(var(--primary) / 0.12)'
                         : 'transparent',
@@ -134,8 +134,8 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
                       layoutId="mobileNavActive"
                       className="absolute -top-0.5 left-1/2 -translate-x-1/2 h-1 w-8 rounded-full"
                       style={{
-                        background: `linear-gradient(90deg, transparent, hsl(var(--aurora-cyan) / 0.9), transparent)`,
-                        boxShadow: `0 0 16px hsl(var(--aurora-cyan) / 0.35)`,
+                        background: `linear-gradient(90deg, transparent, hsl(var(--aurora-orange) / 0.9), transparent)`,
+                        boxShadow: `0 0 16px hsl(var(--aurora-orange) / 0.35)`,
                       }}
                       transition={{ type: 'spring', stiffness: 500, damping: 40 }}
                     />

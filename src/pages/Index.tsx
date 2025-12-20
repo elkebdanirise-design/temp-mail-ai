@@ -47,28 +47,28 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Temp Mail Aura | #1 Fastest Disposable Email Service 2026</title>
+        <title>Temp Mail AI | #1 Fastest AI-Powered Disposable Email 2026</title>
         <meta 
           name="description" 
-          content="Generate free disposable email addresses instantly. Temp Mail Aura provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest AI-powered temp mail service of 2026." 
+          content="Generate free disposable email addresses instantly with AI verification. Temp Mail AI provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest AI-powered temp mail service of 2026." 
         />
-        <meta name="keywords" content="temp mail aura, temp mail, disposable email, temporary email, anonymous email, secure inbox, free email, spam protection, AI email" />
-        <meta property="og:title" content="Temp Mail Aura | #1 Fastest Disposable Email Service 2026" />
-        <meta property="og:description" content="Generate anonymous temporary email addresses instantly. No signup required. Real-time inbox with military-grade privacy and AI-powered security." />
+        <meta name="keywords" content="temp mail ai, temp mail, disposable email, temporary email, anonymous email, ai email, secure inbox, free email, spam protection" />
+        <meta property="og:title" content="Temp Mail AI | #1 Fastest AI-Powered Disposable Email 2026" />
+        <meta property="og:description" content="Generate AI-verified anonymous temporary email addresses instantly. No signup required. Real-time inbox with military-grade privacy and AI-powered security." />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://tempmail-aura.com/og-image.png" />
-        <link rel="canonical" href="https://tempmail-aura.com" />
+        <meta property="og:image" content="https://tempmail-ai.com/og-image.png" />
+        <link rel="canonical" href="https://tempmail-ai.com" />
         
         {/* JSON-LD Schema Markup for SoftwareApplication */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Temp Mail Aura",
+            "name": "Temp Mail AI",
             "applicationCategory": "UtilitiesApplication",
             "operatingSystem": "Web",
-            "description": "AI-powered disposable email service for instant, secure, anonymous temporary email addresses",
-            "url": "https://tempmail-aura.com",
+            "description": "AI-powered disposable email service for instant, secure, anonymous temporary email addresses with AI verification",
+            "url": "https://tempmail-ai.com",
             "offers": {
               "@type": "Offer",
               "price": "0",
@@ -80,11 +80,11 @@ const Index = () => {
               "ratingCount": "12847"
             },
             "featureList": [
-              "Instant email generation",
+              "AI-verified email generation",
               "Real-time inbox",
               "Zero tracking",
               "Encrypted messages",
-              "Automatic domain selection"
+              "AI Smart Shield protection"
             ]
           })}
         </script>
