@@ -61,11 +61,11 @@ export const Header = () => {
                     <span 
                       className="font-extrabold"
                       style={{
-                        background: 'linear-gradient(135deg, hsl(var(--aurora-orange)) 0%, hsl(var(--aurora-orange-light)) 50%, hsl(var(--aurora-orange)) 100%)',
+                        background: 'linear-gradient(135deg, hsl(25 95% 55%) 0%, hsl(35 100% 60%) 50%, hsl(30 95% 55%) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
-                        filter: 'drop-shadow(0 0 12px hsl(var(--aurora-orange) / 0.5))',
+                        filter: 'drop-shadow(0 0 16px hsl(25 95% 55% / 0.9)) drop-shadow(0 0 32px hsl(25 95% 55% / 0.6)) drop-shadow(0 0 48px hsl(30 100% 55% / 0.3))',
                       }}
                     >
                       AI
