@@ -59,6 +59,12 @@ export default {
           DEFAULT: "hsl(var(--neon-glow))",
           secondary: "hsl(var(--neon-glow-secondary))",
         },
+        aurora: {
+          magenta: "hsl(var(--aurora-magenta))",
+          crimson: "hsl(var(--aurora-crimson))",
+          orange: "hsl(var(--aurora-orange))",
+          sunset: "hsl(var(--aurora-sunset))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
