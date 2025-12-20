@@ -37,21 +37,17 @@ export const Header = () => {
                   <AuraLogo className="w-8 h-8" />
                 </div>
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
-                    <span className="font-medium">Aura</span> <span className="neon-text font-bold">Mail</span>
-                  </h1>
-                  {isPremium && <VIPBadge />}
-                </div>
-                <p className="text-[10px] md:text-xs text-muted-foreground tracking-wide uppercase font-medium">
-                  Fast & Secure Disposable Email
-                </p>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl md:text-2xl font-bold tracking-tighter">
+                  <span className="font-semibold">Temp Mail</span>{' '}
+                  <span className="neon-text font-bold">Aura</span>
+                </h1>
+                {isPremium && <VIPBadge />}
               </div>
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4">
-              {/* Live Users Counter - Desktop */}
+              {/* Live Users Counter */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -66,8 +62,6 @@ export const Header = () => {
                   {liveUsers.toLocaleString()} online
                 </span>
               </motion.div>
-
-              {/* Nav links removed for clean design */}
 
               {isPremium ? (
                 <Button

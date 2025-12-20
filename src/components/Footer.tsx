@@ -94,7 +94,7 @@ export const Footer = () => {
               </a>
             </motion.div>
 
-            {/* Copyright - No duplicate branding */}
+            {/* Copyright */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -103,7 +103,7 @@ export const Footer = () => {
               className="text-center"
             >
               <p className="text-xs text-muted-foreground font-medium tracking-wide">
-                © 2026 Aura Mail. All rights reserved. The fastest AI-powered disposable email service.
+                © 2026 Temp Mail Aura. All rights reserved. The fastest AI-powered disposable email service.
               </p>
             </motion.div>
           </div>

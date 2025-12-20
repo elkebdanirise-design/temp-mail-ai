@@ -14,6 +14,8 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
     if (email) {
       await navigator.clipboard.writeText(email);
       toast.success('Email copied to clipboard!');
+    } else {
+      toast.error('No email to copy');
     }
   };
 
@@ -27,6 +29,7 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
   const handleTabClick = (tabId: string) => {
     if (tabId === 'refresh') {
       onRefresh();
+      toast.success('Generating new email...');
     } else if (tabId === 'copy') {
       handleCopyEmail();
     } else {
@@ -57,17 +60,18 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
             return (
               <button
                 key={tab.id}
+                type="button"
                 onClick={() => handleTabClick(tab.id)}
-                className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-all active:scale-95 ${
+                className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg transition-all duration-150 touch-manipulation select-none ${
                   isHighlight
-                    ? 'mesh-gradient-btn-intense text-white shadow-md shadow-cyan-500/30 scale-105 -mt-1'
+                    ? 'mesh-gradient-btn-intense text-white shadow-md shadow-cyan-500/30 scale-100 active:scale-90'
                     : isActive
-                    ? 'text-primary bg-primary/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50 active:bg-secondary/70'
+                    ? 'text-primary bg-primary/10 active:scale-95'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50 active:bg-secondary/70 active:scale-95'
                 }`}
               >
-                <Icon className={`${isHighlight ? 'w-5 h-5' : 'w-4 h-4'}`} />
-                <span className={`${isHighlight ? 'text-[9px] font-semibold' : 'text-[9px] font-medium'}`}>{tab.label}</span>
+                <Icon className="w-4 h-4" />
+                <span className="text-[8px] font-medium">{tab.label}</span>
               </button>
             );
           })}
