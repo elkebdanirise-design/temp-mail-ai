@@ -15,6 +15,7 @@ import { ShootingStars } from '@/components/ShootingStars';
 import { PricingSection } from '@/components/PricingSection';
 import { ComparisonTable } from '@/components/ComparisonTable';
 import { TestimonialsSection } from '@/components/TestimonialsSection';
+import { FastestEmailSection } from '@/components/FastestEmailSection';
 import { useMailTm } from '@/hooks/useMailTm';
 
 const Index = () => {
@@ -148,7 +149,7 @@ const Index = () => {
           {/* 2. Testimonials Section */}
           <TestimonialsSection />
 
-          {/* 3. SEO Section - Why Use Aura Mail */}
+          {/* 3. SEO Section - Why Use Temp Mail AI */}
           <SEOSection />
 
           {/* 4. Blog Section */}
@@ -157,6 +158,9 @@ const Index = () => {
           {/* 5. Pricing & Comparison */}
           <PricingSection />
           <ComparisonTable />
+
+          {/* 6. The Fastest Disposable Email of 2026 - Before Footer */}
+          <FastestEmailSection />
 
           {/* Ad Placeholder */}
           <AdPlaceholder variant="horizontal" className="my-8" monetagId="content-728x90" />

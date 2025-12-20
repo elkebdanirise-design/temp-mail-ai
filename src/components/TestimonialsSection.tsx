@@ -76,8 +76,11 @@ export const TestimonialsSection = () => {
             />
           </div>
 
-          <h2 className="text-3xl md:text-5xl font-bold silver-gradient-text mb-4 relative inline-block">
-            Loved by Thousands
+          <h2 
+            className="text-3xl md:text-5xl font-bold mb-4 relative inline-block italic"
+            style={{ color: '#FFFFFF' }}
+          >
+            𝙇𝙤𝙫𝙚𝙙 𝙗𝙮 𝙏𝙝𝙤𝙪𝙨𝙖𝙣𝙙𝙨
             {/* Animated underline */}
             <motion.div
               initial={{ scaleX: 0 }}

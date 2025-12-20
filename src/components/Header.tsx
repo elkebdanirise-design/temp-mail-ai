@@ -40,9 +40,9 @@ export const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             {/* Logo & Brand */}
-            <div className="flex items-center gap-3">
-              {/* Logo - larger size, no background, clean */}
-              <AuraLogo className="w-12 h-12 md:w-14 md:h-14" />
+            <div className="flex items-center gap-4">
+              {/* Logo - significantly larger, no background, clean */}
+              <AuraLogo className="w-14 h-14 md:w-18 md:h-18 lg:w-20 lg:h-20" />
               
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
