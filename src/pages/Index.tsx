@@ -44,17 +44,17 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Temp Mail Aura | Fast & Secure Disposable Email</title>
+        <title>Aura Mail | Fast & Secure Disposable Email</title>
         <meta 
           name="description" 
-          content="Generate free disposable email addresses instantly. Temp Mail Aura provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest AI-powered temp mail service of 2026." 
+          content="Generate free disposable email addresses instantly. Aura Mail provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest AI-powered temp mail service of 2026." 
         />
-        <meta name="keywords" content="temp mail, disposable email, temporary email, anonymous email, secure inbox, Temp Mail AI, free email, spam protection, AI email, aura mail" />
-        <meta property="og:title" content="Temp Mail Aura | Fast & Secure Disposable Email" />
+        <meta name="keywords" content="aura mail, temp mail, disposable email, temporary email, anonymous email, secure inbox, free email, spam protection, AI email" />
+        <meta property="og:title" content="Aura Mail | Fast & Secure Disposable Email" />
         <meta property="og:description" content="Generate anonymous temporary email addresses instantly. No signup required. Real-time inbox with military-grade privacy and AI-powered security." />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://temp-mail-aura.com/og-image.png" />
-        <link rel="canonical" href="https://temp-mail-aura.com" />
+        <meta property="og:image" content="https://aura-mail.com/og-image.png" />
+        <link rel="canonical" href="https://aura-mail.com" />
         
         {/* Monetag Script Placeholder - Replace with actual Monetag scripts */}
         {/* <script async src="https://alwingulla.com/88/tag.min.js" data-zone="YOUR_ZONE_ID" /> */}
@@ -64,11 +64,11 @@ const Index = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Temp Mail Aura",
+            "name": "Aura Mail",
             "applicationCategory": "UtilitiesApplication",
             "operatingSystem": "Web",
             "description": "AI-powered disposable email service for instant, secure, anonymous temporary email addresses",
-            "url": "https://temp-mail-aura.com",
+            "url": "https://aura-mail.com",
             "offers": {
               "@type": "Offer",
               "price": "0",
@@ -139,14 +139,14 @@ const Index = () => {
           {/* Privacy Solution Section */}
           <PrivacySolutionSection />
 
+          {/* Blog Section - Moved above SEO */}
+          <BlogSection />
+
           {/* Ad Placeholder */}
           <AdPlaceholder variant="horizontal" className="my-8" monetagId="content-728x90" />
 
           {/* SEO Section */}
           <SEOSection />
-
-          {/* Blog Section */}
-          <BlogSection />
         </main>
 
         {/* Footer */}

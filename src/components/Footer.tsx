@@ -102,8 +102,8 @@ export const Footer = () => {
               transition={{ duration: 0.5, delay: 0.25 }}
               className="text-center"
             >
-              <p className="text-xs text-muted-foreground">
-                © 2026 Temp Mail Aura. All rights reserved. The fastest AI-powered disposable email service.
+              <p className="text-xs text-muted-foreground font-medium tracking-wide">
+                © 2026 Aura Mail. All rights reserved. The fastest AI-powered disposable email service.
               </p>
             </motion.div>
           </div>

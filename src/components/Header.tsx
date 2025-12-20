@@ -39,12 +39,12 @@ export const Header = () => {
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-xl md:text-2xl font-bold tracking-tight">
-                    Temp Mail <span className="neon-text">Aura</span>
+                  <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
+                    <span className="font-medium">Aura</span> <span className="neon-text font-bold">Mail</span>
                   </h1>
                   {isPremium && <VIPBadge />}
                 </div>
-                <p className="text-[10px] md:text-xs text-muted-foreground tracking-widest uppercase">
+                <p className="text-[10px] md:text-xs text-muted-foreground tracking-wide uppercase font-medium">
                   Fast & Secure Disposable Email
                 </p>
               </div>

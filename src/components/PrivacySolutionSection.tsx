@@ -33,10 +33,10 @@ export const PrivacySolutionSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
             The Ultimate <span className="neon-text">Privacy Solution</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Built from the ground up with privacy as the core principle. No compromises.
           </p>
         </motion.div>
