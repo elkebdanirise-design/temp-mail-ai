@@ -42,28 +42,22 @@ export const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             {/* Logo & Brand */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
+              {/* Logo - no border, larger size with subtle glow */}
               <div className="relative">
                 <div 
-                  className="absolute inset-0 rounded-xl blur-md"
-                  style={{ background: 'hsl(var(--aurora-orange) / 0.15)' }}
+                  className="absolute inset-0 blur-lg"
+                  style={{ background: 'hsl(var(--aurora-orange) / 0.25)' }}
                 />
-                <div 
-                  className="relative p-1.5 rounded-xl"
-                  style={{
-                    background: 'hsl(0 0% 4% / 0.9)',
-                    border: '1px solid hsl(var(--aurora-orange) / 0.2)',
-                  }}
-                >
-                  <AuraLogo className="w-9 h-9" />
-                </div>
+                <AuraLogo className="w-11 h-11 md:w-12 md:h-12 relative" />
               </div>
+              
               <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <h1 className="font-display text-xl md:text-2xl font-semibold" style={{ letterSpacing: '-0.04em' }}>
+                <div className="flex items-center gap-2">
+                  <h1 className="font-display text-2xl md:text-[1.7rem] font-extrabold" style={{ letterSpacing: '-0.02em' }}>
                     <span 
                       style={{
-                        background: 'linear-gradient(135deg, hsl(0 0% 40%) 0%, hsl(0 0% 75%) 50%, hsl(0 0% 95%) 100%)',
+                        background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 85%) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
@@ -71,15 +65,15 @@ export const Header = () => {
                     >
                       Temp Mail
                     </span>
-                    <span className="mx-1" />
+                    <span className="mx-1.5" />
                     <span 
-                      className="font-bold"
+                      className="font-extrabold"
                       style={{
-                        background: 'linear-gradient(135deg, hsl(var(--aurora-orange)) 0%, hsl(25 100% 55%) 100%)',
+                        background: 'linear-gradient(135deg, hsl(var(--aurora-orange)) 0%, hsl(35 95% 60%) 50%, hsl(var(--aurora-orange)) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
-                        filter: 'drop-shadow(0 0 6px hsl(var(--aurora-orange) / 0.4))',
+                        filter: 'drop-shadow(0 0 10px hsl(var(--aurora-orange) / 0.5))',
                       }}
                     >
                       AI
@@ -88,10 +82,9 @@ export const Header = () => {
                   {isPremium && <VIPBadge />}
                 </div>
                 <span 
-                  className="text-[9px] sm:text-[10px] font-medium uppercase mt-0.5"
+                  className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.25em]"
                   style={{
-                    letterSpacing: '0.2em',
-                    color: 'hsl(0 0% 45%)',
+                    color: 'hsl(0 0% 50%)',
                   }}
                 >
                   AI-POWERED PRIVACY
