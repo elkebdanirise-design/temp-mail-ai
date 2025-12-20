@@ -13,6 +13,7 @@ import { AuroraBackground } from '@/components/AuroraBackground';
 import { ParticleField } from '@/components/ParticleField';
 import { ShootingStars } from '@/components/ShootingStars';
 import { PricingSection } from '@/components/PricingSection';
+import { ComparisonTable } from '@/components/ComparisonTable';
 import { TestimonialsSection } from '@/components/TestimonialsSection';
 import { useMailTm } from '@/hooks/useMailTm';
 
@@ -149,6 +150,9 @@ const Index = () => {
 
           {/* Pricing Section */}
           <PricingSection />
+
+          {/* Comparison Table */}
+          <ComparisonTable />
 
           {/* Testimonials Section */}
           <TestimonialsSection />
