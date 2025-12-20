@@ -132,7 +132,7 @@ export const Footer = () => {
                   fontFamily: "'Geist', sans-serif",
                 }}
               >
-                © 2026 Temp Mail Aura. All rights reserved. The fastest AI-powered disposable email service.
+                © 2026 Temp Mail AI. All rights reserved. The fastest AI-powered disposable email service.
               </p>
             </motion.div>
           </div>

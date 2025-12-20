@@ -8,11 +8,20 @@ import { PremiumModal } from './PremiumModal';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 
+const navItems = [
+  { label: 'Home', href: '#' },
+  { label: 'Solutions', href: '#solutions' },
+  { label: 'Features', href: '#features' },
+  { label: 'Resources', href: '#blog-section' },
+  { label: 'Pricing', href: '#pro-systems' },
+];
+
 export const Header = () => {
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const { isPremium, activatePremium } = usePremium();
   const [liveUsers, setLiveUsers] = useState(1247);
   const { handleAnchorClick } = useSmoothScroll();
+  const [activeNav, setActiveNav] = useState('Home');
 
   // Simulate live users fluctuation
   useEffect(() => {
@@ -32,30 +41,29 @@ export const Header = () => {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
+            {/* Logo & Brand */}
             <div className="flex items-center gap-3">
               <div className="relative">
                 <div 
                   className="absolute inset-0 rounded-xl blur-md"
-                  style={{ background: 'hsl(var(--aurora-magenta) / 0.1)' }}
+                  style={{ background: 'hsl(var(--aurora-orange) / 0.15)' }}
                 />
                 <div 
-                  className="relative p-2 rounded-xl"
+                  className="relative p-1.5 rounded-xl"
                   style={{
                     background: 'hsl(0 0% 4% / 0.9)',
-                    border: '1px solid hsl(var(--aurora-magenta) / 0.15)',
+                    border: '1px solid hsl(var(--aurora-orange) / 0.2)',
                   }}
                 >
-                  <AuraLogo className="w-8 h-8" />
+                  <AuraLogo className="w-9 h-9" />
                 </div>
               </div>
               <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  {/* Luxury Brand Title with Clash Display */}
-                  <h1 className="font-display text-xl md:text-2xl font-semibold relative flex items-center" style={{ letterSpacing: '-0.04em' }}>
+                <div className="flex items-center gap-1.5">
+                  <h1 className="font-display text-xl md:text-2xl font-semibold" style={{ letterSpacing: '-0.04em' }}>
                     <span 
-                      className="font-display"
                       style={{
-                        background: 'linear-gradient(135deg, hsl(0 0% 85%) 0%, hsl(0 0% 95%) 25%, hsl(0 0% 90%) 50%, hsl(0 0% 95%) 75%, hsl(0 0% 90%) 100%)',
+                        background: 'linear-gradient(135deg, hsl(0 0% 40%) 0%, hsl(0 0% 75%) 50%, hsl(0 0% 95%) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
@@ -63,72 +71,63 @@ export const Header = () => {
                     >
                       Temp Mail
                     </span>
-                    <span className="mx-1.5" />
+                    <span className="mx-1" />
                     <span 
-                      className="font-display font-bold"
+                      className="font-bold"
                       style={{
-                        background: 'linear-gradient(135deg, hsl(var(--aurora-magenta)) 0%, hsl(var(--aurora-crimson)) 40%, hsl(var(--aurora-orange)) 70%, hsl(var(--aurora-sunset)) 100%)',
+                        background: 'linear-gradient(135deg, hsl(var(--aurora-orange)) 0%, hsl(25 100% 55%) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
-                        filter: 'drop-shadow(0 0 6px hsl(var(--aurora-magenta) / 0.3))',
+                        filter: 'drop-shadow(0 0 6px hsl(var(--aurora-orange) / 0.4))',
                       }}
                     >
-                      Aura
-                    </span>
-                    {/* AI Precision Symbol - Three glowing dots */}
-                    <span className="hidden sm:inline-flex items-center ml-2 gap-[3px]">
-                      <span 
-                        className="w-[3px] h-[3px] rounded-full"
-                        style={{ 
-                          background: 'hsl(var(--aurora-magenta))',
-                          boxShadow: '0 0 4px hsl(var(--aurora-magenta) / 0.6)',
-                        }}
-                      />
-                      <span 
-                        className="w-[3px] h-[4px] rounded-full"
-                        style={{ 
-                          background: 'hsl(var(--aurora-crimson))',
-                          boxShadow: '0 0 6px hsl(var(--aurora-crimson) / 0.7)',
-                        }}
-                      />
-                      <span 
-                        className="w-[3px] h-[3px] rounded-full"
-                        style={{ 
-                          background: 'hsl(var(--aurora-orange))',
-                          boxShadow: '0 0 4px hsl(var(--aurora-orange) / 0.6)',
-                        }}
-                      />
+                      AI
                     </span>
                   </h1>
                   {isPremium && <VIPBadge />}
                 </div>
-                {/* Premium Cinematic Tagline */}
                 <span 
-                  className="text-[9px] sm:text-[10px] font-medium uppercase mt-1"
+                  className="text-[9px] sm:text-[10px] font-medium uppercase mt-0.5"
                   style={{
-                    letterSpacing: '0.25em',
-                    background: 'linear-gradient(90deg, hsl(0 0% 50%) 0%, hsl(var(--aurora-orange) / 0.7) 50%, hsl(0 0% 45%) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
+                    letterSpacing: '0.2em',
+                    color: 'hsl(0 0% 45%)',
                   }}
                 >
-                  INSTANT PRIVACY. INFINITE SHIELD.
+                  AI-POWERED PRIVACY
                 </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 sm:gap-4">
-              {/* Blog Link */}
-              <a
-                href="#blog-section"
-                onClick={(e) => handleAnchorClick(e, '#blog-section')}
-                className="hidden md:flex text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-aurora-magenta hover:after:w-full after:transition-all"
-              >
-                Blog
-              </a>
+            {/* Navigation - Desktop */}
+            <nav className="hidden lg:flex items-center gap-1">
+              {navItems.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={(e) => {
+                    handleAnchorClick(e, item.href);
+                    setActiveNav(item.label);
+                  }}
+                  className="relative px-4 py-2 text-sm font-medium transition-colors group"
+                  style={{
+                    color: activeNav === item.label ? 'hsl(var(--aurora-orange))' : 'hsl(0 0% 55%)',
+                  }}
+                >
+                  {item.label}
+                  {/* Underline hover effect */}
+                  <span 
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 transition-all duration-300 group-hover:w-full"
+                    style={{
+                      width: activeNav === item.label ? '60%' : '0%',
+                      background: 'hsl(var(--aurora-orange))',
+                    }}
+                  />
+                </a>
+              ))}
+            </nav>
 
+            <div className="flex items-center gap-2 sm:gap-4">
               {/* Live Users Counter */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -160,20 +159,38 @@ export const Header = () => {
                   <span className="sm:hidden">License</span>
                 </Button>
               ) : (
-                <Button
-                  asChild
-                  className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-xl"
-                >
-                  <a 
-                    href="#pro-systems" 
-                    onClick={(e) => handleAnchorClick(e, '#pro-systems')}
-                    className="flex items-center gap-2"
+                <div className="flex items-center gap-2">
+                  {/* System Health Pulse */}
+                  <div className="hidden sm:flex items-center gap-1.5">
+                    <span className="relative flex h-2 w-2">
+                      <span 
+                        className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60"
+                        style={{ background: 'hsl(var(--aurora-orange))' }}
+                      />
+                      <span 
+                        className="relative inline-flex rounded-full h-2 w-2"
+                        style={{ background: 'hsl(var(--aurora-orange))' }}
+                      />
+                    </span>
+                    <span className="text-[9px] font-medium uppercase tracking-wider" style={{ color: 'hsl(var(--aurora-orange) / 0.7)' }}>
+                      AI Active
+                    </span>
+                  </div>
+                  <Button
+                    asChild
+                    className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-xl"
                   >
-                    <Zap className="w-4 h-4" />
-                    <span className="hidden sm:inline">Get Pro Systems</span>
-                    <span className="sm:hidden">Pro</span>
-                  </a>
-                </Button>
+                    <a 
+                      href="#pro-systems" 
+                      onClick={(e) => handleAnchorClick(e, '#pro-systems')}
+                      className="flex items-center gap-2"
+                    >
+                      <Zap className="w-4 h-4" />
+                      <span className="hidden sm:inline">Get Pro Systems</span>
+                      <span className="sm:hidden">Pro</span>
+                    </a>
+                  </Button>
+                </div>
               )}
             </div>
           </div>
