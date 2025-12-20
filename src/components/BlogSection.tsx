@@ -24,12 +24,45 @@ export const BlogSection = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8 md:mb-12">
+          {/* Decorative ornamentation */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="flex items-center justify-center gap-3 mb-5"
+          >
+            <motion.div 
+              initial={{ width: 0 }}
+              whileInView={{ width: 50 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="h-px"
+              style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--aurora-orange)))' }}
+            />
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: 0.3, type: 'spring', stiffness: 200 }}
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ background: 'hsl(var(--aurora-orange))' }}
+            />
+            <motion.div 
+              initial={{ width: 0 }}
+              whileInView={{ width: 50 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="h-px"
+              style={{ background: 'linear-gradient(90deg, hsl(var(--aurora-orange)), transparent)' }}
+            />
+          </motion.div>
+
           <motion.h2
             initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="text-2xl md:text-3xl font-semibold tracking-tight mb-3"
+            className="text-2xl md:text-3xl font-semibold tracking-tight mb-3 relative inline-block"
           >
             <span className="text-foreground">Latest Privacy Insights & </span>
             <span 
@@ -42,13 +75,25 @@ export const BlogSection = () => {
             >
               Temp Mail Aura News
             </span>
+            
+            {/* Animated underline */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute -bottom-2 left-0 right-0 h-[2px] origin-center"
+              style={{
+                background: 'linear-gradient(90deg, transparent, hsl(var(--aurora-magenta) / 0.6), hsl(var(--aurora-orange)), hsl(var(--aurora-magenta) / 0.6), transparent)',
+              }}
+            />
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true }}
             transition={{ delay: 0.1, duration: 0.6 }}
-            className="max-w-2xl mx-auto"
+            className="max-w-2xl mx-auto mt-5"
             style={{ color: 'hsl(200 15% 55%)' }}
           >
             Stay informed about online privacy, security tips, and the latest updates in disposable email technology.

@@ -41,17 +41,8 @@ export const Header = () => {
           <div className="flex items-center justify-between">
             {/* Logo & Brand */}
             <div className="flex items-center gap-3">
-              {/* Logo - refined size with matching orange neon glow */}
-              <div className="relative">
-                <div 
-                  className="absolute inset-0 blur-xl"
-                  style={{ 
-                    background: 'hsl(25 95% 55% / 0.4)',
-                    filter: 'drop-shadow(0 0 15px hsl(25 95% 55% / 0.6))',
-                  }}
-                />
-                <AuraLogo className="w-10 h-10 md:w-11 md:h-11 relative" />
-              </div>
+              {/* Logo - larger size, no background, clean */}
+              <AuraLogo className="w-12 h-12 md:w-14 md:h-14" />
               
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
@@ -153,38 +144,20 @@ export const Header = () => {
                   <span className="sm:hidden">License</span>
                 </Button>
               ) : (
-                <div className="flex items-center gap-2">
-                  {/* System Health Pulse */}
-                  <div className="hidden sm:flex items-center gap-1.5">
-                    <span className="relative flex h-2 w-2">
-                      <span 
-                        className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60"
-                        style={{ background: 'hsl(var(--aurora-orange))' }}
-                      />
-                      <span 
-                        className="relative inline-flex rounded-full h-2 w-2"
-                        style={{ background: 'hsl(var(--aurora-orange))' }}
-                      />
-                    </span>
-                    <span className="text-[9px] font-medium uppercase tracking-wider" style={{ color: 'hsl(var(--aurora-orange) / 0.7)' }}>
-                      AI Active
-                    </span>
-                  </div>
-                  <Button
-                    asChild
-                    className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-xl"
-                  >
-                    <a 
-                      href="#pro-systems" 
-                      onClick={(e) => handleAnchorClick(e, '#pro-systems')}
-                      className="flex items-center gap-2"
-                    >
-                      <Zap className="w-4 h-4" />
-                      <span className="hidden sm:inline">Get Pro Systems</span>
-                      <span className="sm:hidden">Pro</span>
-                    </a>
-                  </Button>
-                </div>
+              <Button
+                asChild
+                className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-xl"
+              >
+                <a 
+                  href="#pro-systems" 
+                  onClick={(e) => handleAnchorClick(e, '#pro-systems')}
+                  className="flex items-center gap-2"
+                >
+                  <Zap className="w-4 h-4" />
+                  <span className="hidden sm:inline">Get Pro Systems</span>
+                  <span className="sm:hidden">Pro</span>
+                </a>
+              </Button>
               )}
             </div>
           </div>

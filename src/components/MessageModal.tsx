@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, User, Clock, ArrowLeft, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { formatDistanceToNow } from 'date-fns';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface MessageDetail {
   id: string;
@@ -56,107 +57,164 @@ export const MessageModal = ({ message, isOpen, onClose, onDelete, isLoading }: 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-background/90 backdrop-blur-md z-50"
             onClick={onClose}
           />
 
-          {/* Modal */}
+          {/* Modal - Full screen on mobile, centered on desktop */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-4 md:inset-10 lg:inset-20 z-50 glass-panel overflow-hidden flex flex-col"
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 sm:inset-4 md:inset-8 lg:inset-12 xl:inset-20 z-50 flex flex-col rounded-none sm:rounded-2xl overflow-hidden"
+            style={{
+              background: 'linear-gradient(145deg, hsl(220 30% 6%), hsl(220 30% 4%))',
+              border: '1px solid hsl(var(--glass-border))',
+              boxShadow: '0 25px 50px -12px hsl(0 0% 0% / 0.5), 0 0 60px hsl(var(--aurora-orange) / 0.1)',
+            }}
           >
             {isLoading ? (
               <div className="flex-1 flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  className="w-10 h-10 rounded-full"
+                  style={{
+                    border: '3px solid hsl(var(--aurora-orange) / 0.2)',
+                    borderTopColor: 'hsl(var(--aurora-orange))',
+                  }}
+                />
               </div>
             ) : message ? (
               <>
-                {/* Header */}
-                <div className="p-4 md:p-6 border-b border-border flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                {/* Header - Sticky */}
+                <div 
+                  className="flex-shrink-0 px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between"
+                  style={{
+                    borderBottom: '1px solid hsl(var(--glass-border))',
+                    background: 'hsl(220 30% 5% / 0.8)',
+                    backdropFilter: 'blur(12px)',
+                  }}
+                >
+                  <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={onClose}
-                      className="hover:bg-secondary"
+                      className="flex-shrink-0 hover:bg-secondary/50 rounded-full"
                     >
-                      <ArrowLeft className="w-4 h-4" />
+                      <ArrowLeft className="w-5 h-5" />
                     </Button>
-                    <h2 className="text-lg font-semibold truncate max-w-[200px] md:max-w-[400px]">
+                    <h2 className="text-base sm:text-lg font-semibold truncate text-foreground">
                       {message.subject || '(No subject)'}
                     </h2>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={onDelete}
-                      className="hover:bg-destructive/10 hover:text-destructive"
+                      className="hover:bg-destructive/10 hover:text-destructive rounded-full"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={onClose}
-                      className="hover:bg-secondary"
+                      className="hover:bg-secondary/50 rounded-full"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-4 h-4 sm:w-5 sm:h-5" />
                     </Button>
                   </div>
                 </div>
 
-                {/* Meta */}
-                <div className="p-4 md:p-6 border-b border-border space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-full bg-primary/10">
-                      <User className="w-4 h-4 text-primary" />
+                {/* Meta Info */}
+                <div 
+                  className="flex-shrink-0 px-4 py-3 sm:px-6 sm:py-4 space-y-2 sm:space-y-3"
+                  style={{ borderBottom: '1px solid hsl(var(--glass-border))' }}
+                >
+                  <div className="flex items-start sm:items-center gap-3">
+                    <div 
+                      className="flex-shrink-0 p-2.5 rounded-full"
+                      style={{
+                        background: 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.15), hsl(var(--aurora-magenta) / 0.1))',
+                        border: '1px solid hsl(var(--aurora-orange) / 0.25)',
+                      }}
+                    >
+                      <User className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: 'hsl(var(--aurora-orange))' }} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium truncate">
+                      <p className="font-semibold text-foreground truncate text-sm sm:text-base">
                         {message.from.name || message.from.address}
                       </p>
-                      <p className="text-xs text-muted-foreground truncate">
+                      <p className="text-xs sm:text-sm text-muted-foreground truncate">
                         {message.from.address}
                       </p>
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Clock className="w-3 h-3" />
-                      <span>{formatDistanceToNow(new Date(message.createdAt), { addSuffix: true })}</span>
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground flex-shrink-0">
+                      <Clock className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">{formatDistanceToNow(new Date(message.createdAt), { addSuffix: true })}</span>
+                      <span className="sm:hidden">{formatDistanceToNow(new Date(message.createdAt), { addSuffix: true }).replace('about ', '')}</span>
                     </div>
                   </div>
 
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs sm:text-sm text-muted-foreground pl-0 sm:pl-12">
                     To: {message.to.map(t => t.address).join(', ')}
                   </p>
                 </div>
 
-                {/* Content */}
-                <div className="flex-1 overflow-auto p-4 md:p-6">
-                  {message.html && message.html.length > 0 && showHtml ? (
-                    <div
-                      className="prose prose-invert max-w-none"
-                      dangerouslySetInnerHTML={{ __html: message.html.join('') }}
-                    />
-                  ) : (
-                    <pre className="whitespace-pre-wrap font-sans text-sm text-foreground/90">
-                      {message.text || 'No content available'}
-                    </pre>
-                  )}
-                </div>
+                {/* Email Content - Scrollable */}
+                <ScrollArea className="flex-1 min-h-0">
+                  <div className="p-4 sm:p-6 md:p-8">
+                    {message.html && message.html.length > 0 && showHtml ? (
+                      <div
+                        className="prose prose-invert prose-sm sm:prose-base max-w-none 
+                          prose-headings:text-foreground prose-p:text-foreground/85 
+                          prose-a:text-[hsl(var(--aurora-orange))] prose-a:no-underline hover:prose-a:underline
+                          prose-strong:text-foreground prose-img:rounded-lg prose-img:max-w-full"
+                        style={{
+                          wordBreak: 'break-word',
+                          overflowWrap: 'break-word',
+                        }}
+                        dangerouslySetInnerHTML={{ __html: message.html.join('') }}
+                      />
+                    ) : (
+                      <pre 
+                        className="whitespace-pre-wrap font-sans text-sm sm:text-base leading-relaxed"
+                        style={{ 
+                          color: 'hsl(var(--foreground) / 0.9)',
+                          wordBreak: 'break-word',
+                          overflowWrap: 'break-word',
+                        }}
+                      >
+                        {message.text || 'No content available'}
+                      </pre>
+                    )}
+                  </div>
+                </ScrollArea>
 
-                {/* Footer */}
+                {/* Footer - Toggle */}
                 {message.html && message.html.length > 0 && (
-                  <div className="p-4 border-t border-border">
+                  <div 
+                    className="flex-shrink-0 px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between"
+                    style={{
+                      borderTop: '1px solid hsl(var(--glass-border))',
+                      background: 'hsl(220 30% 5% / 0.8)',
+                    }}
+                  >
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => setShowHtml(!showHtml)}
-                      className="text-xs"
+                      className="text-xs rounded-full px-4"
+                      style={{
+                        borderColor: 'hsl(var(--aurora-orange) / 0.3)',
+                        color: 'hsl(var(--aurora-orange))',
+                      }}
                     >
                       {showHtml ? 'View Plain Text' : 'View HTML'}
                     </Button>

@@ -142,26 +142,24 @@ const Index = () => {
             </aside>
           </div>
 
-          {/* Privacy Solution Section */}
+          {/* 1. Privacy Solution Section */}
           <PrivacySolutionSection />
 
-          {/* Blog Section - Positioned before SEO for 'Latest Privacy Insights' first */}
+          {/* 2. Testimonials Section */}
+          <TestimonialsSection />
+
+          {/* 3. SEO Section - Why Use Aura Mail */}
+          <SEOSection />
+
+          {/* 4. Blog Section */}
           <BlogSection />
 
-          {/* Pricing Section */}
+          {/* 5. Pricing & Comparison */}
           <PricingSection />
-
-          {/* Comparison Table */}
           <ComparisonTable />
-
-          {/* Testimonials Section */}
-          <TestimonialsSection />
 
           {/* Ad Placeholder */}
           <AdPlaceholder variant="horizontal" className="my-8" monetagId="content-728x90" />
-
-          {/* SEO Section - 'The Fastest Disposable Email' */}
-          <SEOSection />
         </main>
 
         {/* Footer */}

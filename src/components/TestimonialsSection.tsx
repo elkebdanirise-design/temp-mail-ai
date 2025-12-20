@@ -40,7 +40,7 @@ export const TestimonialsSection = () => {
       />
 
       <div className="container mx-auto px-4">
-        {/* Section Header */}
+        {/* Section Header with ornamentation */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -48,10 +48,49 @@ export const TestimonialsSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold silver-gradient-text mb-4">
+          {/* Decorative ornamentation */}
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <motion.div 
+              initial={{ width: 0 }}
+              whileInView={{ width: 50 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="h-px"
+              style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--aurora-orange)))' }}
+            />
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: 0.3, type: 'spring', stiffness: 200 }}
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ background: 'hsl(var(--aurora-orange))' }}
+            />
+            <motion.div 
+              initial={{ width: 0 }}
+              whileInView={{ width: 50 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="h-px"
+              style={{ background: 'linear-gradient(90deg, hsl(var(--aurora-orange)), transparent)' }}
+            />
+          </div>
+
+          <h2 className="text-3xl md:text-5xl font-bold silver-gradient-text mb-4 relative inline-block">
             Loved by Thousands
+            {/* Animated underline */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute -bottom-2 left-0 right-0 h-[2px] origin-center"
+              style={{
+                background: 'linear-gradient(90deg, transparent, hsl(var(--aurora-magenta) / 0.6), hsl(var(--aurora-orange)), hsl(var(--aurora-magenta) / 0.6), transparent)',
+              }}
+            />
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto mt-5">
             See why Pro users never go back to free
           </p>
         </motion.div>
