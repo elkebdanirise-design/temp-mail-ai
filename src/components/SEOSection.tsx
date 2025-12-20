@@ -6,43 +6,43 @@ const features = [
     icon: Shield,
     title: 'Military-Grade Privacy',
     description: 'Your temporary email is encrypted and completely anonymous. No personal data required.',
-    glowColor: 'hsl(270 70% 55% / 0.3)',
-    gradient: 'from-[hsl(270,70%,55%)] to-[hsl(280,65%,50%)]',
+    glowColor: 'hsl(var(--aurora-magenta) / 0.3)',
+    gradient: 'from-[hsl(330,85%,55%)] to-[hsl(350,80%,50%)]',
   },
   {
     icon: Zap,
     title: 'Instant Generation',
     description: 'Get a working email address in milliseconds. No signup, no waiting, no hassle.',
-    glowColor: 'hsl(190 90% 55% / 0.3)',
-    gradient: 'from-[hsl(185,90%,55%)] to-[hsl(195,85%,50%)]',
+    glowColor: 'hsl(var(--aurora-orange) / 0.3)',
+    gradient: 'from-[hsl(25,95%,55%)] to-[hsl(35,90%,60%)]',
   },
   {
     icon: Lock,
     title: 'Spam Protection',
     description: 'Keep your real inbox clean. Use disposable emails for signups and trials.',
-    glowColor: 'hsl(320 70% 55% / 0.3)',
-    gradient: 'from-[hsl(320,70%,55%)] to-[hsl(330,65%,50%)]',
+    glowColor: 'hsl(var(--aurora-crimson) / 0.3)',
+    gradient: 'from-[hsl(350,80%,50%)] to-[hsl(10,85%,50%)]',
   },
   {
     icon: Globe,
     title: 'Works Everywhere',
     description: 'Compatible with any service that requires email verification. 100% deliverability.',
-    glowColor: 'hsl(190 90% 55% / 0.3)',
-    gradient: 'from-[hsl(185,90%,55%)] to-[hsl(195,85%,50%)]',
+    glowColor: 'hsl(var(--aurora-sunset) / 0.3)',
+    gradient: 'from-[hsl(35,90%,60%)] to-[hsl(45,85%,55%)]',
   },
   {
     icon: Clock,
     title: 'Auto-Refresh Inbox',
     description: 'Real-time message delivery. See new emails appear instantly without refreshing.',
-    glowColor: 'hsl(270 70% 55% / 0.3)',
-    gradient: 'from-[hsl(270,70%,55%)] to-[hsl(280,65%,50%)]',
+    glowColor: 'hsl(var(--aurora-magenta) / 0.3)',
+    gradient: 'from-[hsl(330,85%,55%)] to-[hsl(340,75%,60%)]',
   },
   {
     icon: Eye,
     title: 'Zero Tracking',
     description: 'We don\'t track, store, or sell your data. True privacy by design.',
-    glowColor: 'hsl(320 70% 55% / 0.3)',
-    gradient: 'from-[hsl(320,70%,55%)] to-[hsl(330,65%,50%)]',
+    glowColor: 'hsl(var(--aurora-orange) / 0.3)',
+    gradient: 'from-[hsl(10,85%,50%)] to-[hsl(25,95%,55%)]',
   },
 ];
 
@@ -59,7 +59,7 @@ export const SEOSection = () => {
           }}
           transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
           className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full blur-[150px]"
-          style={{ background: 'hsl(270 60% 50% / 0.05)' }}
+          style={{ background: 'hsl(var(--aurora-magenta) / 0.05)' }}
         />
         <motion.div
           animate={{
@@ -69,7 +69,7 @@ export const SEOSection = () => {
           }}
           transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut' }}
           className="absolute bottom-1/3 left-1/4 w-[400px] h-[400px] rounded-full blur-[120px]"
-          style={{ background: 'hsl(190 80% 50% / 0.05)' }}
+          style={{ background: 'hsl(var(--aurora-orange) / 0.05)' }}
         />
       </div>
 
@@ -86,7 +86,7 @@ export const SEOSection = () => {
             <span className="text-foreground">Why Use </span>
             <span 
               style={{
-                background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(190 50% 75%) 60%, hsl(0 0% 90%) 100%)',
+                background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(var(--aurora-orange) / 0.7) 60%, hsl(0 0% 90%) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -163,7 +163,7 @@ export const SEOSection = () => {
                     className="text-sm font-semibold mb-2 uppercase"
                     style={{
                       letterSpacing: '0.08em',
-                      background: 'linear-gradient(135deg, hsl(0 0% 75%) 0%, hsl(0 0% 92%) 40%, hsl(190 40% 80%) 70%, hsl(0 0% 85%) 100%)',
+                      background: 'linear-gradient(135deg, hsl(0 0% 75%) 0%, hsl(0 0% 92%) 40%, hsl(var(--aurora-orange) / 0.8) 70%, hsl(0 0% 85%) 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
@@ -196,7 +196,7 @@ export const SEOSection = () => {
             className="text-xl md:text-2xl font-semibold tracking-tight mb-6 text-center uppercase"
             style={{
               letterSpacing: '0.06em',
-              background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(190 50% 75%) 60%, hsl(0 0% 90%) 100%)',
+              background: 'linear-gradient(135deg, hsl(0 0% 80%) 0%, hsl(0 0% 95%) 30%, hsl(var(--aurora-orange) / 0.7) 60%, hsl(0 0% 90%) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -226,7 +226,7 @@ export const SEOSection = () => {
             </p>
           </div>
 
-          <div className="mt-8 pt-8" style={{ borderTop: '1px solid hsl(190 50% 35% / 0.1)' }}>
+          <div className="mt-8 pt-8" style={{ borderTop: '1px solid hsl(var(--aurora-magenta) / 0.1)' }}>
             <h3 
               className="text-sm font-semibold mb-4 uppercase"
               style={{
@@ -251,7 +251,7 @@ export const SEOSection = () => {
                 <li key={item} className="flex items-center gap-2">
                   <span 
                     className="w-1.5 h-1.5 rounded-full"
-                    style={{ background: 'hsl(190 85% 50%)' }}
+                    style={{ background: 'hsl(var(--aurora-orange))' }}
                   />
                   {item}
                 </li>

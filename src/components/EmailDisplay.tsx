@@ -38,14 +38,14 @@ export const EmailDisplay = ({
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="relative w-full"
     >
-      {/* Section Label */}
+        {/* Section Label */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div 
             className="w-1 h-1 rounded-full"
             style={{ 
-              background: 'hsl(280 80% 60%)',
-              boxShadow: '0 0 6px hsl(280 80% 60% / 0.6)',
+              background: 'hsl(var(--aurora-magenta))',
+              boxShadow: '0 0 6px hsl(var(--aurora-magenta) / 0.6)',
             }}
           />
           <span className="text-[10px] font-medium text-muted-foreground/60 uppercase tracking-[0.2em]">
@@ -82,7 +82,7 @@ export const EmailDisplay = ({
             ease: 'easeInOut',
           }}
           style={{
-            background: 'linear-gradient(135deg, hsl(280 90% 55%) 0%, hsl(260 85% 50%) 30%, hsl(190 90% 50%) 70%, hsl(175 85% 45%) 100%)',
+            background: 'linear-gradient(135deg, hsl(var(--aurora-magenta)) 0%, hsl(var(--aurora-crimson)) 30%, hsl(var(--aurora-orange)) 70%, hsl(var(--aurora-sunset)) 100%)',
             filter: isHovered ? 'blur(4px)' : 'blur(3px)',
           }}
         />
@@ -92,7 +92,7 @@ export const EmailDisplay = ({
           className="absolute inset-0 rounded-full pointer-events-none"
           style={{
             padding: '1.5px',
-            background: 'linear-gradient(135deg, hsl(280 85% 55%) 0%, hsl(260 80% 52%) 25%, hsl(200 85% 50%) 50%, hsl(190 90% 48%) 75%, hsl(280 85% 55%) 100%)',
+            background: 'linear-gradient(135deg, hsl(var(--aurora-magenta)) 0%, hsl(var(--aurora-crimson)) 25%, hsl(var(--aurora-orange)) 50%, hsl(var(--aurora-sunset)) 75%, hsl(var(--aurora-magenta)) 100%)',
             WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
             maskComposite: 'exclude',
@@ -127,7 +127,7 @@ export const EmailDisplay = ({
                 transition={{ duration: 1.2, ease: 'easeInOut' }}
                 className="absolute inset-y-0 w-16 pointer-events-none z-10"
                 style={{
-                  background: 'linear-gradient(90deg, transparent, hsl(190 80% 55% / 0.15), transparent)',
+                  background: 'linear-gradient(90deg, transparent, hsl(var(--aurora-orange) / 0.15), transparent)',
                 }}
               />
             )}
@@ -147,7 +147,7 @@ export const EmailDisplay = ({
                   transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
                   className="absolute inset-y-0 w-1/2"
                   style={{
-                    background: 'linear-gradient(90deg, transparent, hsl(280 70% 55% / 0.08), hsl(190 80% 55% / 0.12), transparent)',
+                    background: 'linear-gradient(90deg, transparent, hsl(var(--aurora-magenta) / 0.08), hsl(var(--aurora-orange) / 0.12), transparent)',
                   }}
                 />
               </motion.div>
@@ -187,7 +187,7 @@ export const EmailDisplay = ({
             <button
               onClick={handleCopy}
               disabled={!email || loading}
-              className="relative flex items-center justify-center w-11 xs:w-12 sm:w-14 h-full min-h-[44px] transition-all disabled:opacity-30 disabled:cursor-not-allowed group rounded-l-full hover:bg-[hsl(280,60%,50%,0.06)] active:bg-[hsl(280,60%,50%,0.12)] active:scale-95"
+              className="relative flex items-center justify-center w-11 xs:w-12 sm:w-14 h-full min-h-[44px] transition-all disabled:opacity-30 disabled:cursor-not-allowed group rounded-l-full hover:bg-[hsl(330,60%,50%,0.06)] active:bg-[hsl(330,60%,50%,0.12)] active:scale-95"
               aria-label="Copy email"
             >
               <motion.div
@@ -197,7 +197,7 @@ export const EmailDisplay = ({
                 <Copy 
                   className="w-4 h-4 sm:w-[18px] sm:h-[18px] transition-colors"
                   style={{ 
-                    color: isHovered ? 'hsl(280 70% 60%)' : 'hsl(260 40% 50%)',
+                    color: isHovered ? 'hsl(var(--aurora-magenta))' : 'hsl(var(--aurora-crimson) / 0.7)',
                   }}
                 />
               </motion.div>
@@ -206,7 +206,7 @@ export const EmailDisplay = ({
             {/* Subtle divider */}
             <div 
               className="w-px h-5 xs:h-6 opacity-30"
-              style={{ background: 'linear-gradient(180deg, transparent, hsl(280 60% 50% / 0.3), transparent)' }}
+              style={{ background: 'linear-gradient(180deg, transparent, hsl(var(--aurora-magenta) / 0.3), transparent)' }}
             />
 
             {/* Email Address - Center - Fluid typography */}
@@ -225,7 +225,7 @@ export const EmailDisplay = ({
                   >
                     <Loader2 
                       className="w-3.5 h-3.5 xs:w-4 xs:h-4 animate-spin"
-                      style={{ color: 'hsl(280 70% 55%)' }}
+                      style={{ color: 'hsl(var(--aurora-magenta))' }}
                     />
                     <span className="text-[10px] xs:text-xs sm:text-sm text-muted-foreground/60 font-medium">
                       Generating...
@@ -244,7 +244,7 @@ export const EmailDisplay = ({
                       fontWeight: 500,
                       letterSpacing: '0.01em',
                       fontSize: 'clamp(0.625rem, 2.5vw, 1rem)',
-                      background: 'linear-gradient(90deg, hsl(0 0% 85%) 0%, hsl(280 50% 75%) 25%, hsl(200 60% 70%) 50%, hsl(190 70% 65%) 75%, hsl(0 0% 80%) 100%)',
+                      background: 'linear-gradient(90deg, hsl(0 0% 85%) 0%, hsl(var(--aurora-magenta) / 0.9) 25%, hsl(var(--aurora-orange) / 0.9) 50%, hsl(var(--aurora-sunset) / 0.9) 75%, hsl(0 0% 80%) 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
@@ -259,14 +259,14 @@ export const EmailDisplay = ({
             {/* Subtle divider */}
             <div 
               className="w-px h-5 xs:h-6 opacity-30"
-              style={{ background: 'linear-gradient(180deg, transparent, hsl(190 60% 50% / 0.3), transparent)' }}
+              style={{ background: 'linear-gradient(180deg, transparent, hsl(var(--aurora-orange) / 0.3), transparent)' }}
             />
 
             {/* Refresh Button - Right - Touch-friendly 44px+ hit area */}
             <button
               onClick={onRefresh}
               disabled={loading}
-              className="relative flex items-center justify-center w-11 xs:w-12 sm:w-14 h-full min-h-[44px] transition-all disabled:opacity-30 disabled:cursor-not-allowed group rounded-r-full hover:bg-[hsl(190,60%,50%,0.06)] active:bg-[hsl(190,60%,50%,0.12)] active:scale-95"
+              className="relative flex items-center justify-center w-11 xs:w-12 sm:w-14 h-full min-h-[44px] transition-all disabled:opacity-30 disabled:cursor-not-allowed group rounded-r-full hover:bg-[hsl(25,80%,50%,0.06)] active:bg-[hsl(25,80%,50%,0.12)] active:scale-95"
               aria-label="Generate new email"
             >
               <motion.div
@@ -278,7 +278,7 @@ export const EmailDisplay = ({
                 <RefreshCw 
                   className="w-4 h-4 sm:w-[18px] sm:h-[18px] transition-colors"
                   style={{ 
-                    color: isHovered ? 'hsl(190 70% 55%)' : 'hsl(200 40% 50%)',
+                    color: isHovered ? 'hsl(var(--aurora-orange))' : 'hsl(var(--aurora-sunset) / 0.7)',
                   }}
                 />
               </motion.div>

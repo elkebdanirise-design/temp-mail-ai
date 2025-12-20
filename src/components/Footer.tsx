@@ -20,7 +20,7 @@ export const Footer = () => {
     <>
       <footer 
         className="py-12 mt-16"
-        style={{ borderTop: '1px solid hsl(190 50% 35% / 0.1)' }}
+        style={{ borderTop: '1px solid hsl(var(--aurora-magenta) / 0.1)' }}
       >
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center gap-8">
@@ -35,7 +35,7 @@ export const Footer = () => {
                 asChild
                 size="lg"
                 className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-105 transition-transform text-white font-semibold shadow-lg rounded-xl"
-                style={{ boxShadow: '0 0 30px hsl(190 80% 50% / 0.2)' }}
+                style={{ boxShadow: '0 0 30px hsl(var(--aurora-magenta) / 0.2)' }}
               >
                 <a 
                   href="#pro-systems" 
@@ -85,7 +85,7 @@ export const Footer = () => {
                     className="relative transition-colors"
                     style={{ color: 'hsl(200 12% 50%)' }}
                   >
-                    <span className="hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(190,80%,50%)] hover:after:w-full after:transition-all">
+                    <span className="hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-aurora-magenta hover:after:w-full after:transition-all">
                       {link.label}
                     </span>
                   </a>
@@ -96,7 +96,7 @@ export const Footer = () => {
                     className="relative transition-colors"
                     style={{ color: 'hsl(200 12% 50%)' }}
                   >
-                    <span className="hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(190,80%,50%)] hover:after:w-full after:transition-all">
+                    <span className="hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-aurora-magenta hover:after:w-full after:transition-all">
                       {link.label}
                     </span>
                   </button>
@@ -109,7 +109,7 @@ export const Footer = () => {
                 className="flex items-center gap-1 transition-colors"
                 style={{ color: 'hsl(200 12% 50%)' }}
               >
-                <span className="hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-[hsl(190,80%,50%)] hover:after:w-full after:transition-all flex items-center gap-1">
+                <span className="hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-aurora-magenta hover:after:w-full after:transition-all flex items-center gap-1">
                   <Map className="w-3 h-3" />
                   Sitemap
                 </span>
