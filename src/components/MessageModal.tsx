@@ -68,11 +68,12 @@ export const MessageModal = ({ message, isOpen, onClose, onDelete, isLoading }: 
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 sm:inset-4 md:inset-8 lg:inset-12 xl:inset-20 z-50 flex flex-col rounded-none sm:rounded-2xl overflow-hidden"
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 flex flex-col rounded-2xl overflow-hidden w-[95vw] sm:w-[85vw] md:w-[75vw] lg:w-[65vw] xl:w-[55vw] max-w-3xl"
             style={{
-              background: 'linear-gradient(145deg, hsl(220 30% 6%), hsl(220 30% 4%))',
+              maxHeight: '80vh',
+              background: 'linear-gradient(145deg, hsl(220 30% 8%), hsl(220 30% 5%))',
               border: '1px solid hsl(var(--glass-border))',
-              boxShadow: '0 25px 50px -12px hsl(0 0% 0% / 0.5), 0 0 60px hsl(var(--aurora-orange) / 0.1)',
+              boxShadow: '0 25px 50px -12px hsl(0 0% 0% / 0.6), 0 0 80px hsl(var(--aurora-orange) / 0.15)',
             }}
           >
             {isLoading ? (

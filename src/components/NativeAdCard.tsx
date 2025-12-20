@@ -1,7 +1,14 @@
 import { motion } from 'framer-motion';
 import { Megaphone, ExternalLink } from 'lucide-react';
+import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 
 export const NativeAdCard = () => {
+  const { handleAnchorClick } = useSmoothScroll();
+
+  const handleLearnMore = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    handleAnchorClick(e, '#pro-systems');
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -31,7 +38,8 @@ export const NativeAdCard = () => {
           
           <a 
             href="#pro-systems"
-            className="inline-flex items-center gap-1 text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
+            onClick={handleLearnMore}
+            className="inline-flex items-center gap-1 text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
           >
             Learn more
             <ExternalLink className="w-3 h-3" />

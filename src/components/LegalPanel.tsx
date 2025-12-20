@@ -146,61 +146,145 @@ export const LegalPanel = ({ isOpen, onClose, type }: LegalPanelProps) => {
     <AnimatePresence>
       {isOpen && content && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop - Obsidian Glass Effect */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            className="fixed inset-0 z-50"
+            style={{
+              background: 'linear-gradient(135deg, hsl(0 0% 0% / 0.85), hsl(220 30% 5% / 0.9))',
+              backdropFilter: 'blur(12px)',
+            }}
           />
           
-          {/* Panel */}
+          {/* Modal - Centered Obsidian Glass Window */}
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full max-w-lg bg-background border-l border-border z-50 overflow-hidden"
+            initial={{ opacity: 0, scale: 0.92, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, y: 30 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[92vw] sm:w-[80vw] md:w-[70vw] lg:w-[55vw] max-w-2xl rounded-2xl overflow-hidden"
+            style={{
+              maxHeight: '80vh',
+              background: 'linear-gradient(145deg, hsl(220 25% 10%), hsl(220 30% 6%))',
+              border: '1px solid hsl(var(--aurora-magenta) / 0.2)',
+              boxShadow: '0 30px 60px -15px hsl(0 0% 0% / 0.7), 0 0 80px hsl(var(--aurora-magenta) / 0.1), inset 0 1px 0 hsl(0 0% 100% / 0.05)',
+            }}
           >
-            <div className="flex flex-col h-full">
-              {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-border">
-                <h2 className="text-xl font-bold">{content.title}</h2>
+            <div className="flex flex-col h-full" style={{ maxHeight: '80vh' }}>
+              {/* Header - Frosted Glass */}
+              <div 
+                className="flex items-center justify-between px-6 py-4 flex-shrink-0"
+                style={{
+                  borderBottom: '1px solid hsl(var(--aurora-magenta) / 0.15)',
+                  background: 'hsl(220 25% 8% / 0.9)',
+                  backdropFilter: 'blur(8px)',
+                }}
+              >
+                <h2 
+                  className="text-lg sm:text-xl font-bold"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-magenta)))',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  {content.title}
+                </h2>
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={onClose}
-                  className="hover:bg-secondary"
+                  className="hover:bg-secondary/50 rounded-full transition-all duration-200"
+                  style={{ color: 'hsl(var(--aurora-orange))' }}
                 >
                   <X className="w-5 h-5" />
                 </Button>
               </div>
               
-              {/* Content */}
-              <div className="flex-1 overflow-y-auto p-6">
+              {/* Content - Scrollable */}
+              <div 
+                className="flex-1 overflow-y-auto p-6 sm:p-8"
+                style={{ scrollbarWidth: 'thin', scrollbarColor: 'hsl(var(--aurora-magenta) / 0.3) transparent' }}
+              >
                 <div className="prose prose-invert prose-sm max-w-none">
                   {content.content.split('\n').map((line, index) => {
                     if (line.startsWith('## ')) {
-                      return <h2 key={index} className="text-lg font-bold mt-6 mb-3 text-foreground">{line.replace('## ', '')}</h2>;
+                      return (
+                        <h2 
+                          key={index} 
+                          className="text-lg font-bold mt-6 mb-3"
+                          style={{ color: 'hsl(var(--aurora-orange))' }}
+                        >
+                          {line.replace('## ', '')}
+                        </h2>
+                      );
                     }
                     if (line.startsWith('### ')) {
-                      return <h3 key={index} className="text-base font-semibold mt-4 mb-2 text-foreground">{line.replace('### ', '')}</h3>;
+                      return (
+                        <h3 
+                          key={index} 
+                          className="text-base font-semibold mt-5 mb-2 text-foreground"
+                        >
+                          {line.replace('### ', '')}
+                        </h3>
+                      );
                     }
                     if (line.startsWith('**') && line.endsWith('**')) {
-                      return <p key={index} className="font-semibold text-muted-foreground">{line.replace(/\*\*/g, '')}</p>;
+                      return (
+                        <p 
+                          key={index} 
+                          className="font-semibold"
+                          style={{ color: 'hsl(var(--aurora-magenta))' }}
+                        >
+                          {line.replace(/\*\*/g, '')}
+                        </p>
+                      );
                     }
                     if (line.startsWith('- ')) {
-                      return <li key={index} className="text-muted-foreground ml-4">{line.replace('- ', '')}</li>;
+                      return (
+                        <li 
+                          key={index} 
+                          className="text-muted-foreground ml-4 mb-1 list-disc"
+                          style={{ color: 'hsl(var(--foreground) / 0.75)' }}
+                        >
+                          {line.replace('- ', '')}
+                        </li>
+                      );
                     }
                     if (line.match(/^\d+\./)) {
-                      return <li key={index} className="text-muted-foreground ml-4 list-decimal">{line.replace(/^\d+\.\s*/, '')}</li>;
+                      return (
+                        <li 
+                          key={index} 
+                          className="ml-4 mb-1 list-decimal"
+                          style={{ color: 'hsl(var(--foreground) / 0.75)' }}
+                        >
+                          {line.replace(/^\d+\.\s*/, '')}
+                        </li>
+                      );
                     }
                     if (line.startsWith('---')) {
-                      return <hr key={index} className="my-4 border-border" />;
+                      return (
+                        <hr 
+                          key={index} 
+                          className="my-6"
+                          style={{ borderColor: 'hsl(var(--aurora-magenta) / 0.2)' }}
+                        />
+                      );
                     }
                     if (line.trim()) {
-                      return <p key={index} className="text-muted-foreground mb-2">{line}</p>;
+                      return (
+                        <p 
+                          key={index} 
+                          className="mb-3 leading-relaxed"
+                          style={{ color: 'hsl(var(--foreground) / 0.7)' }}
+                        >
+                          {line}
+                        </p>
+                      );
                     }
                     return null;
                   })}
