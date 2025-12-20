@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useMemo } from 'react';
 
 interface Particle {
@@ -12,6 +12,12 @@ interface Particle {
 }
 
 export const ParticleField = () => {
+  const { scrollY } = useScroll();
+  
+  // Subtle parallax for particle field - moves slower than content for depth
+  const particleY = useTransform(scrollY, [0, 1000], [0, -60]);
+  const sparkleY = useTransform(scrollY, [0, 1000], [0, -30]);
+
   const particles = useMemo<Particle[]>(() => {
     return Array.from({ length: 50 }, (_, i) => ({
       id: i,
@@ -25,7 +31,10 @@ export const ParticleField = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[1] pointer-events-none overflow-hidden">
+    <motion.div 
+      className="fixed inset-0 z-[1] pointer-events-none overflow-hidden"
+      style={{ y: particleY }}
+    >
       {particles.map((particle) => (
         <motion.div
           key={particle.id}
@@ -52,7 +61,8 @@ export const ParticleField = () => {
         />
       ))}
       
-      {/* Larger, slower moving sparkles */}
+      {/* Larger, slower moving sparkles with separate parallax layer */}
+      <motion.div style={{ y: sparkleY }} className="absolute inset-0">
       {Array.from({ length: 15 }, (_, i) => {
         const x = Math.random() * 100;
         const y = Math.random() * 100;
@@ -106,6 +116,7 @@ export const ParticleField = () => {
           </motion.div>
         );
       })}
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
