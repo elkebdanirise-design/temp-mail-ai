@@ -10,7 +10,6 @@ import { ShootingStars } from '@/components/ShootingStars';
 import { Footer } from '@/components/Footer';
 import { MobileNav } from '@/components/MobileNav';
 import ScrollToTop from '@/components/ScrollToTop';
-import { SupportChatWidget } from '@/components/SupportChatWidget';
 import { useMailTm } from '@/hooks/useMailTm';
 
 // Lazy load below-the-fold sections for faster initial load
@@ -187,9 +186,6 @@ const Index = () => {
 
       {/* Scroll to Top Button */}
       <ScrollToTop />
-
-      {/* Support Chat Widget */}
-      <SupportChatWidget />
     </>
   );
 };
