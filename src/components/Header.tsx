@@ -60,15 +60,14 @@ export const Header = () => {
                       Temp Mail
                     </span>
                     <span className="mx-0.5" />
-                    {/* Vibrant neon orange "AI" with intense bloom - synced with logo */}
+                    {/* Vibrant neon orange "AI" with pulsing bloom animation */}
                     <span 
-                      className="font-extrabold relative"
+                      className="font-extrabold relative animate-ai-bloom"
                       style={{
                         background: 'linear-gradient(135deg, #FF4D00 0%, #FF8C00 50%, #FF6A00 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
-                        filter: 'drop-shadow(0 0 8px rgba(255, 77, 0, 1)) drop-shadow(0 0 20px rgba(255, 140, 0, 0.9)) drop-shadow(0 0 40px rgba(255, 106, 0, 0.7)) drop-shadow(0 0 60px rgba(255, 77, 0, 0.4))',
                       }}
                     >
                       AI
