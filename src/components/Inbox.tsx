@@ -99,11 +99,20 @@ export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, getMessag
                 variant="ghost"
                 size="sm"
                 onClick={onRefresh}
-                className="text-muted-foreground hover:text-foreground hover:scale-105 transition-all"
+                className="text-muted-foreground hover:text-foreground transition-all active:scale-95"
                 disabled={isRefreshing}
+                style={{
+                  background: isRefreshing ? 'hsl(var(--aurora-orange) / 0.08)' : 'transparent',
+                }}
               >
-                <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-                Refresh
+                <RefreshCw 
+                  className={`w-4 h-4 mr-2 transition-transform ${isRefreshing ? 'animate-spin' : 'hover:rotate-180'}`}
+                  style={{ 
+                    color: isRefreshing ? 'hsl(var(--aurora-orange))' : 'currentColor',
+                    transitionDuration: '0.5s',
+                  }}
+                />
+                {isRefreshing ? 'Refreshing...' : 'Refresh'}
               </Button>
             </TooltipTrigger>
             <TooltipContent className="glass-panel border-aurora-magenta/25">

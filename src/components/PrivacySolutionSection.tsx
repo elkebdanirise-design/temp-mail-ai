@@ -63,8 +63,36 @@ export const PrivacySolutionSection = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-14"
         >
+          {/* Decorative ornamentation */}
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <motion.div 
+              initial={{ width: 0 }}
+              whileInView={{ width: 50 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="h-px"
+              style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--aurora-orange)))' }}
+            />
+            <motion.div
+              initial={{ scale: 0, rotate: 0 }}
+              whileInView={{ scale: 1, rotate: 45 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: 0.3, type: 'spring', stiffness: 200 }}
+              className="w-2 h-2"
+              style={{ background: 'hsl(var(--aurora-orange))', transform: 'rotate(45deg)' }}
+            />
+            <motion.div 
+              initial={{ width: 0 }}
+              whileInView={{ width: 50 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="h-px"
+              style={{ background: 'linear-gradient(90deg, hsl(var(--aurora-orange)), transparent)' }}
+            />
+          </div>
+
           {/* Chrome gradient title */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight mb-4 relative inline-block">
             <span className="text-foreground">The Ultimate </span>
             <span 
               style={{
@@ -76,8 +104,20 @@ export const PrivacySolutionSection = () => {
             >
               Privacy Solution
             </span>
+            
+            {/* Animated underline */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute -bottom-3 left-0 right-0 h-[2px] origin-center"
+              style={{
+                background: 'linear-gradient(90deg, transparent, hsl(var(--aurora-magenta) / 0.6), hsl(var(--aurora-orange)), hsl(var(--aurora-magenta) / 0.6), transparent)',
+              }}
+            />
           </h2>
-          <p className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: 'hsl(200 15% 55%)' }}>
+          <p className="text-base md:text-lg max-w-2xl mx-auto leading-relaxed mt-6" style={{ color: 'hsl(200 15% 55%)' }}>
             Built from the ground up with privacy as the core principle. No compromises.
           </p>
         </motion.div>

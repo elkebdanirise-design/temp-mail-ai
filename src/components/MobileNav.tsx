@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Inbox, RefreshCw, Copy } from 'lucide-react';
 import { toast } from 'sonner';
@@ -12,6 +12,7 @@ interface MobileNavProps {
 
 export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNavProps) => {
   const [pressedId, setPressedId] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const tabs = useMemo(
     () => [
@@ -23,19 +24,26 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
     []
   );
 
-  const handleCopyEmail = async () => {
+  const handleCopyEmail = useCallback(async () => {
     if (email) {
       await navigator.clipboard.writeText(email);
       toast.success('Email copied to clipboard!');
     } else {
       toast.error('No email to copy');
     }
-  };
+  }, [email]);
 
-  const handleTabClick = (tabId: string) => {
+  const handleTabClick = useCallback((tabId: string) => {
+    // Immediate haptic-like visual feedback
+    setPressedId(tabId);
+    setTimeout(() => setPressedId(null), 100);
+
     if (tabId === 'refresh') {
-      onRefresh();
+      setIsRefreshing(true);
       toast.success('Generating new email...');
+      onRefresh();
+      // Reset after animation
+      setTimeout(() => setIsRefreshing(false), 1500);
       return;
     }
 
@@ -45,13 +53,13 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
     }
 
     onTabChange(tabId);
-  };
+  }, [onRefresh, handleCopyEmail, onTabChange]);
 
   return (
     <motion.nav
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.25 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
       className="md:hidden"
       style={{
         position: 'fixed',
@@ -67,18 +75,18 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
       <div
         className="relative px-4 py-3"
         style={{
-          background: `linear-gradient(180deg, hsl(var(--background) / 0.72) 0%, hsl(var(--background) / 0.92) 100%)`,
-          backdropFilter: 'blur(12px) saturate(160%)',
-          WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+          background: `linear-gradient(180deg, hsl(var(--background) / 0.85) 0%, hsl(var(--background) / 0.98) 100%)`,
+          backdropFilter: 'blur(16px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(16px) saturate(180%)',
           borderTop: '1px solid hsl(var(--border))',
         }}
       >
         {/* Neon top accent - Orange to Magenta */}
-        <div
-          className="absolute top-0 left-0 right-0 h-[1.5px]"
+        <motion.div
+          className="absolute top-0 left-0 right-0 h-[2px]"
           style={{
             background: `linear-gradient(90deg, hsl(var(--aurora-magenta) / 0.55), hsl(var(--aurora-orange) / 0.85), hsl(var(--aurora-magenta) / 0.55))`,
-            boxShadow: `0 0 10px hsl(var(--aurora-orange) / 0.35), 0 0 18px hsl(var(--aurora-magenta) / 0.18)`,
+            boxShadow: `0 0 12px hsl(var(--aurora-orange) / 0.4), 0 0 20px hsl(var(--aurora-magenta) / 0.2)`,
           }}
         />
 
@@ -89,18 +97,7 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
               const isActive = activeTab === tab.id;
               const isHighlight = !!tab.highlight;
               const isPressed = pressedId === tab.id;
-
-              const baseGlow = isHighlight
-                ? `0 10px 28px hsl(var(--aurora-orange) / 0.22), 0 0 34px hsl(var(--aurora-magenta) / 0.18)`
-                : isActive
-                  ? `0 0 24px hsl(var(--aurora-orange) / 0.18)`
-                  : 'none';
-
-              const pressGlow = isHighlight
-                ? `0 12px 34px hsl(var(--aurora-orange) / 0.35), 0 0 46px hsl(var(--aurora-magenta) / 0.25)`
-                : isActive
-                  ? `0 0 32px hsl(var(--aurora-orange) / 0.3)`
-                  : `0 0 16px hsl(var(--aurora-orange) / 0.12)`;
+              const isThisRefreshing = tab.id === 'refresh' && isRefreshing;
 
               return (
                 <motion.button
@@ -110,38 +107,54 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
                   onPointerDown={() => setPressedId(tab.id)}
                   onPointerUp={() => setPressedId(null)}
                   onPointerCancel={() => setPressedId(null)}
-                  whileTap={{ scale: 0.92 }}
-                  className="relative flex flex-col items-center justify-center gap-1 min-h-[56px] rounded-xl transition-all duration-150 touch-manipulation select-none"
+                  animate={{ 
+                    scale: isPressed ? 0.9 : 1,
+                    opacity: isPressed ? 0.8 : 1,
+                  }}
+                  transition={{ duration: 0.1 }}
+                  className="relative flex flex-col items-center justify-center gap-1 min-h-[56px] rounded-xl transition-colors duration-150 touch-manipulation select-none active:bg-white/5"
                   style={{
                     color: isHighlight
                       ? 'hsl(var(--primary-foreground))'
                       : isActive
-                        ? 'hsl(var(--primary))'
+                        ? 'hsl(var(--aurora-orange))'
                         : 'hsl(var(--muted-foreground))',
                     background: isHighlight
                       ? `linear-gradient(135deg, hsl(var(--aurora-magenta)) 0%, hsl(var(--aurora-orange)) 100%)`
                       : isActive
-                        ? 'hsl(var(--primary) / 0.12)'
+                        ? 'hsl(var(--aurora-orange) / 0.1)'
                         : 'transparent',
-                    boxShadow: isPressed ? pressGlow : baseGlow,
-                    filter: isPressed ? 'brightness(1.08)' : 'none',
+                    boxShadow: isHighlight
+                      ? `0 8px 24px hsl(var(--aurora-orange) / 0.25), 0 0 30px hsl(var(--aurora-magenta) / 0.15)`
+                      : isActive
+                        ? `0 0 20px hsl(var(--aurora-orange) / 0.15)`
+                        : 'none',
                   }}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  {/* Persistent active indicator */}
+                  {/* Active indicator */}
                   {isActive && !isHighlight && (
                     <motion.div
                       layoutId="mobileNavActive"
-                      className="absolute -top-0.5 left-1/2 -translate-x-1/2 h-1 w-8 rounded-full"
+                      className="absolute -top-0.5 left-1/2 -translate-x-1/2 h-1 w-10 rounded-full"
                       style={{
-                        background: `linear-gradient(90deg, transparent, hsl(var(--aurora-orange) / 0.9), transparent)`,
-                        boxShadow: `0 0 16px hsl(var(--aurora-orange) / 0.35)`,
+                        background: `linear-gradient(90deg, transparent, hsl(var(--aurora-orange)), transparent)`,
+                        boxShadow: `0 0 12px hsl(var(--aurora-orange) / 0.4)`,
                       }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 40 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
 
-                  <Icon className="w-5 h-5" />
+                  <motion.div
+                    animate={{ rotate: isThisRefreshing ? 360 : 0 }}
+                    transition={{ 
+                      duration: isThisRefreshing ? 1 : 0, 
+                      repeat: isThisRefreshing ? Infinity : 0, 
+                      ease: 'linear' 
+                    }}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </motion.div>
                   <span className="text-[10px] font-medium tracking-wide">{tab.label}</span>
                 </motion.button>
               );

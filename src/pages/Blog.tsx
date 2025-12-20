@@ -91,20 +91,37 @@ export default function Blog() {
           <Header />
 
           <main className="container mx-auto px-4 py-8 md:py-16">
-            {/* Back to Home Button */}
+            {/* Floating Back to Home Button */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-              className="mb-6"
+              transition={{ duration: 0.3 }}
+              className="fixed top-20 left-4 md:left-6 z-40"
             >
               <Link
                 to="/"
-                className="inline-flex items-center gap-2 text-sm font-medium transition-all duration-300 hover:gap-3 group"
-                style={{ color: 'hsl(200 15% 55%)' }}
+                className="group flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105"
+                style={{
+                  background: 'linear-gradient(145deg, hsl(220 30% 10% / 0.95), hsl(220 30% 6% / 0.98))',
+                  border: '1px solid hsl(var(--glass-border))',
+                  backdropFilter: 'blur(12px)',
+                  boxShadow: '0 8px 32px hsl(0 0% 0% / 0.3)',
+                }}
               >
-                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                <span>Back to Home</span>
+                <ArrowLeft 
+                  className="w-4 h-4 transition-transform group-hover:-translate-x-1" 
+                  style={{ color: 'hsl(var(--aurora-orange))' }}
+                />
+                <span 
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(0 0% 85%), hsl(0 0% 95%))',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Back to Home
+                </span>
               </Link>
             </motion.div>
 
