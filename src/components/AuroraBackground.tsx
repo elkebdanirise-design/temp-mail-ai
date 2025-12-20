@@ -13,7 +13,7 @@ export const AuroraBackground = () => {
   const chipOpacity = useTransform(scrollY, [0, 800], [0.08, 0.03]);
 
   return (
-    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none will-change-transform" style={{ transform: 'translateZ(0)' }}>
       {/* Deep obsidian-black void base */}
       <div 
         className="absolute inset-0"
