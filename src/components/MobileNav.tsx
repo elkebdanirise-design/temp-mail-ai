@@ -36,12 +36,18 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
 
   return (
     <motion.nav
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, delay: 0.3 }}
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ 
+        duration: 0.6, 
+        delay: 0.5,
+        type: 'spring',
+        stiffness: 100,
+        damping: 15
+      }}
       className="fixed bottom-4 left-4 right-4 z-40 md:hidden"
     >
-      <div className="bg-background/60 backdrop-blur-xl rounded-2xl border border-white/10 px-2 py-3 shadow-2xl shadow-black/50">
+      <div className="bg-background/40 backdrop-blur-2xl rounded-2xl border border-white/10 px-2 py-3 shadow-2xl shadow-black/50">
         <div className="flex items-center justify-around">
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -54,7 +60,7 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
                 onClick={() => handleTabClick(tab.id)}
                 className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all ${
                   isHighlight
-                    ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white shadow-lg shadow-cyan-500/30 scale-110 -mt-2'
+                    ? 'mesh-gradient-btn-intense text-white shadow-lg shadow-cyan-500/30 scale-110 -mt-2'
                     : isActive
                     ? 'text-primary bg-primary/10'
                     : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'

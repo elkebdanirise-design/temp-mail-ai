@@ -258,4 +258,42 @@
     background-size: 300% 300%;
     animation: mesh-gradient 4s ease infinite;
   }
+
+  /* Intense glowing gradient button */
+  @keyframes intense-glow {
+    0%, 100% {
+      box-shadow: 
+        0 0 15px hsl(190 95% 50% / 0.5),
+        0 0 30px hsl(190 95% 50% / 0.3),
+        0 0 45px hsl(240 60% 60% / 0.2);
+    }
+    50% {
+      box-shadow: 
+        0 0 25px hsl(190 95% 50% / 0.7),
+        0 0 50px hsl(190 95% 50% / 0.5),
+        0 0 75px hsl(240 60% 60% / 0.3);
+    }
+  }
+
+  .mesh-gradient-btn-intense {
+    background: linear-gradient(
+      -45deg,
+      hsl(240 65% 55%),
+      hsl(190 100% 45%),
+      hsl(220 80% 55%),
+      hsl(190 100% 50%)
+    );
+    background-size: 400% 400%;
+    animation: 
+      mesh-gradient 3s ease infinite,
+      intense-glow 2s ease-in-out infinite;
+    border: 1px solid hsl(190 100% 60% / 0.3);
+  }
+
+  .mesh-gradient-btn-intense:hover {
+    animation: 
+      mesh-gradient 2s ease infinite,
+      intense-glow 1s ease-in-out infinite;
+    transform: scale(1.05);
+  }
 }
