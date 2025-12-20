@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Key, Users, Volume2, VolumeX } from 'lucide-react';
+import { Zap, Key, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuraLogo } from './AuraLogo';
 import { VIPBadge } from './VIPBadge';
 import { PremiumModal } from './PremiumModal';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
-import { useNotificationSound } from '@/hooks/useNotificationSound';
 
 const navItems = [
   { label: 'Home', href: '#' },
@@ -21,7 +20,6 @@ export const Header = () => {
   const [liveUsers, setLiveUsers] = useState(1247);
   const { handleAnchorClick } = useSmoothScroll();
   const [activeNav, setActiveNav] = useState('Home');
-  const { soundEnabled, toggleSound } = useNotificationSound();
 
   // Simulate live users fluctuation
   useEffect(() => {
@@ -115,26 +113,6 @@ export const Header = () => {
             </nav>
 
             <div className="flex items-center gap-2 sm:gap-4">
-              {/* Sound Toggle Button */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={toggleSound}
-                className="flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-300"
-                style={{
-                  background: soundEnabled ? 'hsl(25 95% 55% / 0.1)' : 'hsl(0 0% 50% / 0.1)',
-                  border: `1px solid ${soundEnabled ? 'hsl(25 95% 55% / 0.3)' : 'hsl(0 0% 50% / 0.2)'}`,
-                }}
-                aria-label={soundEnabled ? 'Disable notification sound' : 'Enable notification sound'}
-                title={soundEnabled ? 'Sound on' : 'Sound off'}
-              >
-                {soundEnabled ? (
-                  <Volume2 className="w-4 h-4" style={{ color: 'hsl(25 95% 55%)' }} />
-                ) : (
-                  <VolumeX className="w-4 h-4" style={{ color: 'hsl(0 0% 50%)' }} />
-                )}
-              </motion.button>
-
               {/* Live Users Counter */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
