@@ -82,7 +82,7 @@ export const PrivacySolutionSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 px-2 sm:px-0">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
@@ -90,13 +90,13 @@ export const PrivacySolutionSection = () => {
                 key={feature.title}
                 initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
                 className="group relative"
               >
                 {/* Obsidian glass card with border trace on hover */}
                 <div 
-                  className="relative rounded-2xl p-8 text-center transition-all duration-500 overflow-hidden"
+                  className="relative rounded-2xl p-6 sm:p-8 text-center transition-all duration-500 overflow-hidden"
                   style={{
                     background: 'linear-gradient(145deg, hsl(220 30% 5% / 0.95), hsl(220 30% 3% / 0.98))',
                     border: '1px solid hsl(var(--glass-border))',
@@ -104,7 +104,7 @@ export const PrivacySolutionSection = () => {
                 >
                   {/* Border trace animation on hover */}
                   <div 
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500"
                     style={{
                       background: `linear-gradient(90deg, transparent, ${feature.glowColor}, transparent)`,
                       backgroundSize: '200% 100%',
@@ -116,15 +116,16 @@ export const PrivacySolutionSection = () => {
                     }}
                   />
 
-                  {/* Cyber-Glass 3D Icon Pedestal */}
+                  {/* Cyber-Glass 3D Icon Pedestal - Centered on mobile */}
                   <motion.div
                     initial={{ scale: 1 }}
                     whileHover={{ scale: 1.08 }}
-                    className="relative inline-flex mb-6"
+                    whileTap={{ scale: 0.95 }}
+                    className="relative inline-flex mb-5 sm:mb-6"
                   >
                     {/* Glass pedestal base */}
                     <div 
-                      className="relative p-5 rounded-2xl group-hover:scale-105 transition-all duration-500"
+                      className="relative p-4 sm:p-5 rounded-2xl group-hover:scale-105 group-active:scale-105 transition-all duration-500"
                       style={{
                         background: `linear-gradient(145deg, hsl(220 30% 8% / 0.9), hsl(220 30% 4% / 0.95))`,
                         border: '1px solid hsl(0 0% 100% / 0.06)',
@@ -145,27 +146,28 @@ export const PrivacySolutionSection = () => {
                       
                       {/* Neon aura glow */}
                       <div 
-                        className="absolute inset-[-4px] rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"
+                        className="absolute inset-[-4px] rounded-3xl opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500 blur-md"
                         style={{ background: feature.glowColor }}
                       />
                       
                       {/* Icon with gradient */}
                       <div 
-                        className={`relative p-3 rounded-xl bg-gradient-to-br ${feature.gradient}`}
+                        className={`relative p-2.5 sm:p-3 rounded-xl bg-gradient-to-br ${feature.gradient}`}
                         style={{
                           boxShadow: `0 0 25px ${feature.glowColor}`,
                         }}
                       >
-                        <Icon className="w-7 h-7 text-white" />
+                        <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                       </div>
                     </div>
                   </motion.div>
                   
-                  {/* Chrome gradient title - Cinematic All-Caps */}
+                  {/* Chrome gradient title - Cinematic All-Caps - Fluid typography */}
                   <h3 
-                    className="text-sm md:text-base font-semibold mb-3 uppercase transition-all duration-300"
+                    className="font-semibold mb-2 sm:mb-3 uppercase transition-all duration-300"
                     style={{
-                      letterSpacing: '0.12em',
+                      letterSpacing: '0.1em',
+                      fontSize: 'clamp(0.75rem, 2.5vw, 1rem)',
                       background: 'linear-gradient(135deg, hsl(0 0% 75%) 0%, hsl(0 0% 92%) 40%, hsl(190 40% 80%) 70%, hsl(0 0% 85%) 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
@@ -175,12 +177,13 @@ export const PrivacySolutionSection = () => {
                     {feature.title}
                   </h3>
                   
-                  {/* Muted silver description */}
+                  {/* Muted silver description - Fluid typography */}
                   <p 
-                    className="text-sm leading-relaxed"
+                    className="leading-relaxed"
                     style={{ 
                       color: 'hsl(200 12% 50%)',
                       lineHeight: '1.7',
+                      fontSize: 'clamp(0.8125rem, 2vw, 0.875rem)',
                     }}
                   >
                     {feature.description}

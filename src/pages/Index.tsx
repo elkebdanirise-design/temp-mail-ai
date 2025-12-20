@@ -93,7 +93,8 @@ const Index = () => {
       <AuroraBackground />
       <ParticleField />
       <ShootingStars />
-      <div className="relative z-10 min-h-screen pb-20 md:pb-0 ambient-breathe">
+      {/* Increased bottom padding on mobile for fixed nav bar */}
+      <div className="relative z-10 min-h-screen pb-24 md:pb-0 ambient-breathe">
         {/* Header Ad */}
         <div className="container mx-auto px-4 pt-4">
           <AdPlaceholder variant="horizontal" className="hidden md:flex" monetagId="header-728x90" />
