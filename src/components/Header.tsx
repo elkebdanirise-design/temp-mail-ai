@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { AuraLogo } from './AuraLogo';
 import { VIPBadge } from './VIPBadge';
 import { PremiumModal } from './PremiumModal';
-import { ThemeToggle } from './ThemeToggle';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 
@@ -120,10 +119,7 @@ export const Header = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 sm:gap-3">
-              {/* Theme Toggle */}
-              <ThemeToggle />
-
+            <div className="flex items-center gap-2 sm:gap-4">
               {/* Blog Link */}
               <a
                 href="#blog-section"

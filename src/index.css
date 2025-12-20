@@ -6,60 +6,6 @@
 
 @layer base {
   :root {
-    /* Light mode - Clean, modern, professional */
-    --background: 210 20% 98%;
-    --foreground: 220 30% 10%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 220 30% 10%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 30% 10%;
-
-    --primary: 190 85% 40%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 210 20% 94%;
-    --secondary-foreground: 220 30% 15%;
-
-    --muted: 210 15% 92%;
-    --muted-foreground: 220 15% 40%;
-
-    --accent: 190 85% 35%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 210 20% 88%;
-    --input: 210 20% 88%;
-    --ring: 190 85% 45%;
-
-    /* Consistent corner radius system */
-    --radius: 0.75rem;
-    --radius-sm: 0.5rem;
-    --radius-lg: 1rem;
-    --radius-xl: 1.25rem;
-    --radius-2xl: 1.5rem;
-
-    /* Aurora color palette - light mode */
-    --aurora-cyan: 190 85% 40%;
-    --aurora-blue: 210 90% 45%;
-    --aurora-teal: 175 85% 35%;
-    --aurora-deep-blue: 220 90% 45%;
-    --aurora-light-cyan: 185 90% 50%;
-    --aurora-purple: 275 70% 50%;
-    --aurora-magenta: 320 70% 50%;
-    
-    /* Custom tokens - light mode */
-    --neon-glow: 190 85% 40%;
-    --neon-glow-secondary: 210 90% 45%;
-    --glass-bg: 0 0% 100% / 0.9;
-    --glass-border: 210 20% 85%;
-    --glass-border-hover: 190 60% 50% / 0.3;
-  }
-
-  .dark {
     /* Deep obsidian-black base for expensive feel */
     --background: 220 30% 2%;
     --foreground: 200 15% 96%;
@@ -89,7 +35,14 @@
     --input: 190 50% 35% / 0.12;
     --ring: 190 85% 50%;
 
-    /* Aurora color palette - dark mode refined */
+    /* Consistent corner radius system */
+    --radius: 0.75rem;
+    --radius-sm: 0.5rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.25rem;
+    --radius-2xl: 1.5rem;
+
+    /* Aurora color palette - refined */
     --aurora-cyan: 190 85% 50%;
     --aurora-blue: 210 90% 55%;
     --aurora-teal: 175 85% 42%;
@@ -98,12 +51,17 @@
     --aurora-purple: 275 80% 55%;
     --aurora-magenta: 320 75% 55%;
     
-    /* Custom tokens - dark mode */
+    /* Custom tokens */
     --neon-glow: 190 85% 50%;
     --neon-glow-secondary: 210 90% 55%;
     --glass-bg: 220 30% 5% / 0.8;
     --glass-border: 190 60% 40% / 0.15;
     --glass-border-hover: 190 60% 45% / 0.25;
+  }
+
+  .dark {
+    --background: 220 30% 2%;
+    --foreground: 200 15% 96%;
   }
 }
 
@@ -116,24 +74,12 @@
     scroll-behavior: smooth;
   }
 
-  /* Smooth theme transition */
-  html.transitioning,
-  html.transitioning *,
-  html.transitioning *::before,
-  html.transitioning *::after {
-    transition: background-color 0.4s ease, 
-                border-color 0.4s ease, 
-                color 0.3s ease,
-                box-shadow 0.4s ease !important;
-  }
-
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     letter-spacing: -0.01em;
-    transition: background-color 0.4s ease;
   }
 
   h1, h2 {
