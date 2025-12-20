@@ -6,54 +6,60 @@
 
 @layer base {
   :root {
-    --background: 210 30% 3%;
-    --foreground: 200 20% 98%;
+    /* Deep obsidian-black base for expensive feel */
+    --background: 220 30% 2%;
+    --foreground: 200 15% 96%;
 
-    --card: 210 30% 5%;
-    --card-foreground: 200 20% 98%;
+    --card: 220 30% 3%;
+    --card-foreground: 200 15% 96%;
 
-    --popover: 210 30% 5%;
-    --popover-foreground: 200 20% 98%;
+    --popover: 220 30% 3%;
+    --popover-foreground: 200 15% 96%;
 
-    --primary: 190 100% 55%;
-    --primary-foreground: 210 30% 5%;
+    --primary: 190 85% 50%;
+    --primary-foreground: 220 30% 3%;
 
-    --secondary: 210 25% 8%;
-    --secondary-foreground: 200 20% 98%;
+    --secondary: 220 25% 6%;
+    --secondary-foreground: 200 15% 96%;
 
-    --muted: 210 20% 12%;
-    --muted-foreground: 200 15% 55%;
+    --muted: 220 20% 10%;
+    --muted-foreground: 200 12% 50%;
 
-    --accent: 190 100% 50%;
-    --accent-foreground: 210 30% 5%;
+    --accent: 190 85% 45%;
+    --accent-foreground: 220 30% 3%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 190 60% 40% / 0.15;
-    --input: 190 60% 40% / 0.15;
-    --ring: 190 100% 55%;
+    --border: 190 50% 35% / 0.12;
+    --input: 190 50% 35% / 0.12;
+    --ring: 190 85% 50%;
 
+    /* Consistent corner radius system */
     --radius: 0.75rem;
+    --radius-sm: 0.5rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.25rem;
+    --radius-2xl: 1.5rem;
 
-    /* Aurora color palette - Cyan/Blue focused */
-    --aurora-cyan: 190 100% 55%;
-    --aurora-blue: 210 100% 60%;
-    --aurora-teal: 175 100% 45%;
-    --aurora-deep-blue: 220 100% 55%;
-    --aurora-light-cyan: 185 100% 70%;
+    /* Aurora color palette - refined */
+    --aurora-cyan: 190 85% 50%;
+    --aurora-blue: 210 90% 55%;
+    --aurora-teal: 175 85% 42%;
+    --aurora-deep-blue: 220 90% 50%;
+    --aurora-light-cyan: 185 90% 65%;
     
     /* Custom tokens */
-    --neon-glow: 190 100% 55%;
-    --neon-glow-secondary: 210 100% 60%;
-    --glass-bg: 210 30% 8% / 0.7;
-    --glass-border: 190 80% 50% / 0.2;
-    --glass-border-hover: 190 80% 50% / 0.4;
+    --neon-glow: 190 85% 50%;
+    --neon-glow-secondary: 210 90% 55%;
+    --glass-bg: 220 30% 5% / 0.8;
+    --glass-border: 190 60% 40% / 0.15;
+    --glass-border-hover: 190 60% 45% / 0.25;
   }
 
   .dark {
-    --background: 210 30% 3%;
-    --foreground: 200 20% 98%;
+    --background: 220 30% 2%;
+    --foreground: 200 15% 96%;
   }
 }
 
@@ -86,33 +92,33 @@
 }
 
 @layer components {
-  /* Premium glassmorphism panel - refined, softer glow */
+  /* Premium glassmorphism panel - obsidian black base */
   .glass-panel {
     @apply rounded-2xl;
     background: linear-gradient(
       135deg,
-      hsl(210 30% 8% / 0.85),
-      hsl(210 30% 5% / 0.92)
+      hsl(220 30% 4% / 0.9),
+      hsl(220 30% 2% / 0.95)
     );
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid hsl(var(--glass-border));
     box-shadow: 
-      0 0 20px hsl(var(--aurora-cyan) / 0.04),
-      inset 0 1px 0 hsl(0 0% 100% / 0.02);
+      0 0 15px hsl(var(--aurora-cyan) / 0.03),
+      inset 0 1px 0 hsl(0 0% 100% / 0.015);
     transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .glass-panel:hover {
     border-color: hsl(var(--glass-border-hover));
     box-shadow: 
-      0 0 30px hsl(var(--aurora-cyan) / 0.06),
-      0 15px 40px hsl(var(--aurora-blue) / 0.04),
-      inset 0 1px 0 hsl(0 0% 100% / 0.03);
+      0 0 25px hsl(var(--aurora-cyan) / 0.05),
+      0 12px 35px hsl(var(--aurora-blue) / 0.03),
+      inset 0 1px 0 hsl(0 0% 100% / 0.02);
     transform: translateY(-2px);
   }
 
-  /* Cyan gradient text - softer, more elegant */
+  /* Metallic silver-cyan gradient text */
   .neon-text {
     background: linear-gradient(
       135deg,
