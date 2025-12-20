@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Calendar, Clock, ChevronRight } from 'lucide-react';
 import { Header } from '@/components/Header';
@@ -13,6 +13,10 @@ export default function BlogArticle() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const post = slug ? getPostBySlug(slug) : undefined;
+
+  // Reading progress
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -135,6 +139,16 @@ export default function BlogArticle() {
       </Helmet>
 
       <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+        {/* Reading Progress Bar */}
+        <motion.div
+          className="fixed top-0 left-0 right-0 h-1 z-50 origin-left"
+          style={{
+            scaleX,
+            background: 'linear-gradient(90deg, hsl(var(--aurora-purple)), hsl(190 80% 55%))',
+            boxShadow: '0 0 10px hsl(var(--aurora-purple) / 0.5), 0 0 20px hsl(190 80% 55% / 0.3)',
+          }}
+        />
+
         <AuroraBackground />
         
         <div className="relative z-10">
