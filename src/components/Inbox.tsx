@@ -77,10 +77,16 @@ export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, getMessag
         className="flex items-center justify-between"
       >
         <div className="flex items-center gap-3">
-          <InboxIcon className="w-5 h-5 text-primary" />
+          <InboxIcon className="w-5 h-5 text-[hsl(280,100%,70%)]" />
           <h3 className="text-lg font-semibold">Inbox</h3>
           {messages.length > 0 && (
-            <span className="px-2 py-0.5 text-xs font-medium bg-primary/10 text-primary rounded-full">
+            <span 
+              className="px-2 py-0.5 text-xs font-medium rounded-full"
+              style={{
+                background: 'hsl(280 80% 60% / 0.15)',
+                color: 'hsl(280 100% 75%)',
+              }}
+            >
               {messages.length}
             </span>
           )}
@@ -100,7 +106,7 @@ export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, getMessag
                 Refresh
               </Button>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent className="glass-panel border-[hsl(280,80%,60%,0.3)]">
               <p>Check for new emails</p>
             </TooltipContent>
           </Tooltip>
