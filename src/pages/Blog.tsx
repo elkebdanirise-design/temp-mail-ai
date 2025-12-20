@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { Search, Loader2, ArrowLeft } from 'lucide-react';
+import { Search, Loader2, ArrowLeft, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -10,18 +10,47 @@ import { AuroraBackground } from '@/components/AuroraBackground';
 import { blogPosts, blogCategories, BlogCategory, getPostsByCategory } from '@/data/blogData';
 
 const POSTS_PER_PAGE = 6;
+const MAX_SEARCH_LENGTH = 100;
 
 export default function Blog() {
   const [activeCategory, setActiveCategory] = useState<BlogCategory>('All');
   const [visiblePosts, setVisiblePosts] = useState(POSTS_PER_PAGE);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredPosts = getPostsByCategory(activeCategory);
+  // Filter posts by category and search query
+  const filteredPosts = useMemo(() => {
+    let posts = getPostsByCategory(activeCategory);
+    
+    const trimmedQuery = searchQuery.trim().toLowerCase();
+    if (trimmedQuery) {
+      posts = posts.filter(post => 
+        post.title.toLowerCase().includes(trimmedQuery) ||
+        post.excerpt.toLowerCase().includes(trimmedQuery) ||
+        post.content.toLowerCase().includes(trimmedQuery) ||
+        post.category.toLowerCase().includes(trimmedQuery)
+      );
+    }
+    
+    return posts;
+  }, [activeCategory, searchQuery]);
+
   const displayedPosts = filteredPosts.slice(0, visiblePosts);
   const hasMorePosts = visiblePosts < filteredPosts.length;
 
   const handleCategoryChange = (category: BlogCategory) => {
     setActiveCategory(category);
+    setVisiblePosts(POSTS_PER_PAGE);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.slice(0, MAX_SEARCH_LENGTH);
+    setSearchQuery(value);
+    setVisiblePosts(POSTS_PER_PAGE);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
     setVisiblePosts(POSTS_PER_PAGE);
   };
 
@@ -92,7 +121,7 @@ export default function Blog() {
               </p>
             </motion.div>
 
-            {/* Search Bar (Visual Only) */}
+            {/* Search Bar */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -103,17 +132,40 @@ export default function Blog() {
                 className="relative flex items-center rounded-full overflow-hidden"
                 style={{
                   background: 'linear-gradient(145deg, hsl(220 30% 8% / 0.95), hsl(220 30% 5% / 0.98))',
-                  border: '1px solid hsl(var(--glass-border))',
+                  border: `1px solid ${searchQuery ? 'hsl(var(--aurora-purple) / 0.5)' : 'hsl(var(--glass-border))'}`,
+                  transition: 'border-color 0.3s ease',
                 }}
               >
                 <Search className="absolute left-4 w-5 h-5" style={{ color: 'hsl(200 15% 45%)' }} />
                 <input
                   type="text"
-                  placeholder="Search articles..."
-                  className="w-full bg-transparent py-3.5 pl-12 pr-4 text-sm focus:outline-none placeholder:text-muted-foreground/50"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  placeholder="Search articles by title, content, or category..."
+                  className="w-full bg-transparent py-3.5 pl-12 pr-12 text-sm focus:outline-none placeholder:text-muted-foreground/50"
                   style={{ color: 'hsl(0 0% 90%)' }}
+                  maxLength={MAX_SEARCH_LENGTH}
                 />
+                {searchQuery && (
+                  <button
+                    onClick={clearSearch}
+                    className="absolute right-4 p-1 rounded-full hover:bg-white/10 transition-colors"
+                    aria-label="Clear search"
+                  >
+                    <X className="w-4 h-4" style={{ color: 'hsl(200 15% 55%)' }} />
+                  </button>
+                )}
               </div>
+              {searchQuery && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-xs mt-2 text-center"
+                  style={{ color: 'hsl(200 15% 50%)' }}
+                >
+                  {filteredPosts.length} {filteredPosts.length === 1 ? 'article' : 'articles'} found for "{searchQuery}"
+                </motion.p>
+              )}
             </motion.div>
 
             {/* Category Tabs */}
