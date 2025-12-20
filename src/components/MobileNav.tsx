@@ -47,7 +47,7 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
       }}
       className="fixed bottom-4 left-4 right-4 z-40 md:hidden"
     >
-      <div className="bg-background/40 backdrop-blur-2xl rounded-2xl border border-white/10 px-2 py-3 shadow-2xl shadow-black/50">
+      <div className="bg-background/40 backdrop-blur-2xl rounded-2xl border border-white/10 px-1.5 py-2 shadow-2xl shadow-black/50">
         <div className="flex items-center justify-around">
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -58,16 +58,16 @@ export const MobileNav = ({ activeTab, onTabChange, onRefresh, email }: MobileNa
               <button
                 key={tab.id}
                 onClick={() => handleTabClick(tab.id)}
-                className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all ${
+                className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-all active:scale-95 ${
                   isHighlight
-                    ? 'mesh-gradient-btn-intense text-white shadow-lg shadow-cyan-500/30 scale-110 -mt-2'
+                    ? 'mesh-gradient-btn-intense text-white shadow-md shadow-cyan-500/30 scale-105 -mt-1'
                     : isActive
                     ? 'text-primary bg-primary/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50 active:bg-secondary/70'
                 }`}
               >
-                <Icon className={`${isHighlight ? 'w-6 h-6' : 'w-5 h-5'}`} />
-                <span className={`${isHighlight ? 'text-[11px] font-semibold' : 'text-[10px] font-medium'}`}>{tab.label}</span>
+                <Icon className={`${isHighlight ? 'w-5 h-5' : 'w-4 h-4'}`} />
+                <span className={`${isHighlight ? 'text-[9px] font-semibold' : 'text-[9px] font-medium'}`}>{tab.label}</span>
               </button>
             );
           })}

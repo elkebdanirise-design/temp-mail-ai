@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, RefreshCw, Trash2, Mail, Info, ChevronDown } from 'lucide-react';
+import { Copy, Check, RefreshCw, Trash2, Mail, Info, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -9,34 +9,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-
-interface Domain {
-  id: string;
-  domain: string;
-}
 
 interface EmailDisplayProps {
   email: string | null;
   loading: boolean;
-  domains: Domain[];
-  selectedDomain: string | null;
-  onDomainChange: (domain: string) => void;
-  onRefresh: (customPrefix?: string, domain?: string) => void;
+  onRefresh: (customPrefix?: string) => void;
   onDelete: () => void;
 }
 
 export const EmailDisplay = ({ 
   email, 
   loading, 
-  domains, 
-  selectedDomain, 
-  onDomainChange, 
   onRefresh, 
   onDelete 
 }: EmailDisplayProps) => {
@@ -53,17 +36,8 @@ export const EmailDisplay = ({
 
   const handleGenerateWithCustomPrefix = () => {
     const prefix = customPrefix.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-    onRefresh(prefix || undefined, selectedDomain || undefined);
+    onRefresh(prefix || undefined);
     setCustomPrefix('');
-  };
-
-  const handleDomainSelect = (domain: string) => {
-    onDomainChange(domain);
-    // Extract current username and regenerate with new domain
-    if (email) {
-      const username = email.split('@')[0];
-      onRefresh(username, domain);
-    }
   };
 
   return (
@@ -116,7 +90,7 @@ export const EmailDisplay = ({
           </div>
         </div>
 
-        {/* Custom Username Input - Always Visible */}
+        {/* Custom Username Input */}
         <div className="mb-4">
           <label className="text-xs text-muted-foreground mb-1.5 block">Custom Email ID (optional)</label>
           <div className="flex flex-col sm:flex-row gap-2">
@@ -129,54 +103,25 @@ export const EmailDisplay = ({
                 className="flex-1 bg-secondary/50 border-border text-sm rounded-r-none focus:z-10"
                 maxLength={20}
               />
-              <span className="px-3 py-2 bg-secondary/30 border border-l-0 border-border text-muted-foreground text-sm">
-                @
+              <span className="px-3 py-2 bg-secondary/30 border border-l-0 border-border text-muted-foreground text-sm rounded-r-lg">
+                @domain
               </span>
-              {/* Domain Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="rounded-l-none border-l-0 bg-secondary/50 border-border hover:border-primary/50 transition-all min-w-[100px] sm:min-w-[140px] justify-between h-10"
-                    disabled={loading || domains.length === 0}
-                  >
-                    <span className="text-xs sm:text-sm truncate max-w-[60px] sm:max-w-[100px]">
-                      {selectedDomain || 'Select'}
-                    </span>
-                    <ChevronDown className="w-3 h-3 ml-1 shrink-0" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent 
-                  align="end" 
-                  className="glass-panel border-border bg-background/95 backdrop-blur-xl min-w-[180px] z-50"
-                >
-                  {domains.map((domain) => (
-                    <DropdownMenuItem
-                      key={domain.id}
-                      onClick={() => handleDomainSelect(domain.domain)}
-                      className={`cursor-pointer transition-colors ${
-                        selectedDomain === domain.domain 
-                          ? 'bg-primary/10 text-primary' 
-                          : 'hover:bg-secondary'
-                      }`}
-                    >
-                      @{domain.domain}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
             <Button
               onClick={handleGenerateWithCustomPrefix}
               disabled={loading}
               className="mesh-gradient-btn-intense text-white font-medium h-10 px-4 whitespace-nowrap"
             >
-              <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+              {loading ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <RefreshCw className="w-4 h-4 mr-2" />
+              )}
               Generate
             </Button>
           </div>
           <p className="text-[10px] text-muted-foreground/50 mt-1.5">
-            Leave empty for random ID • Only lowercase letters and numbers
+            Leave empty for random ID • Only lowercase letters and numbers • Domain auto-selected
           </p>
         </div>
 
@@ -184,7 +129,7 @@ export const EmailDisplay = ({
         <div className="mb-4">
           <label className="text-xs text-muted-foreground mb-1.5 block">Current Email Address</label>
           <div 
-            className="w-full bg-secondary/50 rounded-lg px-3 sm:px-4 py-3 border border-border cursor-pointer hover:border-primary/50 transition-colors group relative overflow-hidden"
+            className="w-full bg-secondary/50 rounded-lg px-3 sm:px-4 py-3 border border-border cursor-pointer hover:border-primary/50 transition-colors group relative overflow-hidden min-h-[52px] flex items-center"
             onClick={handleCopy}
           >
             {/* Subtle mesh gradient on hover */}
@@ -197,10 +142,10 @@ export const EmailDisplay = ({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex items-center gap-2"
+                  className="flex items-center justify-center w-full gap-3"
                 >
-                  <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                  <span className="text-muted-foreground">Generating...</span>
+                  <Loader2 className="w-5 h-5 text-primary animate-spin" />
+                  <span className="text-muted-foreground font-medium">Creating secure mailbox...</span>
                 </motion.div>
               ) : (
                 <motion.span
@@ -266,11 +211,15 @@ export const EmailDisplay = ({
               <TooltipTrigger asChild>
                 <Button
                   variant="outline"
-                  onClick={() => onRefresh(undefined, selectedDomain || undefined)}
+                  onClick={() => onRefresh(undefined)}
                   disabled={loading}
                   className="flex-1 sm:flex-none border-border hover:border-primary/50 hover:bg-primary/10 transition-all hover:scale-105 h-11"
                 >
-                  <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                  {loading ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                  )}
                   <span>New Random</span>
                 </Button>
               </TooltipTrigger>

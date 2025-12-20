@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 const API_BASE = 'https://api.mail.tm';
 
 interface Domain {
   id: string;
   domain: string;
+  isActive: boolean;
 }
 
 interface Account {
@@ -44,17 +45,25 @@ export const useMailTm = () => {
   const [error, setError] = useState<string | null>(null);
   const [domains, setDomains] = useState<Domain[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
+  const previousMessageCount = useRef(0);
+  const onNewMessageCallback = useRef<(() => void) | null>(null);
 
   const generateRandomString = (length: number) => {
     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
     return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
   };
 
+  // Set callback for new message notification
+  const setOnNewMessage = useCallback((callback: () => void) => {
+    onNewMessageCallback.current = callback;
+  }, []);
+
   const fetchDomains = useCallback(async (): Promise<Domain[]> => {
     try {
       const response = await fetch(`${API_BASE}/domains`);
       const data = await response.json();
-      const domainList = data['hydra:member'] || [];
+      // Filter only active domains for faster, reliable email creation
+      const domainList = (data['hydra:member'] || []).filter((d: Domain) => d.isActive !== false);
       setDomains(domainList);
       if (domainList.length > 0 && !selectedDomain) {
         setSelectedDomain(domainList[0].domain);
@@ -149,7 +158,15 @@ export const useMailTm = () => {
       }
       
       const data = await response.json();
-      setMessages(data['hydra:member'] || []);
+      const newMessages = data['hydra:member'] || [];
+      
+      // Check for new messages and trigger notification
+      if (newMessages.length > previousMessageCount.current && previousMessageCount.current > 0) {
+        onNewMessageCallback.current?.();
+      }
+      previousMessageCount.current = newMessages.length;
+      
+      setMessages(newMessages);
     } catch (err) {
       console.error('Error fetching messages:', err);
     }
@@ -255,5 +272,6 @@ export const useMailTm = () => {
     deleteMessage,
     deleteAccount,
     refreshMessages: fetchMessages,
+    setOnNewMessage,
   };
 };
