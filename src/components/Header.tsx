@@ -35,25 +35,50 @@ export const Header = () => {
             <div className="flex items-center gap-3">
               <div className="relative">
                 <div 
-                  className="absolute inset-0 rounded-lg blur-lg animate-pulse"
-                  style={{ background: 'hsl(190 100% 55% / 0.35)' }}
+                  className="absolute inset-0 rounded-lg blur-md"
+                  style={{ background: 'hsl(190 100% 55% / 0.15)' }}
                 />
                 <div 
                   className="relative p-1.5 rounded-lg"
                   style={{
-                    background: 'hsl(190 80% 50% / 0.1)',
-                    border: '1px solid hsl(190 80% 50% / 0.25)',
+                    background: 'hsl(190 80% 50% / 0.08)',
+                    border: '1px solid hsl(190 80% 50% / 0.2)',
                   }}
                 >
                   <AuraLogo className="w-8 h-8" />
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl md:text-2xl font-bold tracking-tighter">
-                  <span className="font-semibold text-foreground">Temp Mail</span>{' '}
-                  <span className="aurora-gradient-text font-bold">Aura</span>
-                </h1>
-                {isPremium && <VIPBadge />}
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <h1 className="text-xl md:text-2xl font-bold tracking-tighter relative">
+                    <span className="font-semibold text-foreground">Temp Mail</span>{' '}
+                    <span className="aurora-gradient-text font-bold">Aura</span>
+                    {/* High-tech ornamental element */}
+                    <span className="hidden sm:inline-flex items-center ml-2 relative">
+                      <svg viewBox="0 0 32 12" className="w-8 h-3" fill="none">
+                        <rect x="0" y="4" width="6" height="4" rx="1" fill="hsl(190 80% 50% / 0.4)" />
+                        <rect x="8" y="3" width="4" height="6" rx="1" fill="hsl(190 80% 50% / 0.3)" />
+                        <rect x="14" y="2" width="2" height="8" rx="0.5" fill="hsl(190 80% 50% / 0.25)" />
+                        <rect x="18" y="4" width="8" height="4" rx="1" fill="hsl(190 80% 50% / 0.35)" />
+                        <rect x="28" y="5" width="4" height="2" rx="0.5" fill="hsl(190 80% 50% / 0.2)" />
+                        <line x1="0" y1="6" x2="32" y2="6" stroke="hsl(190 80% 50% / 0.15)" strokeWidth="0.5" />
+                      </svg>
+                    </span>
+                  </h1>
+                  {isPremium && <VIPBadge />}
+                </div>
+                {/* Subtitle tagline */}
+                <span 
+                  className="text-[10px] sm:text-xs font-medium tracking-widest uppercase mt-0.5"
+                  style={{
+                    background: 'linear-gradient(90deg, hsl(190 60% 55% / 0.7), hsl(210 60% 60% / 0.5))',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Instant Privacy. Infinite Shield.
+                </span>
               </div>
             </div>
 
