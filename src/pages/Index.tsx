@@ -16,6 +16,7 @@ import { PricingSection } from '@/components/PricingSection';
 import { ComparisonTable } from '@/components/ComparisonTable';
 import { TestimonialsSection } from '@/components/TestimonialsSection';
 import { FastestEmailSection } from '@/components/FastestEmailSection';
+import ScrollToTop from '@/components/ScrollToTop';
 import { useMailTm } from '@/hooks/useMailTm';
 
 const Index = () => {
@@ -177,6 +178,9 @@ const Index = () => {
         onRefresh={handleNewEmail}
         email={email}
       />
+
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
     </>
   );
 };
