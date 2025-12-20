@@ -16,7 +16,7 @@ export const AuraLogo = ({
         alt="Temp Mail AI Logo" 
         className="w-full h-full object-contain"
         style={{
-          filter: 'drop-shadow(0 0 12px hsl(var(--aurora-orange) / 0.5))',
+          filter: 'drop-shadow(0 0 16px hsl(25 95% 55% / 0.9)) drop-shadow(0 0 32px hsl(25 95% 55% / 0.6)) drop-shadow(0 0 48px hsl(30 100% 55% / 0.3))',
           background: 'transparent',
         }}
         src="/lovable-uploads/233fffab-b388-432b-94fa-4d216e249b1b.png" 

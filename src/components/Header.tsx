@@ -41,8 +41,8 @@ export const Header = () => {
           <div className="flex items-center justify-between">
             {/* Logo & Brand */}
             <div className="flex items-center gap-4">
-              {/* Logo - significantly larger, no background, clean */}
-              <AuraLogo className="w-14 h-14 md:w-18 md:h-18 lg:w-20 lg:h-20" />
+              {/* Logo - 25% larger, no background, aligned with text height */}
+              <AuraLogo className="w-[4.5rem] h-[4.5rem] md:w-[5.5rem] md:h-[5.5rem] lg:w-[6.25rem] lg:h-[6.25rem]" />
               
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
@@ -61,11 +61,11 @@ export const Header = () => {
                     <span 
                       className="font-extrabold"
                       style={{
-                        background: 'linear-gradient(135deg, hsl(25 95% 55%) 0%, hsl(35 95% 60%) 50%, hsl(25 95% 55%) 100%)',
+                        background: 'linear-gradient(135deg, hsl(25 95% 55%) 0%, hsl(35 100% 60%) 50%, hsl(30 95% 55%) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
-                        filter: 'drop-shadow(0 0 12px hsl(25 95% 55% / 0.7)) drop-shadow(0 0 25px hsl(25 95% 55% / 0.4))',
+                        filter: 'drop-shadow(0 0 16px hsl(25 95% 55% / 0.9)) drop-shadow(0 0 32px hsl(25 95% 55% / 0.6)) drop-shadow(0 0 48px hsl(30 100% 55% / 0.3))',
                       }}
                     >
                       AI
