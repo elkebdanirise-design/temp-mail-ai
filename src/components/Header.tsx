@@ -39,11 +39,10 @@ export const Header = () => {
       >
         <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center justify-between">
-            {/* Logo & Brand - shifted left on mobile with tighter padding */}
-            {/* Unified brand unit - tighter gap between logo and text */}
-            <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 -ml-1 sm:ml-0">
+            {/* Unified brand unit - minimal gap for integrated appearance */}
+            <div className="flex items-center gap-0 -ml-1 sm:ml-0">
               {/* Logo - with synchronized neon orange glow */}
-              <AuraLogo className="w-14 h-14 sm:w-[4.5rem] sm:h-[4.5rem] md:w-[5.5rem] md:h-[5.5rem] lg:w-[6.25rem] lg:h-[6.25rem]" />
+              <AuraLogo className="w-14 h-14 sm:w-[4.5rem] sm:h-[4.5rem] md:w-[5.5rem] md:h-[5.5rem] lg:w-[6.25rem] lg:h-[6.25rem] -mr-1 sm:-mr-1.5 md:-mr-2" />
               
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
