@@ -6,7 +6,6 @@ import { ArrowLeft, User, Clock, Trash2, Mail } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { AuroraBackground } from '@/components/AuroraBackground';
 import { ParticleField } from '@/components/ParticleField';
 import { ShootingStars } from '@/components/ShootingStars';
 import { AuraLogo } from '@/components/AuraLogo';
@@ -94,7 +93,23 @@ const EmailView = () => {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <AuroraBackground />
+      {/* Simplified cosmic background for email view - no large logo */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(180deg, hsl(0 0% 2%) 0%, hsl(220 30% 4%) 50%, hsl(0 0% 3%) 100%)',
+          }}
+        />
+        {/* Subtle aurora glow */}
+        <div
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[150%] h-[60%]"
+          style={{
+            background: 'radial-gradient(ellipse 60% 40% at center, hsl(var(--aurora-orange) / 0.08) 0%, hsl(var(--aurora-magenta) / 0.04) 40%, transparent 70%)',
+            filter: 'blur(100px)',
+          }}
+        />
+      </div>
       <ParticleField />
       <ShootingStars />
 
