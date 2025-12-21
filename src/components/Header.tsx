@@ -63,7 +63,7 @@ export const Header = () => {
                     <span 
                       className="font-extrabold relative animate-ai-bloom"
                       style={{
-                        background: 'linear-gradient(135deg, #FF4D00 0%, #FF8C00 50%, #FF6A00 100%)',
+                        background: 'linear-gradient(135deg, hsl(var(--aurora-orange)) 0%, hsl(var(--aurora-sunset)) 55%, hsl(var(--aurora-orange)) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
