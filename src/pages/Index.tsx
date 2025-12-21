@@ -132,7 +132,6 @@ const Index = () => {
                   messages={messages}
                   onRefresh={refreshMessages}
                   onDeleteMessage={deleteMessage}
-                  getMessageDetail={getMessageDetail}
                   isRefreshing={loading}
                 />
               </div>

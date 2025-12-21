@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { RefreshCw, Inbox as InboxIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MessageCard } from './MessageCard';
-import { MessageModal } from './MessageModal';
 import { EmptyInbox } from './EmptyInbox';
 import { InboxSkeleton } from './InboxSkeleton';
 import { NativeAdCard } from './NativeAdCard';
@@ -37,34 +36,14 @@ interface InboxProps {
   messages: Message[];
   onRefresh: () => void;
   onDeleteMessage: (id: string) => void;
-  getMessageDetail: (id: string) => Promise<Message | null>;
   isRefreshing?: boolean;
 }
 
-export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, getMessageDetail, isRefreshing = false }: InboxProps) => {
-  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoadingMessage, setIsLoadingMessage] = useState(false);
+export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, isRefreshing = false }: InboxProps) => {
+  const navigate = useNavigate();
 
-  const handleOpenMessage = async (messageId: string) => {
-    setIsModalOpen(true);
-    setIsLoadingMessage(true);
-    
-    const detail = await getMessageDetail(messageId);
-    setSelectedMessage(detail);
-    setIsLoadingMessage(false);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setTimeout(() => setSelectedMessage(null), 300);
-  };
-
-  const handleDeleteFromModal = () => {
-    if (selectedMessage) {
-      onDeleteMessage(selectedMessage.id);
-      handleCloseModal();
-    }
+  const handleOpenMessage = (messageId: string) => {
+    navigate(`/email/${messageId}`);
   };
 
   return (
@@ -152,15 +131,6 @@ export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, getMessag
 
       {/* Trust Badge */}
       <TrustBadge />
-
-      {/* Message Modal */}
-      <MessageModal
-        message={selectedMessage}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onDelete={handleDeleteFromModal}
-        isLoading={isLoadingMessage}
-      />
     </div>
   );
 };
