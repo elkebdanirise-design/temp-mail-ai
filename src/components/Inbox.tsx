@@ -43,7 +43,7 @@ export const InboxComponent = ({ messages, onRefresh, onDeleteMessage, isRefresh
   const navigate = useNavigate();
 
   const handleOpenMessage = (messageId: string) => {
-    navigate(`/email/${messageId}`);
+    navigate(`/message/${messageId}`);
   };
 
   return (

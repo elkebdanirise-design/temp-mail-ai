@@ -38,7 +38,9 @@ const App = () => (
               <Route path="/faq" element={<FAQ />} />
               <Route path="/sitemap" element={<Sitemap />} />
 
-              {/* Email view page */}
+              {/* Message view page */}
+              <Route path="/message/:id" element={<EmailView />} />
+              {/* Backwards-compatible alias */}
               <Route path="/email/:id" element={<EmailView />} />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
