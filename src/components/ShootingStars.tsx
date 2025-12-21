@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo } from 'react';
+import { useReducedMotion, useIsLowEndDevice } from '@/hooks/useReducedMotion';
 
 interface ShootingStar {
   id: number;
@@ -7,7 +8,6 @@ interface ShootingStar {
   startY: number;
   angle: number;
   duration: number;
-  delay: number;
   size: number;
 }
 
@@ -20,12 +20,16 @@ interface StaticStar {
   pulseDelay: number;
 }
 
-export const ShootingStars = () => {
+export const ShootingStars = memo(() => {
   const [shootingStars, setShootingStars] = useState<ShootingStar[]>([]);
+  const prefersReducedMotion = useReducedMotion();
+  const isLowEnd = useIsLowEndDevice();
 
-  // Static twinkling stars - memoized so they don't regenerate
+  const shouldRender = !prefersReducedMotion && !isLowEnd;
+  const starCount = shouldRender ? 30 : 0;
+
   const staticStars = useMemo<StaticStar[]>(() => {
-    return Array.from({ length: 60 }, (_, i) => ({
+    return Array.from({ length: starCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -33,57 +37,50 @@ export const ShootingStars = () => {
       opacity: 0.3 + Math.random() * 0.5,
       pulseDelay: Math.random() * 5,
     }));
-  }, []);
+  }, [starCount]);
 
   const createShootingStar = useCallback(() => {
+    if (!shouldRender) return;
     const id = Date.now() + Math.random();
-    const startX = Math.random() * 100;
-    const startY = Math.random() * 40;
-    const angle = 30 + Math.random() * 30;
     const duration = 0.8 + Math.random() * 0.6;
-    const size = 1 + Math.random() * 1.5;
 
     const newStar: ShootingStar = {
       id,
-      startX,
-      startY,
-      angle,
+      startX: Math.random() * 100,
+      startY: Math.random() * 40,
+      angle: 30 + Math.random() * 30,
       duration,
-      delay: 0,
-      size,
+      size: 1 + Math.random() * 1.5,
     };
 
     setShootingStars(prev => [...prev, newStar]);
-
-    setTimeout(() => {
-      setShootingStars(prev => prev.filter(s => s.id !== id));
-    }, duration * 1000 + 500);
-  }, []);
+    setTimeout(() => setShootingStars(prev => prev.filter(s => s.id !== id)), duration * 1000 + 500);
+  }, [shouldRender]);
 
   useEffect(() => {
+    if (!shouldRender) return;
+
+    let timeoutId: ReturnType<typeof setTimeout>;
     const scheduleNextStar = () => {
-      const delay = 2000 + Math.random() * 5000;
-      return setTimeout(() => {
+      timeoutId = setTimeout(() => {
         createShootingStar();
         scheduleNextStar();
-      }, delay);
+      }, 3000 + Math.random() * 6000);
     };
 
-    const initialTimeout = setTimeout(() => {
-      createShootingStar();
-    }, 1500);
-
-    const recurringTimeout = scheduleNextStar();
+    const initialTimeout = setTimeout(createShootingStar, 2000);
+    scheduleNextStar();
 
     return () => {
       clearTimeout(initialTimeout);
-      clearTimeout(recurringTimeout);
+      clearTimeout(timeoutId);
     };
-  }, [createShootingStar]);
+  }, [createShootingStar, shouldRender]);
+
+  if (!shouldRender) return null;
 
   return (
     <div className="fixed inset-0 z-[2] pointer-events-none overflow-hidden will-change-transform" style={{ transform: 'translateZ(0)' }}>
-      {/* Static twinkling stars */}
       {staticStars.map((star) => (
         <motion.div
           key={star.id}
@@ -109,21 +106,17 @@ export const ShootingStars = () => {
         />
       ))}
 
-      {/* Shooting stars */}
       <AnimatePresence>
         {shootingStars.map((star) => {
           const distance = 300 + Math.random() * 200;
-          const endX = star.startX + (distance * Math.cos(star.angle * Math.PI / 180));
-          const endY = star.startY + (distance * Math.sin(star.angle * Math.PI / 180));
+          const endX = star.startX + distance * Math.cos(star.angle * Math.PI / 180);
+          const endY = star.startY + distance * Math.sin(star.angle * Math.PI / 180);
 
           return (
             <motion.div
               key={star.id}
               className="absolute"
-              style={{
-                left: `${star.startX}%`,
-                top: `${star.startY}%`,
-              }}
+              style={{ left: `${star.startX}%`, top: `${star.startY}%` }}
               initial={{ opacity: 0, scale: 0 }}
               animate={{
                 opacity: [0, 1, 1, 0],
@@ -132,20 +125,9 @@ export const ShootingStars = () => {
                 y: [0, (endY - star.startY) * 10],
               }}
               exit={{ opacity: 0 }}
-              transition={{
-                duration: star.duration,
-                ease: "easeOut",
-                times: [0, 0.1, 0.7, 1],
-              }}
+              transition={{ duration: star.duration, ease: "easeOut", times: [0, 0.1, 0.7, 1] }}
             >
-              {/* Star head - warm orange/white */}
-              <div
-                className="relative"
-                style={{
-                  width: star.size * 3,
-                  height: star.size * 3,
-                }}
-              >
+              <div className="relative" style={{ width: star.size * 3, height: star.size * 3 }}>
                 <div
                   className="absolute rounded-full"
                   style={{
@@ -156,8 +138,6 @@ export const ShootingStars = () => {
                   }}
                 />
               </div>
-              
-              {/* Star tail - orange to magenta gradient */}
               <motion.div
                 className="absolute"
                 style={{
@@ -171,15 +151,8 @@ export const ShootingStars = () => {
                   filter: `blur(${star.size * 0.5}px)`,
                 }}
                 initial={{ scaleX: 0, opacity: 0 }}
-                animate={{ 
-                  scaleX: [0, 1, 1, 0.3],
-                  opacity: [0, 0.8, 0.6, 0],
-                }}
-                transition={{
-                  duration: star.duration,
-                  ease: "easeOut",
-                  times: [0, 0.15, 0.6, 1],
-                }}
+                animate={{ scaleX: [0, 1, 1, 0.3], opacity: [0, 0.8, 0.6, 0] }}
+                transition={{ duration: star.duration, ease: "easeOut", times: [0, 0.15, 0.6, 1] }}
               />
             </motion.div>
           );
@@ -187,4 +160,4 @@ export const ShootingStars = () => {
       </AnimatePresence>
     </div>
   );
-};
+});
