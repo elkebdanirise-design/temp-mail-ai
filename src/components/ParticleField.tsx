@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
+import { useReducedMotion, useIsLowEndDevice } from '@/hooks/useReducedMotion';
 
 interface Particle {
   id: number;
@@ -11,15 +12,23 @@ interface Particle {
   opacity: number;
 }
 
-export const ParticleField = () => {
+export const ParticleField = memo(() => {
   const { scrollY } = useScroll();
-  
-  // Subtle parallax for particle field - moves slower than content for depth
+  const prefersReducedMotion = useReducedMotion();
+  const isLowEnd = useIsLowEndDevice();
+
+  // Skip rendering entirely on reduced motion or low-end devices
+  const shouldRender = !prefersReducedMotion && !isLowEnd;
+
   const particleY = useTransform(scrollY, [0, 1000], [0, -60]);
   const sparkleY = useTransform(scrollY, [0, 1000], [0, -30]);
 
+  // Reduce particle count for performance
+  const particleCount = shouldRender ? 25 : 0;
+  const sparkleCount = shouldRender ? 8 : 0;
+
   const particles = useMemo<Particle[]>(() => {
-    return Array.from({ length: 50 }, (_, i) => ({
+    return Array.from({ length: particleCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -28,12 +37,25 @@ export const ParticleField = () => {
       delay: Math.random() * 5,
       opacity: Math.random() * 0.5 + 0.2,
     }));
-  }, []);
+  }, [particleCount]);
+
+  const sparkles = useMemo(() => {
+    return Array.from({ length: sparkleCount }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 3 + 2,
+      duration: Math.random() * 6 + 5,
+      delay: Math.random() * 3,
+    }));
+  }, [sparkleCount]);
+
+  if (!shouldRender) return null;
 
   return (
     <motion.div 
-      className="fixed inset-0 z-[1] pointer-events-none overflow-hidden"
-      style={{ y: particleY }}
+      className="fixed inset-0 z-[1] pointer-events-none overflow-hidden will-change-transform"
+      style={{ y: particleY, transform: 'translateZ(0)' }}
     >
       {particles.map((particle) => (
         <motion.div
@@ -61,62 +83,40 @@ export const ParticleField = () => {
         />
       ))}
       
-      {/* Larger, slower moving sparkles with separate parallax layer */}
       <motion.div style={{ y: sparkleY }} className="absolute inset-0">
-      {Array.from({ length: 15 }, (_, i) => {
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        const size = Math.random() * 3 + 2;
-        const duration = Math.random() * 6 + 5;
-        const delay = Math.random() * 3;
-        
-        return (
+        {sparkles.map((sparkle) => (
           <motion.div
-            key={`sparkle-${i}`}
+            key={`sparkle-${sparkle.id}`}
             className="absolute"
-            style={{
-              left: `${x}%`,
-              top: `${y}%`,
-            }}
-            animate={{
-              opacity: [0, 0.8, 0],
-              scale: [0.5, 1, 0.5],
-            }}
+            style={{ left: `${sparkle.x}%`, top: `${sparkle.y}%` }}
+            animate={{ opacity: [0, 0.8, 0], scale: [0.5, 1, 0.5] }}
             transition={{
-              duration: duration,
-              delay: delay,
+              duration: sparkle.duration,
+              delay: sparkle.delay,
               repeat: Infinity,
               ease: "easeInOut",
             }}
           >
-            {/* Star shape using CSS */}
-            <div
-              className="relative"
-              style={{
-                width: size * 2,
-                height: size * 2,
-              }}
-            >
+            <div className="relative" style={{ width: sparkle.size * 2, height: sparkle.size * 2 }}>
               <div
                 className="absolute inset-0"
                 style={{
                   background: `linear-gradient(0deg, transparent 40%, hsl(190 100% 75%) 50%, transparent 60%),
                                linear-gradient(90deg, transparent 40%, hsl(190 100% 75%) 50%, transparent 60%)`,
-                  filter: `blur(${size * 0.3}px)`,
+                  filter: `blur(${sparkle.size * 0.3}px)`,
                 }}
               />
               <div
                 className="absolute inset-0"
                 style={{
                   background: `radial-gradient(circle, hsl(190 100% 80%) 0%, transparent 50%)`,
-                  filter: `blur(${size * 0.5}px)`,
+                  filter: `blur(${sparkle.size * 0.5}px)`,
                 }}
               />
             </div>
           </motion.div>
-        );
-      })}
+        ))}
       </motion.div>
     </motion.div>
   );
-};
+});
