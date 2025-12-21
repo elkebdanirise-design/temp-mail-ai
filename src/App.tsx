@@ -14,6 +14,7 @@ import Privacy from "./pages/Privacy";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Sitemap from "./pages/Sitemap";
+import EmailView from "./pages/EmailView";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,9 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/sitemap" element={<Sitemap />} />
+
+              {/* Email view page */}
+              <Route path="/email/:id" element={<EmailView />} />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
