@@ -163,7 +163,7 @@ export const Header = memo(() => {
             </nav>
 
             {/* Right section: Auth & CTA buttons - Swapped order: Pro first, then Login */}
-            <div className="flex items-center gap-2 md:gap-3 shrink-0">
+            <div className="flex items-center gap-3 md:gap-4 shrink-0">
               {isAuthLoading ? (
                 /* Auth loading skeleton */
                 <div className="flex items-center gap-2">
@@ -289,10 +289,10 @@ export const Header = memo(() => {
               <>
                   {/* Pro Button - Slightly larger for better balance */}
                   {!isPremium && (
-                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[36px] md:h-11 w-[72px] md:w-[110px] p-0">
-                      <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="w-full h-full flex items-center justify-center gap-1.5">
-                        <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-white shrink-0" />
-                        <span className="text-[11px] md:text-sm font-semibold text-white leading-none">Pro</span>
+                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-xl h-[40px] md:h-12 w-[80px] md:w-[120px] p-0">
+                      <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="w-full h-full flex items-center justify-center gap-2">
+                        <Zap className="w-4 h-4 md:w-5 md:h-5 text-white shrink-0" />
+                        <span className="text-xs md:text-[15px] font-semibold text-white leading-none">Pro</span>
                       </a>
                     </Button>
                   )}
@@ -301,11 +301,11 @@ export const Header = memo(() => {
                   <Button 
                     asChild 
                     variant="ghost" 
-                    className="geometric-diamond-btn header-cta-frame h-[36px] md:h-11 w-[72px] md:w-[110px] p-0 rounded-lg md:rounded-xl"
+                    className="geometric-diamond-btn header-cta-frame h-[40px] md:h-12 w-[80px] md:w-[120px] p-0 rounded-xl"
                   >
-                    <Link to="/auth" className="w-full h-full flex items-center justify-center gap-1.5">
-                      <LogIn className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" style={{ color: 'hsl(var(--aurora-orange))' }} />
-                      <span className="text-[11px] md:text-sm font-semibold leading-none" style={{ color: 'hsl(var(--aurora-orange))' }}>Login</span>
+                    <Link to="/auth" className="w-full h-full flex items-center justify-center gap-2">
+                      <LogIn className="w-4 h-4 md:w-5 md:h-5 shrink-0" style={{ color: 'hsl(var(--aurora-orange))' }} />
+                      <span className="text-xs md:text-[15px] font-semibold leading-none" style={{ color: 'hsl(var(--aurora-orange))' }}>Login</span>
                     </Link>
                   </Button>
                 </>
