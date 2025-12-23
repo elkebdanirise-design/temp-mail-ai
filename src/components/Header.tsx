@@ -292,12 +292,12 @@ export const Header = memo(() => {
                 </DropdownMenu>
               ) : (
                 <>
-                  {/* Pro Button - Balanced mobile size */}
+                  {/* Pro Button - Compact mobile size for breathing room */}
                   {!isPremium && (
-                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[36px] md:h-10 w-[72px] md:w-[100px] p-0">
+                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-md md:rounded-xl h-[32px] md:h-10 w-[64px] md:w-[100px] p-0">
                       <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="w-full h-full flex items-center justify-center gap-1">
-                        <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-white shrink-0" />
-                        <span className="text-[11px] md:text-sm font-semibold text-white leading-none">Pro</span>
+                        <Zap className="w-3 h-3 md:w-4 md:h-4 text-white shrink-0" />
+                        <span className="text-[10px] md:text-sm font-semibold text-white leading-none">Pro</span>
                       </a>
                     </Button>
                   )}
@@ -306,11 +306,11 @@ export const Header = memo(() => {
                   <Button 
                     asChild 
                     variant="ghost" 
-                    className="geometric-diamond-btn header-cta-frame h-[36px] md:h-10 w-[72px] md:w-[100px] p-0 rounded-lg md:rounded-xl"
+                    className="geometric-diamond-btn header-cta-frame h-[32px] md:h-10 w-[64px] md:w-[100px] p-0 rounded-md md:rounded-xl"
                   >
                     <Link to="/auth" className="w-full h-full flex items-center justify-center gap-1">
-                      <LogIn className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" style={{ color: 'hsl(var(--aurora-orange))' }} />
-                      <span className="text-[11px] md:text-sm font-semibold leading-none" style={{ color: 'hsl(var(--aurora-orange))' }}>Login</span>
+                      <LogIn className="w-3 h-3 md:w-4 md:h-4 shrink-0" style={{ color: 'hsl(var(--aurora-orange))' }} />
+                      <span className="text-[10px] md:text-sm font-semibold leading-none" style={{ color: 'hsl(var(--aurora-orange))' }}>Login</span>
                     </Link>
                   </Button>
                 </>
