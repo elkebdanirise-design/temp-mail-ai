@@ -479,13 +479,23 @@ export const Header = memo(() => {
                     delay: 0.18
                   }}
                 >
-                  <span className="font-display text-base font-bold leading-tight" style={{
-                    background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 80%) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}>
-                    Temp Mail AI
+                  <span className="font-display text-base font-bold leading-tight">
+                    <span style={{
+                      background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 80%) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text'
+                    }}>
+                      Temp Mail{' '}
+                    </span>
+                    <span style={{
+                      background: 'linear-gradient(135deg, hsl(var(--aurora-orange)) 0%, hsl(var(--aurora-sunset)) 55%, hsl(var(--aurora-orange)) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text'
+                    }}>
+                      AI
+                    </span>
                   </span>
                 </motion.div>
               </SheetTitle>
