@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { User, Crown, Mail, Calendar, Key, LogOut, ArrowLeft, Shield, Sparkles, Check, AlertCircle, RefreshCw, CheckCircle, Lock, Eye, EyeOff } from 'lucide-react';
+import { User, Crown, Mail, Calendar, Key, LogOut, ArrowLeft, Shield, Sparkles, Check, AlertCircle, RefreshCw, CheckCircle, Lock, Eye, EyeOff, Camera, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuraLogo } from '@/components/AuraLogo';
 import { VIPBadge } from '@/components/VIPBadge';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const Profile = () => {
   const { user, signOut, resendVerificationEmail, updatePassword, isLoading: authLoading } = useAuth();
@@ -19,6 +20,11 @@ const Profile = () => {
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [isResendingVerification, setIsResendingVerification] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
+  
+  // Avatar upload state
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Password change state
   const [showPasswordChange, setShowPasswordChange] = useState(false);
@@ -42,6 +48,29 @@ const Profile = () => {
       navigate('/auth');
     }
   }, [user, authLoading, navigate]);
+
+  // Load avatar URL from profile or user metadata
+  useEffect(() => {
+    const loadAvatar = async () => {
+      if (!user) return;
+      
+      // First check profile table
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('avatar_url')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (profile?.avatar_url) {
+        setAvatarUrl(profile.avatar_url);
+      } else if (user.user_metadata?.avatar_url || user.user_metadata?.picture) {
+        // Fallback to Google profile picture
+        setAvatarUrl(user.user_metadata?.avatar_url || user.user_metadata?.picture);
+      }
+    };
+    
+    loadAvatar();
+  }, [user]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -81,6 +110,61 @@ const Profile = () => {
       toast.error('Failed to send verification email');
     } finally {
       setIsResendingVerification(false);
+    }
+  };
+
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !user) return;
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+    
+    // Validate file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Image must be less than 2MB');
+      return;
+    }
+    
+    setIsUploadingAvatar(true);
+    
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/avatar.${fileExt}`;
+      
+      // Upload to storage
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file, { upsert: true });
+      
+      if (uploadError) throw uploadError;
+      
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+      
+      // Add cache buster to force refresh
+      const urlWithCacheBuster = `${publicUrl}?t=${Date.now()}`;
+      
+      // Update profile with new avatar URL
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: urlWithCacheBuster })
+        .eq('user_id', user.id);
+      
+      if (updateError) throw updateError;
+      
+      setAvatarUrl(urlWithCacheBuster);
+      toast.success('Profile picture updated!');
+    } catch (error) {
+      console.error('Error uploading avatar:', error);
+      toast.error('Failed to upload profile picture');
+    } finally {
+      setIsUploadingAvatar(false);
     }
   };
 
@@ -204,33 +288,89 @@ const Profile = () => {
             }}
           >
             {/* Avatar and Name Section */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-8">
-              <div 
-                className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center relative"
-                style={{
-                  background: isPremium 
-                    ? 'linear-gradient(135deg, hsl(45 80% 50%), hsl(35 90% 45%))' 
-                    : 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)))',
-                  boxShadow: isPremium 
-                    ? '0 0 40px hsl(45 80% 50% / 0.4)' 
-                    : '0 0 40px hsl(var(--aurora-orange) / 0.3)'
-                }}
-              >
-                {isPremium ? (
-                  <Crown className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
-                ) : (
-                  <User className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
-                )}
+            <div className="flex flex-col items-center gap-6 mb-8">
+              {/* Large Avatar with Edit Button */}
+              <div className="relative group">
+                <motion.div 
+                  className="w-28 h-28 sm:w-36 sm:h-36 rounded-full flex items-center justify-center relative overflow-hidden"
+                  style={{
+                    background: isPremium 
+                      ? 'linear-gradient(135deg, hsl(45 80% 50%), hsl(35 90% 45%))' 
+                      : 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)))',
+                    boxShadow: isPremium 
+                      ? '0 0 50px hsl(45 80% 50% / 0.5), inset 0 0 30px hsl(0 0% 0% / 0.2)' 
+                      : '0 0 50px hsl(var(--aurora-orange) / 0.4), inset 0 0 30px hsl(0 0% 0% / 0.2)'
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                >
+                  {avatarUrl ? (
+                    <img 
+                      src={avatarUrl}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : isPremium ? (
+                    <Crown className="w-14 h-14 sm:w-16 sm:h-16 text-white" />
+                  ) : (
+                    <User className="w-14 h-14 sm:w-16 sm:h-16 text-white" />
+                  )}
+                  
+                  {/* Premium ring */}
+                  {isPremium && (
+                    <div 
+                      className="absolute inset-0 rounded-full pointer-events-none"
+                      style={{
+                        border: '3px solid hsl(45 80% 55%)',
+                        boxShadow: 'inset 0 0 10px hsl(45 80% 50% / 0.3)'
+                      }}
+                    />
+                  )}
+                </motion.div>
+                
+                {/* Edit button overlay */}
+                <motion.button
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploadingAvatar}
+                  className="absolute bottom-1 right-1 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center cursor-pointer transition-all"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)))',
+                    boxShadow: '0 4px 20px hsl(0 0% 0% / 0.4), inset 0 1px 0 hsl(0 0% 100% / 0.2)',
+                    border: '2px solid hsl(0 0% 8%)'
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {isUploadingAvatar ? (
+                    <Loader2 className="w-5 h-5 text-white animate-spin" />
+                  ) : (
+                    <Camera className="w-5 h-5 text-white" />
+                  )}
+                </motion.button>
+                
+                {/* Hidden file input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarUpload}
+                  className="hidden"
+                />
               </div>
               
-              <div className="text-center sm:text-left">
-                <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
-                  <h1 className="text-xl sm:text-2xl font-bold" style={{ color: 'hsl(0 0% 95%)' }}>
-                    {user.email?.split('@')[0] || 'User'}
+              {/* Name and Email */}
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <h1 className="text-2xl sm:text-3xl font-bold" style={{ color: 'hsl(0 0% 95%)' }}>
+                    {user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'User'}
                   </h1>
                   {isPremium && <VIPBadge />}
                 </div>
                 <p className="text-sm" style={{ color: 'hsl(0 0% 50%)' }}>{user.email}</p>
+                <p className="text-xs mt-1" style={{ color: 'hsl(0 0% 40%)' }}>
+                  Click the camera icon to change your photo
+                </p>
               </div>
             </div>
 
