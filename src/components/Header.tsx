@@ -112,7 +112,7 @@ export const Header = memo(() => {
               </Button>
 
               {/* Unified brand unit - Larger on mobile, shifted left */}
-              <div className="flex items-center gap-0 scale-[1.2] origin-left md:scale-100">
+              <div className="flex items-center gap-0 scale-[1.2] origin-left md:scale-100 -ml-1 md:ml-0">
                 <AuraLogo className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-18 lg:h-18 -mr-0.5 sm:-mr-1 md:-mr-2" />
                 
                 <div className="flex flex-col">
