@@ -51,15 +51,14 @@ export const Header = memo(() => {
                       Temp Mail
                     </span>
                     <span className="mx-0.5" />
-                    {/* Vibrant neon orange "AI" with diamond glow effect */}
+                    {/* Vibrant neon orange "AI" with pulsing bloom animation */}
                     <span 
-                      className="font-extrabold relative"
+                      className="font-extrabold relative animate-ai-bloom"
                       style={{
-                        background: 'linear-gradient(135deg, #f97316 0%, #db2777 100%)',
+                        background: 'linear-gradient(135deg, hsl(var(--aurora-orange)) 0%, hsl(var(--aurora-sunset)) 55%, hsl(var(--aurora-orange)) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
-                        filter: 'drop-shadow(0 0 8px rgba(249, 115, 22, 0.9)) drop-shadow(0 0 16px rgba(219, 39, 119, 0.6)) drop-shadow(0 0 2px rgba(249, 115, 22, 1))',
                       }}
                     >
                       AI
