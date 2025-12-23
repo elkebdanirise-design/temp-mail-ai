@@ -6,25 +6,14 @@ export const AuraLogo = memo(({
   className?: string;
 }) => {
   return (
-    <div className={`relative ${className}`}>
-      {/* Outer glow layer */}
-      <div 
-        className="absolute inset-0 rounded-full blur-xl opacity-60 animate-ai-bloom"
-        style={{
-          background: 'radial-gradient(circle, hsl(var(--aurora-orange) / 0.6) 0%, hsl(var(--aurora-sunset) / 0.3) 50%, transparent 70%)',
-        }}
-      />
-      {/* Inner glow layer */}
-      <div 
-        className="absolute inset-1 rounded-full blur-md opacity-80"
-        style={{
-          background: 'radial-gradient(circle, hsl(var(--aurora-orange) / 0.4) 0%, transparent 60%)',
-        }}
-      />
+    <div className={`relative flex items-center justify-center ${className}`}>
       <img 
         alt="Temp Mail AI Logo" 
-        className="relative w-full h-full object-contain drop-shadow-[0_0_20px_hsl(var(--aurora-orange)/0.5)]"
-        style={{ background: 'transparent' }} 
+        className="w-full h-full object-contain animate-ai-bloom"
+        style={{ 
+          background: 'transparent',
+          filter: 'drop-shadow(0 0 6px hsl(25 100% 55%)) drop-shadow(0 0 12px hsl(25 100% 50% / 0.7)) drop-shadow(0 0 20px hsl(350 85% 55% / 0.5))',
+        }} 
         src="/lovable-uploads/233fffab-b388-432b-94fa-4d216e249b1b.webp"
         loading="eager"
         decoding="async"
