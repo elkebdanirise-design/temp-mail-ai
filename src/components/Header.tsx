@@ -1,5 +1,6 @@
 import { useState, memo, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Zap, Key, Menu, Home, BookOpen, DollarSign, Sparkles, FileText, LogIn, LogOut, User, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuraLogo } from './AuraLogo';
@@ -93,29 +94,29 @@ export const Header = memo(() => {
 
   return (
     <>
-      <header className="py-3 md:py-6 lg:py-8 relative z-20 animate-fade-in">
-        <div className="container mx-auto px-3 sm:px-4">
+      <header className="py-4 md:py-6 lg:py-8 relative z-20 animate-fade-in">
+        <div className="container mx-auto px-4 sm:px-4 md:px-6">
           <div className="flex items-center justify-between">
             {/* Left section: Mobile menu + Logo */}
-            <div className="flex items-center gap-2 md:gap-0">
+            <div className="flex items-center gap-3 md:gap-0">
               {/* Mobile hamburger menu - LEFT side, only visible on mobile */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden w-8 h-8 text-muted-foreground hover:text-foreground hover:bg-white/5 shrink-0"
+                className="md:hidden w-7 h-7 text-muted-foreground hover:text-foreground hover:bg-white/5 shrink-0"
                 onClick={() => setSidebarOpen(true)}
                 aria-label="Open menu"
               >
-                <Menu className="w-4 h-4" />
+                <Menu className="w-3.5 h-3.5" />
               </Button>
 
-              {/* Unified brand unit - Compact on mobile */}
+              {/* Unified brand unit - More compact on mobile (~15% smaller) */}
               <div className="items-center gap-0 flex flex-row">
-                <AuraLogo className="w-9 h-9 sm:w-12 sm:h-12 md:w-[5rem] md:h-[5rem] lg:w-[6.25rem] lg:h-[6.25rem] -mr-0.5 sm:-mr-1 md:-mr-2" />
+                <AuraLogo className="w-7 h-7 sm:w-10 sm:h-10 md:w-[5rem] md:h-[5rem] lg:w-[6.25rem] lg:h-[6.25rem] -mr-0.5 sm:-mr-1 md:-mr-2" />
                 
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1 md:gap-2">
-                    <h1 className="font-display text-base sm:text-lg md:text-[1.65rem] font-extrabold" style={{ letterSpacing: '-0.02em' }}>
+                    <h1 className="font-display text-sm sm:text-base md:text-[1.65rem] font-extrabold" style={{ letterSpacing: '-0.02em' }}>
                       <span style={{
                         background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 85%) 100%)',
                         WebkitBackgroundClip: 'text',
@@ -136,7 +137,7 @@ export const Header = memo(() => {
                     </h1>
                     {isPremium && <VIPBadge />}
                   </div>
-                  <span className="text-[6px] sm:text-[7px] md:text-[10px] font-semibold uppercase tracking-[0.12em] sm:tracking-[0.15em] md:tracking-[0.25em]" style={{ color: 'hsl(0 0% 45%)' }}>
+                  <span className="text-[5px] sm:text-[6px] md:text-[10px] font-semibold uppercase tracking-[0.1em] sm:tracking-[0.12em] md:tracking-[0.25em]" style={{ color: 'hsl(0 0% 45%)' }}>
                     AI-POWERED PRIVACY
                   </span>
                 </div>
@@ -165,13 +166,13 @@ export const Header = memo(() => {
               ))}
             </nav>
 
-            {/* Right section: Auth & CTA buttons */}
-            <div className="flex items-center gap-2 shrink-0">
+            {/* Right section: Auth & CTA buttons - Swapped order: Pro first, then Login */}
+            <div className="flex items-center gap-2 md:gap-3 shrink-0">
               {isAuthLoading ? (
                 /* Auth loading skeleton */
                 <div className="flex items-center gap-2">
                   <div 
-                    className="h-8 md:h-10 w-20 md:w-28 rounded-lg md:rounded-xl animate-pulse"
+                    className="h-7 md:h-10 w-16 md:w-28 rounded-lg md:rounded-xl animate-pulse"
                     style={{ background: 'hsl(0 0% 100% / 0.05)' }}
                   />
                 </div>
@@ -180,7 +181,7 @@ export const Header = memo(() => {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="h-8 md:h-10 px-2 md:px-3 rounded-lg md:rounded-xl gap-1.5 md:gap-2"
+                      className="h-7 md:h-10 px-1.5 md:px-3 rounded-lg md:rounded-xl gap-1 md:gap-2"
                       style={{
                         background: isPremium 
                           ? 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.15), hsl(var(--aurora-sunset) / 0.1))'
@@ -189,7 +190,7 @@ export const Header = memo(() => {
                       }}
                     >
                       <div 
-                        className="w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center overflow-hidden relative"
+                        className="w-5 h-5 md:w-7 md:h-7 rounded-full flex items-center justify-center overflow-hidden relative"
                         style={{
                           background: isPremium 
                             ? 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)))'
@@ -205,9 +206,9 @@ export const Header = memo(() => {
                             referrerPolicy="no-referrer"
                           />
                         ) : isPremium ? (
-                          <Crown className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
+                          <Crown className="w-3 h-3 md:w-4 md:h-4 text-white" />
                         ) : (
-                          <User className="w-3.5 h-3.5 md:w-4 md:h-4 text-muted-foreground" />
+                          <User className="w-3 h-3 md:w-4 md:h-4 text-muted-foreground" />
                         )}
                         {/* Premium ring indicator */}
                         {isPremium && (user.user_metadata?.avatar_url || user.user_metadata?.picture) && (
@@ -253,10 +254,10 @@ export const Header = memo(() => {
                       asChild
                       className="rounded-lg cursor-pointer gap-2 py-2.5"
                     >
-                      <a href="/profile" style={{ color: 'hsl(0 0% 70%)' }}>
+                      <Link to="/profile" style={{ color: 'hsl(0 0% 70%)' }}>
                         <User className="w-4 h-4" />
                         My Profile
-                      </a>
+                      </Link>
                     </DropdownMenuItem>
                     {!isPremium && (
                       <DropdownMenuItem 
@@ -289,28 +290,38 @@ export const Header = memo(() => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <Button 
-                  asChild 
-                  variant="ghost" 
-                  className="h-8 md:h-10 px-3 md:px-4 rounded-lg md:rounded-xl text-xs md:text-sm font-medium"
-                  style={{
-                    background: 'hsl(0 0% 100% / 0.05)',
-                    border: '1px solid hsl(0 0% 100% / 0.1)',
-                    color: 'hsl(0 0% 70%)'
-                  }}
-                >
-                  <a href="/auth" className="flex items-center gap-1.5 md:gap-2">
-                    <LogIn className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                    <span className="hidden sm:inline">Sign In</span>
-                    <span className="sm:hidden">Login</span>
-                  </a>
-                </Button>
+                <>
+                  {/* Pro Button - First on mobile */}
+                  {!isPremium && (
+                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-lg md:rounded-xl h-7 md:h-10 px-2.5 md:px-4 text-[10px] md:text-sm">
+                      <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="flex items-center gap-1 md:gap-2">
+                        <Zap className="w-3 h-3 md:w-4 md:h-4" />
+                        <span className="hidden sm:inline">Get Pro Systems</span>
+                        <span className="sm:hidden">Pro</span>
+                      </a>
+                    </Button>
+                  )}
+                  
+                  {/* Login Button - Diamond Glow style */}
+                  <Button 
+                    asChild 
+                    variant="ghost" 
+                    className="diamond-glow-btn h-7 md:h-10 px-2.5 md:px-4 rounded-lg md:rounded-xl text-[10px] md:text-sm font-medium"
+                  >
+                    <Link to="/auth" className="flex items-center gap-1 md:gap-2" style={{ color: 'hsl(var(--aurora-orange))' }}>
+                      <LogIn className="w-3 h-3 md:w-4 md:h-4" />
+                      <span className="hidden sm:inline">Sign In</span>
+                      <span className="sm:hidden">Login</span>
+                    </Link>
+                  </Button>
+                </>
               )}
               
-              {!isPremium && (
-                <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-lg md:rounded-xl h-8 md:h-10 px-3 md:px-4 text-xs md:text-sm">
-                  <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="flex items-center gap-1.5 md:gap-2">
-                    <Zap className="w-3.5 h-3.5 md:w-4 md:h-4" />
+              {/* Pro button for logged in non-premium users */}
+              {user && !isPremium && (
+                <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-lg md:rounded-xl h-7 md:h-10 px-2.5 md:px-4 text-[10px] md:text-sm">
+                  <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="flex items-center gap-1 md:gap-2">
+                    <Zap className="w-3 h-3 md:w-4 md:h-4" />
                     <span className="hidden sm:inline">Get Pro Systems</span>
                     <span className="sm:hidden">Pro</span>
                   </a>
@@ -626,12 +637,9 @@ export const Header = memo(() => {
                 </span>
               </motion.button>
             ) : (
-              <motion.a
-                href="/auth"
+              <Link
+                to="/auth"
                 onClick={() => setSidebarOpen(false)}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.4 }}
                 className="group relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-300 ease-out transform hover:translate-x-1"
                 style={{
                   background: 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.15), hsl(var(--aurora-sunset) / 0.1))',
@@ -652,7 +660,7 @@ export const Header = memo(() => {
                 >
                   Sign In / Register
                 </span>
-              </motion.a>
+              </Link>
             )}
           </nav>
           </motion.div>
