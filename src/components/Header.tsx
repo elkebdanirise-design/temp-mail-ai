@@ -128,7 +128,7 @@ export const Header = memo(() => {
                       </span>
                       <span className="mx-0.5" />
                       <span className="font-extrabold relative animate-ai-bloom" style={{
-                        background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #818cf8 100%)',
+                        background: 'linear-gradient(135deg, hsl(var(--aurora-orange)) 0%, hsl(var(--aurora-sunset)) 55%, hsl(var(--aurora-orange)) 100%)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text'
