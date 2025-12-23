@@ -487,6 +487,9 @@ export const Header = memo(() => {
                   }}>
                     Temp Mail AI
                   </span>
+                  <span className="text-[8px] font-semibold uppercase tracking-[0.18em]" style={{ color: 'hsl(var(--aurora-orange) / 0.7)' }}>
+                    PRIVACY FIRST
+                  </span>
                 </motion.div>
               </SheetTitle>
             </SheetHeader>
