@@ -749,4 +749,14 @@
   .animate-twinkle {
     animation: twinkle 4s ease-in-out infinite;
   }
+
+  /* Diamond shimmer effect */
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-150%);
+    }
+    50%, 100% {
+      transform: translateX(150%);
+    }
+  }
 }
