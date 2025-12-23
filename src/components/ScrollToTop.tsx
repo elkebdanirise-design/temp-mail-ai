@@ -19,28 +19,7 @@ const ScrollToTop = () => {
   }, []);
 
   const scrollToTop = () => {
-    const duration = 800;
-    const startPosition = window.scrollY;
-    let start: number | null = null;
-
-    const easeInOutCubic = (t: number): number => {
-      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    };
-
-    const animation = (currentTime: number) => {
-      if (start === null) start = currentTime;
-      const timeElapsed = currentTime - start;
-      const progress = Math.min(timeElapsed / duration, 1);
-      const easedProgress = easeInOutCubic(progress);
-
-      window.scrollTo(0, startPosition * (1 - easedProgress));
-
-      if (timeElapsed < duration) {
-        requestAnimationFrame(animation);
-      }
-    };
-
-    requestAnimationFrame(animation);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
