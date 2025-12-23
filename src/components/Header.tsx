@@ -97,8 +97,8 @@ export const Header = memo(() => {
       <header className="py-4 md:py-8 lg:py-10 relative z-20 animate-fade-in">
         <div className="container mx-auto px-3 sm:px-6 md:px-8">
           <div className="flex items-center justify-between gap-4 sm:gap-6 md:gap-8">
-            {/* Left section: Mobile menu + Logo - shifted to left edge */}
-            <div className="flex items-center gap-0.5 md:gap-0 -ml-3 md:ml-0">
+            {/* Left section: Mobile menu + Logo - positioned at far left edge */}
+            <div className="flex items-center gap-0 md:gap-0 -ml-1 md:ml-0">
               {/* Mobile hamburger menu - LEFT side, only visible on mobile */}
               <Button
                 variant="ghost"
@@ -291,9 +291,9 @@ export const Header = memo(() => {
                 </DropdownMenu>
               ) : (
                 <>
-                  {/* Pro Button - 44px mobile tap target */}
+                  {/* Pro Button - Exact dimensions for pixel-perfect match */}
                   {!isPremium && (
-                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[44px] md:h-10 min-w-[56px] md:min-w-[100px] px-3 md:px-4">
+                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[44px] md:h-10 w-[72px] md:w-[100px] p-0">
                       <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="w-full h-full flex items-center justify-center gap-1.5">
                         <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-white shrink-0" />
                         <span className="text-[11px] md:text-sm font-semibold text-white leading-none">Pro</span>
@@ -301,11 +301,11 @@ export const Header = memo(() => {
                     </Button>
                   )}
                   
-                  {/* Login Button - Geometric Diamond with pulsing glow */}
+                  {/* Login Button - Exact same dimensions as Pro button */}
                   <Button 
                     asChild 
                     variant="ghost" 
-                    className="geometric-diamond-btn h-[44px] md:h-10 min-w-[56px] md:min-w-[100px] px-3 md:px-4 rounded-lg md:rounded-xl"
+                    className="geometric-diamond-btn h-[44px] md:h-10 w-[72px] md:w-[100px] p-0 rounded-lg md:rounded-xl"
                   >
                     <Link to="/auth" className="w-full h-full flex items-center justify-center gap-1.5">
                       <LogIn className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" style={{ color: 'hsl(var(--aurora-orange))' }} />
@@ -317,7 +317,7 @@ export const Header = memo(() => {
               
               {/* Pro button for logged in non-premium users */}
               {user && !isPremium && (
-                <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[44px] md:h-10 min-w-[56px] md:min-w-[100px] px-3 md:px-4">
+                <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[44px] md:h-10 w-[72px] md:w-[100px] p-0">
                   <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="w-full h-full flex items-center justify-center gap-1.5">
                     <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-white shrink-0" />
                     <span className="text-[11px] md:text-sm font-semibold text-white leading-none">Pro</span>
