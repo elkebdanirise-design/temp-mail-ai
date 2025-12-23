@@ -123,7 +123,7 @@ export const Header = memo(() => {
                     </h1>
                     {isPremium && <VIPBadge />}
                   </div>
-                  <span className="text-[7px] sm:text-[8px] md:text-[10px] font-semibold uppercase tracking-[0.15em] md:tracking-[0.25em] hidden sm:block" style={{ color: 'hsl(0 0% 50%)' }}>
+                  <span className="text-[6px] sm:text-[7px] md:text-[10px] font-semibold uppercase tracking-[0.12em] sm:tracking-[0.15em] md:tracking-[0.25em]" style={{ color: 'hsl(0 0% 45%)' }}>
                     AI-POWERED PRIVACY
                   </span>
                 </div>
@@ -367,43 +367,43 @@ export const Header = memo(() => {
                     delay: index * 0.08,
                     ease: [0.25, 0.46, 0.45, 0.94]
                   }}
-                  className="group relative flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 ease-out transform hover:translate-x-1"
+                  className="group relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-300 ease-out transform hover:translate-x-1"
                   style={{
                     background: isActive 
                       ? 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.18) 0%, hsl(var(--aurora-sunset) / 0.12) 100%)'
                       : 'transparent',
                     boxShadow: isActive 
-                      ? '0 0 30px hsl(var(--aurora-orange) / 0.25), inset 0 0 0 1px hsl(var(--aurora-orange) / 0.25), 0 4px 20px hsl(0 0% 0% / 0.3)'
+                      ? '0 0 20px hsl(var(--aurora-orange) / 0.2), inset 0 0 0 1px hsl(var(--aurora-orange) / 0.2), 0 2px 12px hsl(0 0% 0% / 0.25)'
                       : 'none'
                   }}
                 >
                   {/* Icon container with glow */}
                   <div 
-                    className="relative flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300 group-hover:scale-110"
+                    className="relative flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-300 group-hover:scale-110"
                     style={{
                       background: isActive 
                         ? 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.25) 0%, hsl(var(--aurora-sunset) / 0.15) 100%)'
                         : 'hsl(0 0% 100% / 0.03)',
                       boxShadow: isActive 
-                        ? '0 0 20px hsl(var(--aurora-orange) / 0.3)'
+                        ? '0 0 15px hsl(var(--aurora-orange) / 0.25)'
                         : 'none'
                     }}
                   >
                     <Icon 
-                      className="w-5 h-5 transition-all duration-300"
+                      className="w-4 h-4 transition-all duration-300"
                       style={{
                         color: isActive ? 'hsl(var(--aurora-orange))' : 'hsl(0 0% 55%)',
-                        filter: isActive ? 'drop-shadow(0 0 8px hsl(var(--aurora-orange) / 0.7))' : 'none'
+                        filter: isActive ? 'drop-shadow(0 0 6px hsl(var(--aurora-orange) / 0.6))' : 'none'
                       }}
                     />
                   </div>
                   
                   {/* Label with gradient on active */}
                   <span
-                    className="font-semibold text-[15px] tracking-wide transition-all duration-300"
+                    className="font-medium text-[13px] tracking-wide transition-all duration-300"
                     style={{
                       color: isActive ? 'hsl(0 0% 98%)' : 'hsl(0 0% 55%)',
-                      textShadow: isActive ? '0 0 15px hsl(var(--aurora-orange) / 0.5)' : 'none'
+                      textShadow: isActive ? '0 0 12px hsl(var(--aurora-orange) / 0.4)' : 'none'
                     }}
                   >
                     {item.label}
@@ -411,7 +411,7 @@ export const Header = memo(() => {
                   
                   {/* Right arrow indicator on hover */}
                   <span 
-                    className="absolute right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-0 -translate-x-2"
+                    className="absolute right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-0 -translate-x-2 text-sm"
                     style={{ color: 'hsl(var(--aurora-orange))' }}
                   >
                     →
