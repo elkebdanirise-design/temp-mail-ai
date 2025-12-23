@@ -645,23 +645,37 @@ export const Header = memo(() => {
               <Link
                 to="/auth"
                 onClick={() => setSidebarOpen(false)}
-                className="group relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-300 ease-out transform hover:translate-x-1"
+                className="group relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-300 ease-out transform hover:translate-x-1 overflow-hidden"
                 style={{
-                  background: 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.15), hsl(var(--aurora-sunset) / 0.1))',
-                  boxShadow: 'inset 0 0 0 1px hsl(var(--aurora-orange) / 0.2)'
+                  background: 'linear-gradient(135deg, hsl(45 80% 55% / 0.2), hsl(35 90% 45% / 0.15), hsl(50 70% 60% / 0.1))',
+                  boxShadow: 'inset 0 0 0 1px hsl(45 80% 55% / 0.4), 0 0 20px hsl(45 80% 55% / 0.15)'
                 }}
               >
+                {/* Diamond shimmer effect */}
+                <div 
+                  className="absolute inset-0 opacity-50"
+                  style={{
+                    background: 'linear-gradient(105deg, transparent 20%, hsl(45 90% 75% / 0.3) 45%, hsl(50 100% 85% / 0.5) 50%, hsl(45 90% 75% / 0.3) 55%, transparent 80%)',
+                    animation: 'shimmer 3s ease-in-out infinite'
+                  }}
+                />
                 <div 
                   className="relative flex items-center justify-center w-8 h-8 rounded-lg"
                   style={{
-                    background: 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.25), hsl(var(--aurora-sunset) / 0.15))'
+                    background: 'linear-gradient(135deg, hsl(45 85% 50% / 0.35), hsl(40 80% 45% / 0.25))',
+                    boxShadow: '0 0 10px hsl(45 80% 55% / 0.3)'
                   }}
                 >
-                  <LogIn className="w-4 h-4" style={{ color: 'hsl(var(--aurora-orange))' }} />
+                  <LogIn className="w-4 h-4" style={{ color: 'hsl(45 85% 60%)' }} />
                 </div>
                 <span 
-                  className="font-medium text-[13px]"
-                  style={{ color: 'hsl(var(--aurora-orange))' }}
+                  className="relative font-semibold text-[13px]"
+                  style={{ 
+                    background: 'linear-gradient(135deg, hsl(45 90% 70%), hsl(40 85% 55%), hsl(50 80% 65%))',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    textShadow: '0 0 20px hsl(45 80% 55% / 0.3)'
+                  }}
                 >
                   Sign In / Register
                 </span>
