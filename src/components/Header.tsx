@@ -1,5 +1,5 @@
-import { useState, memo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, memo, useCallback, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Zap, Key, Menu, Home, BookOpen, DollarSign, Sparkles, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuraLogo } from './AuraLogo';
@@ -21,11 +21,11 @@ const navItems = [
 ];
 
 const sidebarItems = [
-  { label: 'Home', href: '#', icon: Home },
-  { label: 'Blog', href: '#blog-section', icon: BookOpen },
-  { label: 'Pricing', href: '#pricing', icon: DollarSign },
-  { label: 'Features', href: '#features', icon: Sparkles },
-  { label: 'Terms', href: '/terms', icon: FileText },
+  { label: 'Home', href: '#', icon: Home, sectionId: '' },
+  { label: 'Blog', href: '#blog-section', icon: BookOpen, sectionId: 'blog-section' },
+  { label: 'Pricing', href: '#pricing', icon: DollarSign, sectionId: 'pricing' },
+  { label: 'Features', href: '#features', icon: Sparkles, sectionId: 'features' },
+  { label: 'Terms', href: '/terms', icon: FileText, sectionId: '' },
 ];
 
 export const Header = memo(() => {
@@ -35,16 +35,39 @@ export const Header = memo(() => {
   const { handleAnchorClick } = useSmoothScroll();
   const [activeNav, setActiveNav] = useState('Home');
 
+  // Scroll-based active nav detection
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 150;
+      
+      for (let i = sidebarItems.length - 1; i >= 0; i--) {
+        const item = sidebarItems[i];
+        if (!item.sectionId) continue;
+        
+        const section = document.getElementById(item.sectionId);
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveNav(item.label);
+          return;
+        }
+      }
+      
+      if (scrollPosition < 300) {
+        setActiveNav('Home');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string, label: string) => {
     handleAnchorClick(e, href);
     setActiveNav(label);
   }, [handleAnchorClick]);
 
   const handleSidebarNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string, label: string) => {
-    // Close sidebar first
     setSidebarOpen(false);
     
-    // Handle navigation after a short delay for smooth transition
     setTimeout(() => {
       if (href.startsWith('#')) {
         handleAnchorClick(e, href);
@@ -159,12 +182,13 @@ export const Header = memo(() => {
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <SheetContent 
           side="left" 
-          className="w-[280px] border-r-0 p-0 overflow-hidden"
+          className="w-[280px] border-r-0 p-0 flex flex-col"
           style={{
             background: 'linear-gradient(180deg, hsl(0 0% 4% / 0.95) 0%, hsl(0 0% 2% / 0.98) 100%)',
             backdropFilter: 'blur(40px) saturate(180%)',
             WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-            boxShadow: '4px 0 60px hsl(var(--aurora-orange) / 0.15), inset 1px 0 0 hsl(0 0% 100% / 0.08)'
+            boxShadow: '4px 0 60px hsl(var(--aurora-orange) / 0.15), inset 1px 0 0 hsl(0 0% 100% / 0.08)',
+            maxHeight: '100dvh'
           }}
         >
           {/* Top gradient accent line with glow pulse */}
@@ -193,31 +217,32 @@ export const Header = memo(() => {
           
           {/* Inner content wrapper with spring bounce */}
           <motion.div
-            initial={{ x: -10, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
+            initial={{ x: -20, opacity: 0, scale: 0.98 }}
+            animate={{ x: 0, opacity: 1, scale: 1 }}
             transition={{ 
               type: 'spring',
-              stiffness: 400,
-              damping: 25,
-              mass: 0.8,
-              delay: 0.1
+              stiffness: 300,
+              damping: 22,
+              mass: 0.6,
+              delay: 0.05
             }}
-            className="h-full flex flex-col"
+            className="flex flex-col h-full overflow-hidden"
           >
-            <SheetHeader className="p-6 pb-5 border-b border-white/5">
-              <SheetTitle className="flex items-center gap-3">
+            {/* Compact Brand Header */}
+            <SheetHeader className="p-4 pb-3 border-b border-white/5 shrink-0">
+              <SheetTitle className="flex items-center gap-2.5">
                 <motion.div
                   className="relative"
-                  initial={{ scale: 0.8, rotate: -10 }}
+                  initial={{ scale: 0.7, rotate: -15 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ 
                     type: 'spring',
-                    stiffness: 500,
-                    damping: 20,
-                    delay: 0.2
+                    stiffness: 450,
+                    damping: 18,
+                    delay: 0.12
                   }}
                 >
-                  <AuraLogo className="w-11 h-11" />
+                  <AuraLogo className="w-9 h-9" />
                   
                   {/* Sparkle particles emanating from logo */}
                   {[...Array(6)].map((_, i) => (
@@ -285,16 +310,16 @@ export const Header = memo(() => {
                 </motion.div>
                 <motion.div 
                   className="flex flex-col"
-                  initial={{ x: -15, opacity: 0 }}
+                  initial={{ x: -12, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ 
                     type: 'spring',
-                    stiffness: 400,
-                    damping: 25,
-                    delay: 0.25
+                    stiffness: 380,
+                    damping: 22,
+                    delay: 0.18
                   }}
                 >
-                  <span className="font-display text-xl font-bold" style={{
+                  <span className="font-display text-base font-bold leading-tight" style={{
                     background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 80%) 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
@@ -302,14 +327,22 @@ export const Header = memo(() => {
                   }}>
                     Temp Mail AI
                   </span>
-                  <span className="text-[9px] font-semibold uppercase tracking-[0.2em]" style={{ color: 'hsl(var(--aurora-orange) / 0.7)' }}>
+                  <span className="text-[8px] font-semibold uppercase tracking-[0.18em]" style={{ color: 'hsl(var(--aurora-orange) / 0.7)' }}>
                     PRIVACY FIRST
                   </span>
                 </motion.div>
               </SheetTitle>
             </SheetHeader>
           
-          <nav className="flex flex-col gap-2 p-5">
+          {/* Scrollable nav area with smooth touch scrolling */}
+          <nav 
+            className="flex flex-col gap-2 p-4 flex-1 overflow-y-auto"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              scrollbarWidth: 'thin',
+              scrollbarColor: 'hsl(var(--aurora-orange) / 0.3) transparent'
+            }}
+          >
             {sidebarItems.map((item, index) => {
               const Icon = item.icon;
               const isActive = activeNav === item.label;
