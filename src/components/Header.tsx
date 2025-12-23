@@ -40,7 +40,7 @@ export const Header = memo(() => {
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { isPremium, activatePremium } = usePremium();
-  const { user, signOut } = useAuth();
+  const { user, isLoading: isAuthLoading, signOut } = useAuth();
   const { handleAnchorClick } = useSmoothScroll();
   const [activeNav, setActiveNav] = useState('Home');
 
@@ -167,7 +167,15 @@ export const Header = memo(() => {
 
             {/* Right section: Auth & CTA buttons */}
             <div className="flex items-center gap-2 shrink-0">
-              {user ? (
+              {isAuthLoading ? (
+                /* Auth loading skeleton */
+                <div className="flex items-center gap-2">
+                  <div 
+                    className="h-8 md:h-10 w-20 md:w-28 rounded-lg md:rounded-xl animate-pulse"
+                    style={{ background: 'hsl(0 0% 100% / 0.05)' }}
+                  />
+                </div>
+              ) : user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
