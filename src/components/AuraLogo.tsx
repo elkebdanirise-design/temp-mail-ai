@@ -1,23 +1,23 @@
-import { motion } from 'framer-motion';
+import { memo } from 'react';
 
-export const AuraLogo = ({
+export const AuraLogo = memo(({
   className = ''
 }: {
   className?: string;
 }) => {
   return (
-    <motion.div 
-      className={`relative ${className}`} 
-      initial={{ opacity: 0, scale: 0.8 }} 
-      animate={{ opacity: 1, scale: 1 }} 
-      transition={{ duration: 0.5 }}
-    >
+    <div className={`relative ${className}`}>
       <img 
         alt="Temp Mail AI Logo" 
         className="w-full h-full object-cover opacity-100 animate-ai-bloom"
         style={{ background: 'transparent' }} 
-        src="/lovable-uploads/233fffab-b388-432b-94fa-4d216e249b1b.png" 
+        src="/lovable-uploads/233fffab-b388-432b-94fa-4d216e249b1b.png"
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
       />
-    </motion.div>
+    </div>
   );
-};
+});
+
+AuraLogo.displayName = 'AuraLogo';

@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense, memo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Header } from '@/components/Header';
 import { EmailDisplay } from '@/components/EmailDisplay';
@@ -20,6 +20,10 @@ const PricingSection = lazy(() => import('@/components/PricingSection').then(m =
 const ComparisonTable = lazy(() => import('@/components/ComparisonTable').then(m => ({ default: m.ComparisonTable })));
 const TestimonialsSection = lazy(() => import('@/components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })));
 const FastestEmailSection = lazy(() => import('@/components/FastestEmailSection').then(m => ({ default: m.FastestEmailSection })));
+
+// Minimal loading fallback
+const SectionFallback = memo(() => <div className="min-h-[100px]" />);
+SectionFallback.displayName = 'SectionFallback';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('email');
@@ -146,7 +150,7 @@ const Index = () => {
           </div>
 
           {/* Lazy loaded sections with minimal fallback */}
-          <Suspense fallback={<div className="min-h-[200px]" />}>
+          <Suspense fallback={<SectionFallback />}>
             {/* 1. Privacy Solution Section */}
             <PrivacySolutionSection />
 
