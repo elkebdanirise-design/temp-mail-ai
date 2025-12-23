@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, memo, useCallback } from 'react';
 import { Zap, Key, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuraLogo } from './AuraLogo';
@@ -14,28 +13,30 @@ const navItems = [
   { label: 'Pricing', href: '#pricing' },
 ];
 
-export const Header = () => {
+export const Header = memo(() => {
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const { isPremium, activatePremium } = usePremium();
   const [liveUsers, setLiveUsers] = useState(1247);
   const { handleAnchorClick } = useSmoothScroll();
   const [activeNav, setActiveNav] = useState('Home');
 
-  // Simulate live users fluctuation
+  // Simulate live users fluctuation - debounced
   useEffect(() => {
     const interval = setInterval(() => {
       setLiveUsers(prev => prev + Math.floor(Math.random() * 11) - 5);
-    }, 3000);
+    }, 5000); // Reduced frequency from 3s to 5s
     return () => clearInterval(interval);
   }, []);
 
+  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string, label: string) => {
+    handleAnchorClick(e, href);
+    setActiveNav(label);
+  }, [handleAnchorClick]);
+
   return (
     <>
-      <motion.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="py-6 md:py-8 relative z-20"
+      <header
+        className="py-6 md:py-8 relative z-20 animate-fade-in"
       >
         <div className="container mx-auto px-2 sm:px-4">
           <div className="flex items-center justify-between">
@@ -91,10 +92,7 @@ export const Header = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  onClick={(e) => {
-                    handleAnchorClick(e, item.href);
-                    setActiveNav(item.label);
-                  }}
+                  onClick={(e) => handleNavClick(e, item.href, item.label)}
                   className="relative px-4 py-2 text-sm font-medium transition-colors group"
                   style={{
                     color: activeNav === item.label ? 'hsl(var(--aurora-orange))' : 'hsl(0 0% 55%)',
@@ -115,10 +113,7 @@ export const Header = () => {
 
             <div className="flex items-center gap-2 sm:gap-4">
               {/* Live Users Counter */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+              <div
                 className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl"
                 style={{
                   background: 'hsl(160 60% 35% / 0.06)',
@@ -132,7 +127,7 @@ export const Header = () => {
                 <span className="text-xs font-medium text-emerald-400/80">
                   {liveUsers.toLocaleString()} online
                 </span>
-              </motion.div>
+              </div>
 
               {isPremium ? (
                 <Button
@@ -163,7 +158,7 @@ export const Header = () => {
             </div>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       <PremiumModal
         isOpen={showPremiumModal}
@@ -172,4 +167,6 @@ export const Header = () => {
       />
     </>
   );
-};
+});
+
+Header.displayName = 'Header';

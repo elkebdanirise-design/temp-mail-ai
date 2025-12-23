@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&display=swap');
-
+/* Fonts loaded via index.html for better performance */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -495,5 +494,69 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Lightweight CSS-only aurora animations */
+  @keyframes aurora-wave-1 {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+      opacity: 0.4;
+    }
+    50% {
+      transform: translate(30px, 20px) scale(1.03);
+      opacity: 0.55;
+    }
+  }
+
+  @keyframes aurora-wave-2 {
+    0%, 100% {
+      transform: translate(0, 0);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translate(50px, -25px);
+      opacity: 0.45;
+    }
+  }
+
+  @keyframes aurora-wave-3 {
+    0%, 100% {
+      transform: translate(0, 0);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translate(-40px, 30px);
+      opacity: 0.45;
+    }
+  }
+
+  .animate-aurora-wave-1 {
+    animation: aurora-wave-1 18s ease-in-out infinite;
+  }
+
+  .animate-aurora-wave-2 {
+    animation: aurora-wave-2 22s ease-in-out infinite;
+    animation-delay: -5s;
+  }
+
+  .animate-aurora-wave-3 {
+    animation: aurora-wave-3 20s ease-in-out infinite;
+    animation-delay: -10s;
+  }
+
+  /* Twinkle animation for stars */
+  @keyframes twinkle {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(0.8);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+
+  .animate-twinkle {
+    animation: twinkle 4s ease-in-out infinite;
   }
 }
