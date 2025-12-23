@@ -97,9 +97,9 @@ export const Header = memo(() => {
     <>
       <header className="py-4 md:py-8 lg:py-10 relative z-20 animate-fade-in">
         <div className="container mx-auto px-2 sm:px-6 md:px-8">
-          <div className="flex items-center justify-between gap-4 sm:gap-6 md:gap-8">
-            {/* Left section: Mobile menu + Logo - positioned at far left edge */}
-            <div className="flex items-center gap-0 md:gap-0 ml-0">
+          <div className="flex items-center justify-between gap-2 sm:gap-6 md:gap-8">
+            {/* Left section: Mobile menu + Logo - all aligned on same horizontal line */}
+            <div className="flex items-center gap-1 md:gap-0">
               {/* Mobile hamburger menu - LEFT side, only visible on mobile */}
               <Button
                 variant="ghost"
@@ -108,16 +108,16 @@ export const Header = memo(() => {
                 onClick={() => setSidebarOpen(true)}
                 aria-label="Open menu"
               >
-                <Menu className="w-4 h-4" />
+                <Menu className="w-5 h-5" />
               </Button>
 
-              {/* Unified brand unit - Larger on mobile, shifted left */}
-              <div className="flex items-center gap-0 scale-[1.2] origin-left md:scale-100">
-                <AuraLogo className="w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-18 lg:h-18 -mr-0.5 sm:-mr-1 md:-mr-2" />
+              {/* Unified brand unit - horizontally aligned with buttons */}
+              <div className="flex items-center gap-0 md:scale-100">
+                <AuraLogo className="w-9 h-9 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-18 lg:h-18 -mr-0.5 sm:-mr-1 md:-mr-2" />
                 
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1 md:gap-2">
-                    <h1 className="font-display text-[15px] sm:text-base md:text-lg lg:text-xl font-extrabold whitespace-nowrap" style={{ letterSpacing: '-0.02em' }}>
+                    <h1 className="font-display text-base sm:text-base md:text-lg lg:text-xl font-extrabold whitespace-nowrap" style={{ letterSpacing: '-0.02em' }}>
                       <span style={{
                         background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 85%) 100%)',
                         WebkitBackgroundClip: 'text',
@@ -138,7 +138,7 @@ export const Header = memo(() => {
                     </h1>
                     {isPremium && <VIPBadge />}
                   </div>
-                  <span className="text-[5.5px] sm:text-[6px] md:text-[8px] lg:text-[9px] font-semibold uppercase tracking-[0.06em] sm:tracking-[0.08em] md:tracking-[0.18em] text-center md:text-left" style={{ color: 'hsl(0 0% 45%)' }}>
+                  <span className="hidden sm:block text-[6px] md:text-[8px] lg:text-[9px] font-semibold uppercase tracking-[0.08em] md:tracking-[0.18em] text-center md:text-left" style={{ color: 'hsl(0 0% 45%)' }}>
                     AI-POWERED PRIVACY
                   </span>
                 </div>
@@ -291,26 +291,26 @@ export const Header = memo(() => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <>
-                  {/* Pro Button - Exact dimensions for pixel-perfect match */}
+              <>
+                  {/* Pro Button - 10% larger: 48px height, 110px width on mobile */}
                   {!isPremium && (
-                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[44px] md:h-10 w-[100px] md:w-[100px] p-0">
+                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[48px] md:h-11 w-[110px] md:w-[110px] p-0">
                       <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="w-full h-full flex items-center justify-center gap-1.5">
-                        <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-white shrink-0" />
-                        <span className="text-[11px] md:text-sm font-semibold text-white leading-none">Pro</span>
+                        <Zap className="w-4 h-4 md:w-4 md:h-4 text-white shrink-0" />
+                        <span className="text-xs md:text-sm font-semibold text-white leading-none">Pro</span>
                       </a>
                     </Button>
                   )}
                   
-                  {/* Login Button - Exact same dimensions as Pro button */}
+                  {/* Login Button - 10% larger: 48px height, 110px width on mobile */}
                   <Button 
                     asChild 
                     variant="ghost" 
-                    className="geometric-diamond-btn header-cta-frame h-[44px] md:h-10 w-[100px] md:w-[100px] p-0 rounded-lg md:rounded-xl"
+                    className="geometric-diamond-btn header-cta-frame h-[48px] md:h-11 w-[110px] md:w-[110px] p-0 rounded-lg md:rounded-xl"
                   >
                     <Link to="/auth" className="w-full h-full flex items-center justify-center gap-1.5">
-                      <LogIn className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" style={{ color: 'hsl(var(--aurora-orange))' }} />
-                      <span className="text-[11px] md:text-sm font-semibold leading-none" style={{ color: 'hsl(var(--aurora-orange))' }}>Login</span>
+                      <LogIn className="w-4 h-4 md:w-4 md:h-4 shrink-0" style={{ color: 'hsl(var(--aurora-orange))' }} />
+                      <span className="text-xs md:text-sm font-semibold leading-none" style={{ color: 'hsl(var(--aurora-orange))' }}>Login</span>
                     </Link>
                   </Button>
                 </>
@@ -318,10 +318,10 @@ export const Header = memo(() => {
               
               {/* Pro button for logged in non-premium users */}
               {user && !isPremium && (
-                <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[44px] md:h-10 w-[100px] md:w-[100px] p-0">
+                <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[48px] md:h-11 w-[110px] md:w-[110px] p-0">
                   <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="w-full h-full flex items-center justify-center gap-1.5">
-                    <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-white shrink-0" />
-                    <span className="text-[11px] md:text-sm font-semibold text-white leading-none">Pro</span>
+                    <Zap className="w-4 h-4 md:w-4 md:h-4 text-white shrink-0" />
+                    <span className="text-xs md:text-sm font-semibold text-white leading-none">Pro</span>
                   </a>
                 </Button>
               )}
