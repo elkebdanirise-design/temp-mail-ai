@@ -98,8 +98,8 @@ export const Header = memo(() => {
       <header className="py-4 md:py-8 lg:py-10 relative z-20 animate-fade-in">
         <div className="container mx-auto px-2 sm:px-6 md:px-8">
           <div className="flex items-center justify-between gap-4 sm:gap-6 md:gap-8">
-            {/* Left section: Mobile menu + Logo - aligned on same horizontal line */}
-            <div className="flex items-center gap-1 md:gap-0 ml-0">
+            {/* Left section: Mobile menu + Logo - positioned at far left edge */}
+            <div className="flex items-center gap-0 md:gap-0 ml-0">
               {/* Mobile hamburger menu - LEFT side, only visible on mobile */}
               <Button
                 variant="ghost"
@@ -111,7 +111,7 @@ export const Header = memo(() => {
                 <Menu className="w-4 h-4" />
               </Button>
 
-              {/* Unified brand unit - aligned horizontally with buttons */}
+              {/* Unified brand unit - Larger on mobile, shifted left */}
               <div className="flex items-center gap-0 scale-[1.2] origin-left md:scale-100">
                 <AuraLogo className="w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-18 lg:h-18 -mr-0.5 sm:-mr-1 md:-mr-2" />
                 
@@ -292,9 +292,9 @@ export const Header = memo(() => {
                 </DropdownMenu>
               ) : (
                 <>
-                  {/* Pro Button - 1% larger with perfect centering */}
+                  {/* Pro Button - Exact dimensions for pixel-perfect match */}
                   {!isPremium && (
-                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[44px] md:h-10 w-[101px] md:w-[101px] p-0">
+                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[44px] md:h-10 w-[100px] md:w-[100px] p-0">
                       <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="w-full h-full flex items-center justify-center gap-1.5">
                         <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-white shrink-0" />
                         <span className="text-[11px] md:text-sm font-semibold text-white leading-none">Pro</span>
@@ -302,11 +302,11 @@ export const Header = memo(() => {
                     </Button>
                   )}
                   
-                  {/* Login Button - 1% larger with perfect centering */}
+                  {/* Login Button - Exact same dimensions as Pro button */}
                   <Button 
                     asChild 
                     variant="ghost" 
-                    className="geometric-diamond-btn header-cta-frame h-[44px] md:h-10 w-[101px] md:w-[101px] p-0 rounded-lg md:rounded-xl"
+                    className="geometric-diamond-btn header-cta-frame h-[44px] md:h-10 w-[100px] md:w-[100px] p-0 rounded-lg md:rounded-xl"
                   >
                     <Link to="/auth" className="w-full h-full flex items-center justify-center gap-1.5">
                       <LogIn className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" style={{ color: 'hsl(var(--aurora-orange))' }} />
@@ -318,7 +318,7 @@ export const Header = memo(() => {
               
               {/* Pro button for logged in non-premium users */}
               {user && !isPremium && (
-                <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[44px] md:h-10 w-[101px] md:w-[101px] p-0">
+                <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-lg md:rounded-xl h-[44px] md:h-10 w-[100px] md:w-[100px] p-0">
                   <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="w-full h-full flex items-center justify-center gap-1.5">
                     <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-white shrink-0" />
                     <span className="text-[11px] md:text-sm font-semibold text-white leading-none">Pro</span>
