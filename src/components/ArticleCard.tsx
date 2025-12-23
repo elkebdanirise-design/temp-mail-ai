@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { memo, useCallback } from 'react';
 import { Calendar, ArrowRight, Clock, Bookmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BlogPost } from '@/data/blogData';
@@ -10,25 +10,22 @@ interface ArticleCardProps {
   index: number;
 }
 
-export const ArticleCard = ({ post, index }: ArticleCardProps) => {
+export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
   const Icon = post.icon;
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const bookmarked = isBookmarked(post.id);
 
-  const handleBookmarkClick = (e: React.MouseEvent) => {
+  const handleBookmarkClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     const newState = toggleBookmark(post.id);
     toast.success(newState ? 'Article bookmarked!' : 'Bookmark removed');
-  };
+  }, [post.id, toggleBookmark]);
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.08, duration: 0.6 }}
-      className="group"
+    <article
+      className="group animate-fade-in"
+      style={{ animationDelay: `${index * 80}ms` }}
     >
       <Link to={`/blog/${post.slug}`} className="block">
         <div 
@@ -62,8 +59,9 @@ export const ArticleCard = ({ post, index }: ArticleCardProps) => {
               style={{ background: 'linear-gradient(to top, hsl(220 30% 3% / 0.9), transparent 60%)' }}
             />
             
-            {/* Zoom effect on hover */}
-            <div className="absolute inset-0 scale-100 group-hover:scale-110 transition-transform duration-700 ease-out opacity-30"
+            {/* Zoom effect on hover - CSS only */}
+            <div 
+              className="absolute inset-0 scale-100 group-hover:scale-110 transition-transform duration-700 ease-out opacity-30"
               style={{ background: `radial-gradient(circle at center, ${post.glowColor}, transparent 70%)` }}
             />
             
@@ -175,6 +173,8 @@ export const ArticleCard = ({ post, index }: ArticleCardProps) => {
           </div>
         </div>
       </Link>
-    </motion.article>
+    </article>
   );
-};
+});
+
+ArticleCard.displayName = 'ArticleCard';

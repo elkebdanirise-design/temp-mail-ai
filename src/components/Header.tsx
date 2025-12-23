@@ -1,5 +1,5 @@
-import { useState, useEffect, memo, useCallback } from 'react';
-import { Zap, Key, Users } from 'lucide-react';
+import { useState, memo, useCallback } from 'react';
+import { Zap, Key } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuraLogo } from './AuraLogo';
 import { VIPBadge } from './VIPBadge';
@@ -16,17 +16,8 @@ const navItems = [
 export const Header = memo(() => {
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const { isPremium, activatePremium } = usePremium();
-  const [liveUsers, setLiveUsers] = useState(1247);
   const { handleAnchorClick } = useSmoothScroll();
   const [activeNav, setActiveNav] = useState('Home');
-
-  // Simulate live users fluctuation - debounced
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLiveUsers(prev => prev + Math.floor(Math.random() * 11) - 5);
-    }, 5000); // Reduced frequency from 3s to 5s
-    return () => clearInterval(interval);
-  }, []);
 
   const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string, label: string) => {
     handleAnchorClick(e, href);
@@ -112,22 +103,6 @@ export const Header = memo(() => {
             </nav>
 
             <div className="flex items-center gap-2 sm:gap-4">
-              {/* Live Users Counter */}
-              <div
-                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl"
-                style={{
-                  background: 'hsl(160 60% 35% / 0.06)',
-                  border: '1px solid hsl(160 60% 40% / 0.12)',
-                }}
-              >
-                <div className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-live-pulse" />
-                  <Users className="w-3.5 h-3.5 text-emerald-400/80" />
-                </div>
-                <span className="text-xs font-medium text-emerald-400/80">
-                  {liveUsers.toLocaleString()} online
-                </span>
-              </div>
 
               {isPremium ? (
                 <Button
