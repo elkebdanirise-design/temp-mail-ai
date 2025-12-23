@@ -384,6 +384,28 @@ export const Header = memo(() => {
                       boxShadow: 'inset 0 0 0 1px hsl(var(--aurora-orange) / 0.15)'
                     }}
                   />
+                  
+                  {/* Shimmer sweep animation */}
+                  <motion.span
+                    className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 + index * 0.08 }}
+                  >
+                    <motion.span
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        background: 'linear-gradient(90deg, transparent 0%, hsl(var(--aurora-orange) / 0.15) 45%, hsl(0 0% 100% / 0.25) 50%, hsl(var(--aurora-sunset) / 0.15) 55%, transparent 100%)',
+                      }}
+                      initial={{ x: '-100%' }}
+                      animate={{ x: '200%' }}
+                      transition={{
+                        duration: 0.8,
+                        delay: 0.6 + index * 0.12,
+                        ease: [0.25, 0.46, 0.45, 0.94]
+                      }}
+                    />
+                  </motion.span>
                 </motion.a>
               );
             })}
