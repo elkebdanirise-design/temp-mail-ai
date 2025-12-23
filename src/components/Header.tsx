@@ -1,4 +1,5 @@
 import { useState, memo, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Key, Menu, Home, BookOpen, DollarSign, Sparkles, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuraLogo } from './AuraLogo';
@@ -199,10 +200,17 @@ export const Header = memo(() => {
               const isActive = activeNav === item.label;
               
               return (
-                <a
+                <motion.a
                   key={item.label}
                   href={item.href}
                   onClick={(e) => handleSidebarNavClick(e, item.href, item.label)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ 
+                    duration: 0.3, 
+                    delay: index * 0.08,
+                    ease: [0.25, 0.46, 0.45, 0.94]
+                  }}
                   className="group relative flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 ease-out transform hover:translate-x-1"
                   style={{
                     background: isActive 
@@ -210,8 +218,7 @@ export const Header = memo(() => {
                       : 'transparent',
                     boxShadow: isActive 
                       ? '0 0 30px hsl(var(--aurora-orange) / 0.25), inset 0 0 0 1px hsl(var(--aurora-orange) / 0.25), 0 4px 20px hsl(0 0% 0% / 0.3)'
-                      : 'none',
-                    animationDelay: `${index * 50}ms`
+                      : 'none'
                   }}
                 >
                   {/* Icon container with glow */}
@@ -262,7 +269,7 @@ export const Header = memo(() => {
                       boxShadow: 'inset 0 0 0 1px hsl(var(--aurora-orange) / 0.15)'
                     }}
                   />
-                </a>
+                </motion.a>
               );
             })}
           </nav>
