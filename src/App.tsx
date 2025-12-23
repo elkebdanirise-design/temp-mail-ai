@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { PremiumProvider } from "@/contexts/PremiumContext";
 import Index from "./pages/Index";
 import Blog from "./pages/Blog";
@@ -17,42 +18,46 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Sitemap from "./pages/Sitemap";
 import EmailView from "./pages/EmailView";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
-      <PremiumProvider>
-        <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Analytics />
-        <SpeedInsights />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogArticle />} />
+      <AuthProvider>
+        <PremiumProvider>
+          <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Analytics />
+          <SpeedInsights />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogArticle />} />
 
-              {/* Dedicated footer pages */}
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/sitemap" element={<Sitemap />} />
+                {/* Dedicated footer pages */}
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/sitemap" element={<Sitemap />} />
 
-              {/* Message view page */}
-              <Route path="/message/:id" element={<EmailView />} />
-              {/* Backwards-compatible alias */}
-              <Route path="/email/:id" element={<EmailView />} />
+                {/* Message view page */}
+                <Route path="/message/:id" element={<EmailView />} />
+                {/* Backwards-compatible alias */}
+                <Route path="/email/:id" element={<EmailView />} />
 
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </PremiumProvider>
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </PremiumProvider>
+      </AuthProvider>
     </QueryClientProvider>
   </HelmetProvider>
 );

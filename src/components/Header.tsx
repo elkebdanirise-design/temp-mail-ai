@@ -1,11 +1,12 @@
 import { useState, memo, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Key, Menu, Home, BookOpen, DollarSign, Sparkles, FileText } from 'lucide-react';
+import { Zap, Key, Menu, Home, BookOpen, DollarSign, Sparkles, FileText, LogIn, LogOut, User, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuraLogo } from './AuraLogo';
 import { VIPBadge } from './VIPBadge';
 import { PremiumModal } from './PremiumModal';
 import { usePremium } from '@/contexts/PremiumContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import {
   Sheet,
@@ -13,6 +14,13 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const navItems = [
   { label: 'Home', href: '#', icon: Home },
@@ -32,8 +40,13 @@ export const Header = memo(() => {
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { isPremium, activatePremium } = usePremium();
+  const { user, signOut } = useAuth();
   const { handleAnchorClick } = useSmoothScroll();
   const [activeNav, setActiveNav] = useState('Home');
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   // Scroll-based active nav detection
   useEffect(() => {
@@ -152,19 +165,113 @@ export const Header = memo(() => {
               ))}
             </nav>
 
-            {/* Right section: CTA button */}
+            {/* Right section: Auth & CTA buttons */}
             <div className="flex items-center gap-2 shrink-0">
-              {isPremium ? (
-                <Button
-                  variant="outline"
-                  onClick={() => setShowPremiumModal(true)}
-                  className="border-amber-500/20 text-amber-400/90 hover:bg-amber-500/8 rounded-lg md:rounded-xl h-8 md:h-10 px-2.5 md:px-4 text-xs md:text-sm"
-                >
-                  <Key className="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2" />
-                  <span className="hidden sm:inline">Manage License</span>
-                  <span className="sm:hidden">VIP</span>
-                </Button>
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="h-8 md:h-10 px-2 md:px-3 rounded-lg md:rounded-xl gap-1.5 md:gap-2"
+                      style={{
+                        background: isPremium 
+                          ? 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.15), hsl(var(--aurora-sunset) / 0.1))'
+                          : 'hsl(0 0% 100% / 0.05)',
+                        border: isPremium ? '1px solid hsl(var(--aurora-orange) / 0.3)' : '1px solid hsl(0 0% 100% / 0.1)'
+                      }}
+                    >
+                      <div 
+                        className="w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center"
+                        style={{
+                          background: isPremium 
+                            ? 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)))'
+                            : 'hsl(0 0% 100% / 0.1)'
+                        }}
+                      >
+                        {isPremium ? (
+                          <Crown className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
+                        ) : (
+                          <User className="w-3.5 h-3.5 md:w-4 md:h-4 text-muted-foreground" />
+                        )}
+                      </div>
+                      <span className="hidden md:inline text-sm font-medium truncate max-w-[100px]" style={{ color: 'hsl(0 0% 70%)' }}>
+                        {user.email?.split('@')[0]}
+                      </span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent 
+                    align="end" 
+                    className="w-56 rounded-xl border-0 p-2"
+                    style={{
+                      background: 'linear-gradient(180deg, hsl(0 0% 10%) 0%, hsl(0 0% 7%) 100%)',
+                      boxShadow: '0 10px 40px hsl(0 0% 0% / 0.5), inset 0 1px 0 hsl(0 0% 100% / 0.05)'
+                    }}
+                  >
+                    <div className="px-2 py-2 mb-2">
+                      <p className="text-xs font-medium" style={{ color: 'hsl(0 0% 50%)' }}>Signed in as</p>
+                      <p className="text-sm font-semibold truncate" style={{ color: 'hsl(0 0% 90%)' }}>{user.email}</p>
+                      {isPremium && (
+                        <span 
+                          className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
+                          style={{
+                            background: 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.2), hsl(var(--aurora-sunset) / 0.15))',
+                            color: 'hsl(var(--aurora-orange))'
+                          }}
+                        >
+                          <Crown className="w-3 h-3" /> VIP Member
+                        </span>
+                      )}
+                    </div>
+                    <DropdownMenuSeparator className="bg-white/5" />
+                    {!isPremium && (
+                      <DropdownMenuItem 
+                        onClick={() => setShowPremiumModal(true)}
+                        className="rounded-lg cursor-pointer gap-2 py-2.5"
+                        style={{ color: 'hsl(var(--aurora-orange))' }}
+                      >
+                        <Key className="w-4 h-4" />
+                        Redeem License Key
+                      </DropdownMenuItem>
+                    )}
+                    {isPremium && (
+                      <DropdownMenuItem 
+                        onClick={() => setShowPremiumModal(true)}
+                        className="rounded-lg cursor-pointer gap-2 py-2.5"
+                        style={{ color: 'hsl(var(--aurora-orange))' }}
+                      >
+                        <Crown className="w-4 h-4" />
+                        Manage VIP
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuItem 
+                      onClick={handleSignOut}
+                      className="rounded-lg cursor-pointer gap-2 py-2.5 text-red-400 focus:text-red-400"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               ) : (
+                <Button 
+                  asChild 
+                  variant="ghost" 
+                  className="h-8 md:h-10 px-3 md:px-4 rounded-lg md:rounded-xl text-xs md:text-sm font-medium"
+                  style={{
+                    background: 'hsl(0 0% 100% / 0.05)',
+                    border: '1px solid hsl(0 0% 100% / 0.1)',
+                    color: 'hsl(0 0% 70%)'
+                  }}
+                >
+                  <a href="/auth" className="flex items-center gap-1.5 md:gap-2">
+                    <LogIn className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                    <span className="hidden sm:inline">Sign In</span>
+                    <span className="sm:hidden">Login</span>
+                  </a>
+                </Button>
+              )}
+              
+              {!isPremium && (
                 <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-lg md:rounded-xl h-8 md:h-10 px-3 md:px-4 text-xs md:text-sm">
                   <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="flex items-center gap-1.5 md:gap-2">
                     <Zap className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -450,6 +557,67 @@ export const Header = memo(() => {
                 </motion.a>
               );
             })}
+            
+            {/* Divider */}
+            <div 
+              className="my-3 h-px"
+              style={{ background: 'linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.08), transparent)' }}
+            />
+            
+            {/* Auth action */}
+            {user ? (
+              <motion.button
+                onClick={() => {
+                  setSidebarOpen(false);
+                  handleSignOut();
+                }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+                className="group relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-300 ease-out transform hover:translate-x-1 w-full text-left"
+                style={{
+                  background: 'hsl(0 70% 50% / 0.08)'
+                }}
+              >
+                <div 
+                  className="relative flex items-center justify-center w-8 h-8 rounded-lg"
+                  style={{ background: 'hsl(0 70% 50% / 0.15)' }}
+                >
+                  <LogOut className="w-4 h-4" style={{ color: 'hsl(0 70% 60%)' }} />
+                </div>
+                <span className="font-medium text-[13px]" style={{ color: 'hsl(0 70% 60%)' }}>
+                  Sign Out
+                </span>
+              </motion.button>
+            ) : (
+              <motion.a
+                href="/auth"
+                onClick={() => setSidebarOpen(false)}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+                className="group relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-300 ease-out transform hover:translate-x-1"
+                style={{
+                  background: 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.15), hsl(var(--aurora-sunset) / 0.1))',
+                  boxShadow: 'inset 0 0 0 1px hsl(var(--aurora-orange) / 0.2)'
+                }}
+              >
+                <div 
+                  className="relative flex items-center justify-center w-8 h-8 rounded-lg"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.25), hsl(var(--aurora-sunset) / 0.15))'
+                  }}
+                >
+                  <LogIn className="w-4 h-4" style={{ color: 'hsl(var(--aurora-orange))' }} />
+                </div>
+                <span 
+                  className="font-medium text-[13px]"
+                  style={{ color: 'hsl(var(--aurora-orange))' }}
+                >
+                  Sign In / Register
+                </span>
+              </motion.a>
+            )}
           </nav>
           </motion.div>
           

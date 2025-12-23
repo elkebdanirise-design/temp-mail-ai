@@ -1,37 +1,29 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from './AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
-interface PremiumContextType {
-  isPremium: boolean;
-  licenseKey: string | null;
-  isLoading: boolean;
-  activatePremium: (key: string) => Promise<{ success: boolean; error?: string }>;
-  deactivatePremium: () => void;
+interface Profile {
+  id: string;
+  user_id: string;
+  email: string | null;
+  is_pro: boolean;
+  license_key: string | null;
+  activated_at: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
-const PremiumContext = createContext<PremiumContextType | undefined>(undefined);
-
-export const PremiumProvider = ({ children }: { children: ReactNode }) => {
+export const useProfile = () => {
   const { user } = useAuth();
-  const [isPremium, setIsPremium] = useState(false);
-  const [licenseKey, setLicenseKey] = useState<string | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
       fetchProfile();
     } else {
-      // Check localStorage for non-logged in users (legacy support)
-      const savedKey = localStorage.getItem('aura_license_key');
-      if (savedKey) {
-        setLicenseKey(savedKey);
-        setIsPremium(true);
-      } else {
-        setIsPremium(false);
-        setLicenseKey(null);
-      }
+      setProfile(null);
       setIsLoading(false);
     }
   }, [user]);
@@ -43,15 +35,14 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('is_pro, license_key')
+        .select('*')
         .eq('user_id', user.id)
         .maybeSingle();
 
       if (error) {
         console.error('Error fetching profile:', error);
-      } else if (data) {
-        setIsPremium(data.is_pro);
-        setLicenseKey(data.license_key);
+      } else {
+        setProfile(data);
       }
     } catch (err) {
       console.error('Error fetching profile:', err);
@@ -60,14 +51,9 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const activatePremium = async (key: string): Promise<{ success: boolean; error?: string }> => {
+  const redeemLicenseKey = async (licenseKey: string): Promise<{ success: boolean; error?: string }> => {
     if (!user) {
-      // Legacy mode for non-logged in users - just store in localStorage
-      localStorage.setItem('aura_license_key', key);
-      setLicenseKey(key);
-      setIsPremium(true);
-      toast.success('License key activated!');
-      return { success: true };
+      return { success: false, error: 'Please sign in to redeem a license key' };
     }
 
     try {
@@ -75,7 +61,7 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
       const { data: keyData, error: keyError } = await supabase
         .from('license_keys')
         .select('*')
-        .eq('license_key', key)
+        .eq('license_key', licenseKey)
         .maybeSingle();
 
       if (keyError) {
@@ -98,7 +84,7 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
           used_by: user.id,
           used_at: new Date().toISOString()
         })
-        .eq('license_key', key);
+        .eq('license_key', licenseKey);
 
       if (updateKeyError) {
         return { success: false, error: 'Error redeeming license key' };
@@ -109,7 +95,7 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
         .from('profiles')
         .update({
           is_pro: true,
-          license_key: key,
+          license_key: licenseKey,
           activated_at: new Date().toISOString()
         })
         .eq('user_id', user.id);
@@ -118,8 +104,8 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
         return { success: false, error: 'Error updating profile' };
       }
 
-      setLicenseKey(key);
-      setIsPremium(true);
+      // Refresh the profile
+      await fetchProfile();
       
       toast.success('License key activated! Enjoy VIP features!');
       return { success: true };
@@ -129,23 +115,11 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const deactivatePremium = () => {
-    localStorage.removeItem('aura_license_key');
-    setLicenseKey(null);
-    setIsPremium(false);
+  return {
+    profile,
+    isLoading,
+    isPro: profile?.is_pro ?? false,
+    redeemLicenseKey,
+    refetch: fetchProfile
   };
-
-  return (
-    <PremiumContext.Provider value={{ isPremium, licenseKey, isLoading, activatePremium, deactivatePremium }}>
-      {children}
-    </PremiumContext.Provider>
-  );
-};
-
-export const usePremium = () => {
-  const context = useContext(PremiumContext);
-  if (!context) {
-    throw new Error('usePremium must be used within a PremiumProvider');
-  }
-  return context;
 };
