@@ -390,7 +390,7 @@ export const Header = memo(() => {
           >
             {/* Compact Brand Header */}
             <SheetHeader className="p-4 pb-3 border-b border-white/5 shrink-0">
-              <SheetTitle className="flex items-center gap-2.5">
+              <SheetTitle className="flex items-center gap-1.5">
                 <motion.div
                   className="relative"
                   initial={{ scale: 0.7, rotate: -15 }}
@@ -402,7 +402,7 @@ export const Header = memo(() => {
                     delay: 0.12
                   }}
                 >
-                  <AuraLogo className="w-9 h-9" />
+                  <AuraLogo className="w-8 h-8" />
                   
                   {/* Sparkle particles emanating from logo */}
                   {[...Array(6)].map((_, i) => (
