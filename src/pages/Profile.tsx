@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { User, Crown, Mail, Calendar, Key, LogOut, ArrowLeft, Shield, Sparkles, Check } from 'lucide-react';
+import { User, Crown, Mail, Calendar, Key, LogOut, ArrowLeft, Shield, Sparkles, Check, AlertCircle, RefreshCw, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuraLogo } from '@/components/AuraLogo';
 import { VIPBadge } from '@/components/VIPBadge';
@@ -10,13 +10,18 @@ import { usePremium } from '@/contexts/PremiumContext';
 import { toast } from 'sonner';
 
 const Profile = () => {
-  const { user, signOut, isLoading: authLoading } = useAuth();
+  const { user, signOut, resendVerificationEmail, isLoading: authLoading } = useAuth();
   const { isPremium, licenseKey, activatePremium, isLoading: premiumLoading } = usePremium();
   const navigate = useNavigate();
   
   const [showRedeemInput, setShowRedeemInput] = useState(false);
   const [redeemKey, setRedeemKey] = useState('');
   const [isRedeeming, setIsRedeeming] = useState(false);
+  const [isResendingVerification, setIsResendingVerification] = useState(false);
+  const [verificationSent, setVerificationSent] = useState(false);
+
+  // Check if email is verified
+  const isEmailVerified = user?.email_confirmed_at != null;
 
   // Redirect if not logged in
   useEffect(() => {
@@ -44,6 +49,26 @@ const Profile = () => {
       toast.error(result.error || 'Failed to redeem license key');
     }
     setIsRedeeming(false);
+  };
+
+  const handleResendVerification = async () => {
+    setIsResendingVerification(true);
+    
+    try {
+      const { error } = await resendVerificationEmail();
+      if (error) {
+        toast.error(error.message || 'Failed to send verification email');
+      } else {
+        setVerificationSent(true);
+        toast.success('Verification email sent! Check your inbox.');
+        // Reset the button after 60 seconds
+        setTimeout(() => setVerificationSent(false), 60000);
+      }
+    } catch (err) {
+      toast.error('Failed to send verification email');
+    } finally {
+      setIsResendingVerification(false);
+    }
   };
 
   if (authLoading || premiumLoading) {
@@ -191,21 +216,108 @@ const Profile = () => {
 
             {/* Info Grid */}
             <div className="grid gap-4 mb-6">
-              {/* Email */}
+              {/* Email with Verification Status */}
               <div 
-                className="flex items-center gap-4 p-4 rounded-xl"
-                style={{ background: 'hsl(0 0% 100% / 0.03)' }}
+                className="p-4 rounded-xl"
+                style={{ 
+                  background: isEmailVerified 
+                    ? 'hsl(0 0% 100% / 0.03)' 
+                    : 'linear-gradient(135deg, hsl(45 80% 50% / 0.08), hsl(35 90% 45% / 0.05))'
+                }}
               >
-                <div 
-                  className="w-10 h-10 rounded-lg flex items-center justify-center"
-                  style={{ background: 'hsl(var(--aurora-orange) / 0.1)' }}
-                >
-                  <Mail className="w-5 h-5" style={{ color: 'hsl(var(--aurora-orange))' }} />
+                <div className="flex items-center gap-4">
+                  <div 
+                    className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: 'hsl(var(--aurora-orange) / 0.1)' }}
+                  >
+                    <Mail className="w-5 h-5" style={{ color: 'hsl(var(--aurora-orange))' }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium" style={{ color: 'hsl(0 0% 45%)' }}>Email Address</p>
+                    <p className="text-sm font-medium truncate" style={{ color: 'hsl(0 0% 80%)' }}>{user.email}</p>
+                  </div>
+                  
+                  {/* Verification Badge */}
+                  <div 
+                    className="flex items-center gap-1 px-2 py-1 rounded-full shrink-0"
+                    style={{ 
+                      background: isEmailVerified 
+                        ? 'hsl(150 60% 40% / 0.15)' 
+                        : 'hsl(45 80% 50% / 0.15)'
+                    }}
+                  >
+                    {isEmailVerified ? (
+                      <>
+                        <CheckCircle className="w-3 h-3" style={{ color: 'hsl(150 70% 50%)' }} />
+                        <span className="text-xs font-medium" style={{ color: 'hsl(150 70% 55%)' }}>Verified</span>
+                      </>
+                    ) : (
+                      <>
+                        <AlertCircle className="w-3 h-3" style={{ color: 'hsl(45 85% 55%)' }} />
+                        <span className="text-xs font-medium" style={{ color: 'hsl(45 85% 60%)' }}>Unverified</span>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <p className="text-xs font-medium" style={{ color: 'hsl(0 0% 45%)' }}>Email Address</p>
-                  <p className="text-sm font-medium" style={{ color: 'hsl(0 0% 80%)' }}>{user.email}</p>
-                </div>
+                
+                {/* Resend Verification Section */}
+                <AnimatePresence>
+                  {!isEmailVerified && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mt-4 pt-4 border-t"
+                      style={{ borderColor: 'hsl(0 0% 100% / 0.05)' }}
+                    >
+                      <div className="flex items-start gap-3">
+                        <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'hsl(45 85% 55%)' }} />
+                        <div className="flex-1">
+                          <p className="text-xs mb-2" style={{ color: 'hsl(0 0% 55%)' }}>
+                            Please verify your email to access all features and secure your account.
+                          </p>
+                          <Button
+                            onClick={handleResendVerification}
+                            disabled={isResendingVerification || verificationSent}
+                            variant="outline"
+                            size="sm"
+                            className="h-8 rounded-lg text-xs font-medium gap-2 border-0"
+                            style={{
+                              background: verificationSent 
+                                ? 'hsl(150 60% 40% / 0.15)' 
+                                : 'hsl(var(--aurora-orange) / 0.15)',
+                              color: verificationSent 
+                                ? 'hsl(150 70% 55%)' 
+                                : 'hsl(var(--aurora-orange))'
+                            }}
+                          >
+                            {isResendingVerification ? (
+                              <>
+                                <motion.div
+                                  animate={{ rotate: 360 }}
+                                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                                >
+                                  <RefreshCw className="w-3 h-3" />
+                                </motion.div>
+                                Sending...
+                              </>
+                            ) : verificationSent ? (
+                              <>
+                                <Check className="w-3 h-3" />
+                                Email Sent
+                              </>
+                            ) : (
+                              <>
+                                <RefreshCw className="w-3 h-3" />
+                                Resend Verification Email
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Member Since */}
