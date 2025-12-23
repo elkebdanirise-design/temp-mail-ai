@@ -97,8 +97,8 @@ export const Header = memo(() => {
       <header className="py-4 md:py-8 lg:py-10 relative z-20 animate-fade-in">
         <div className="container mx-auto px-3 sm:px-6 md:px-8">
           <div className="flex items-center justify-between gap-4 sm:gap-6 md:gap-8">
-            {/* Left section: Mobile menu + Logo - shifted further left */}
-            <div className="flex items-center gap-1.5 md:gap-0 -ml-2 md:ml-0">
+            {/* Left section: Mobile menu + Logo - shifted to left edge */}
+            <div className="flex items-center gap-0.5 md:gap-0 -ml-3 md:ml-0">
               {/* Mobile hamburger menu - LEFT side, only visible on mobile */}
               <Button
                 variant="ghost"

@@ -286,7 +286,7 @@
     transform: translateY(-1px);
   }
 
-  /* Geometric Diamond Button - Faceted obsidian with pulsing amber glow */
+  /* Geometric Diamond Button - Faceted obsidian with static amber glow */
   .geometric-diamond-btn {
     position: relative;
     overflow: hidden;
@@ -302,7 +302,11 @@
     border: 1px solid hsl(var(--aurora-orange) / 0.5);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    animation: diamond-glow-pulse 3s ease-in-out infinite;
+    box-shadow: 
+      0 0 16px hsl(var(--aurora-orange) / 0.2),
+      0 0 32px hsl(var(--aurora-sunset) / 0.1),
+      0 3px 10px hsl(0 0% 0% / 0.4),
+      inset 0 1px 0 hsl(0 0% 100% / 0.1);
     transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -351,29 +355,11 @@
   .geometric-diamond-btn:hover {
     border-color: hsl(var(--aurora-orange) / 0.7);
     transform: translateY(-2px);
-    animation: none;
     box-shadow: 
       0 0 28px hsl(var(--aurora-orange) / 0.35),
       0 0 56px hsl(var(--aurora-sunset) / 0.15),
       0 6px 20px hsl(0 0% 0% / 0.45),
       inset 0 1px 0 hsl(0 0% 100% / 0.15);
-  }
-
-  @keyframes diamond-glow-pulse {
-    0%, 100% {
-      box-shadow: 
-        0 0 16px hsl(var(--aurora-orange) / 0.2),
-        0 0 32px hsl(var(--aurora-sunset) / 0.1),
-        0 3px 10px hsl(0 0% 0% / 0.4),
-        inset 0 1px 0 hsl(0 0% 100% / 0.1);
-    }
-    50% {
-      box-shadow: 
-        0 0 24px hsl(var(--aurora-orange) / 0.35),
-        0 0 48px hsl(var(--aurora-sunset) / 0.18),
-        0 4px 14px hsl(0 0% 0% / 0.45),
-        inset 0 1px 0 hsl(0 0% 100% / 0.12);
-    }
   }
 }
 
