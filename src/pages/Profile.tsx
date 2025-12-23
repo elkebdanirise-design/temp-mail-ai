@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { User, Crown, Mail, Calendar, Key, LogOut, ArrowLeft, Shield, Sparkles, Check, AlertCircle, RefreshCw, CheckCircle, Lock, Eye, EyeOff, Camera, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { AuraLogo } from '@/components/AuraLogo';
+import { BrandLogo } from '@/components/BrandLogo';
 import { VIPBadge } from '@/components/VIPBadge';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
@@ -256,7 +256,7 @@ const Profile = () => {
           </Button>
           
           <div className="flex items-center gap-2">
-            <AuraLogo className="w-8 h-8" />
+            <BrandLogo className="w-8 h-8" />
             <span className="font-display font-bold" style={{ color: 'hsl(0 0% 80%)' }}>Profile</span>
           </div>
         </motion.div>

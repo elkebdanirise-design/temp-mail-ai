@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import { Sparkles, X, Shield, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { AuraLogo } from '@/components/AuraLogo';
+import { BrandLogo } from '@/components/BrandLogo';
 import { useAuth } from '@/contexts/AuthContext';
 import confetti from 'canvas-confetti';
 
@@ -316,7 +316,7 @@ const Auth = () => {
                   delay: 0.1 
                 }}
               >
-                <AuraLogo className="w-20 h-20 mb-5" />
+                <BrandLogo className="w-20 h-20 mb-5" />
               </motion.div>
               
               <motion.h1 

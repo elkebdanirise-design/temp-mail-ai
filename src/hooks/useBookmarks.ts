@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-const BOOKMARKS_KEY = 'tempmail-aura-bookmarks';
+const BOOKMARKS_KEY = 'tempmail-ai-bookmarks';
 
 export const useBookmarks = () => {
   const [bookmarks, setBookmarks] = useState<string[]>(() => {

@@ -143,10 +143,10 @@ export const useMailTm = () => {
         previousMessageCount.current = 0;
         
         // Store in session for persistence
-        sessionStorage.setItem('aura_email', address);
-        sessionStorage.setItem('aura_token', authToken);
-        sessionStorage.setItem('aura_password', password);
-        sessionStorage.setItem('aura_account_id', account.id);
+        sessionStorage.setItem('tempmail_email', address);
+        sessionStorage.setItem('tempmail_token', authToken);
+        sessionStorage.setItem('tempmail_password', password);
+        sessionStorage.setItem('tempmail_account_id', account.id);
         
         setLoading(false);
         return; // Success - exit the retry loop
@@ -239,10 +239,10 @@ export const useMailTm = () => {
       console.error('Error deleting account:', err);
     } finally {
       // Always clear local state regardless of API result
-      sessionStorage.removeItem('aura_email');
-      sessionStorage.removeItem('aura_token');
-      sessionStorage.removeItem('aura_password');
-      sessionStorage.removeItem('aura_account_id');
+      sessionStorage.removeItem('tempmail_email');
+      sessionStorage.removeItem('tempmail_token');
+      sessionStorage.removeItem('tempmail_password');
+      sessionStorage.removeItem('tempmail_account_id');
       
       setEmail(null);
       setToken(null);
@@ -257,9 +257,9 @@ export const useMailTm = () => {
     if (isInitialized.current) return;
     isInitialized.current = true;
     
-    const savedEmail = sessionStorage.getItem('aura_email');
-    const savedToken = sessionStorage.getItem('aura_token');
-    const savedAccountId = sessionStorage.getItem('aura_account_id');
+    const savedEmail = sessionStorage.getItem('tempmail_email');
+    const savedToken = sessionStorage.getItem('tempmail_token');
+    const savedAccountId = sessionStorage.getItem('tempmail_account_id');
     
     if (savedEmail && savedToken && savedAccountId) {
       setEmail(savedEmail);

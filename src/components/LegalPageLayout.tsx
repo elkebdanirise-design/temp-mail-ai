@@ -3,7 +3,7 @@ import { AuroraBackground } from '@/components/AuroraBackground';
 import { ParticleField } from '@/components/ParticleField';
 import { ShootingStars } from '@/components/ShootingStars';
 import { BackToHomeButton } from '@/components/BackToHomeButton';
-import { AuraLogo } from '@/components/AuraLogo';
+import { BrandLogo } from '@/components/BrandLogo';
 
 type Props = {
   title: string;
@@ -44,7 +44,7 @@ export const LegalPageLayout = ({
 
         {showBrandHeader ? (
           <div className="fixed top-6 right-6 z-50 flex items-center gap-2">
-            <AuraLogo className="w-10 h-10 sm:w-12 sm:h-12" />
+            <BrandLogo className="w-10 h-10 sm:w-12 sm:h-12" />
             <span
               className="font-display text-sm sm:text-base font-extrabold"
               style={{

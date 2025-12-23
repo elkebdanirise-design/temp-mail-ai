@@ -42,7 +42,7 @@ const EmailView = () => {
     let isMounted = true;
 
     const fetchMessage = async () => {
-      const token = sessionStorage.getItem('aura_token');
+      const token = sessionStorage.getItem('tempmail_token');
 
       if (!id) {
         if (!isMounted) return;
