@@ -503,7 +503,7 @@ export const Header = memo(() => {
           
           {/* Scrollable nav area with smooth touch scrolling */}
           <nav 
-            className="flex flex-col gap-2 p-4 flex-1 overflow-y-auto"
+            className="flex flex-col gap-1.5 p-3 flex-1 overflow-y-auto"
             style={{
               WebkitOverflowScrolling: 'touch',
               scrollbarWidth: 'thin',
@@ -526,7 +526,7 @@ export const Header = memo(() => {
                     delay: index * 0.08,
                     ease: [0.25, 0.46, 0.45, 0.94]
                   }}
-                  className="group relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all duration-300 ease-out transform hover:translate-x-1"
+                  className="group relative flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-300 ease-out transform hover:translate-x-1"
                   style={{
                     background: isActive 
                       ? 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.18) 0%, hsl(var(--aurora-sunset) / 0.12) 100%)'
@@ -538,7 +538,7 @@ export const Header = memo(() => {
                 >
                   {/* Icon container with glow */}
                   <div 
-                    className="relative flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-300 group-hover:scale-110"
+                    className="relative flex items-center justify-center w-7 h-7 rounded-md transition-all duration-300 group-hover:scale-110"
                     style={{
                       background: isActive 
                         ? 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.25) 0%, hsl(var(--aurora-sunset) / 0.15) 100%)'
@@ -549,7 +549,7 @@ export const Header = memo(() => {
                     }}
                   >
                     <Icon 
-                      className="w-4 h-4 transition-all duration-300"
+                      className="w-3.5 h-3.5 transition-all duration-300"
                       style={{
                         color: isActive ? 'hsl(var(--aurora-orange))' : 'hsl(0 0% 55%)',
                         filter: isActive ? 'drop-shadow(0 0 6px hsl(var(--aurora-orange) / 0.6))' : 'none'
@@ -559,7 +559,7 @@ export const Header = memo(() => {
                   
                   {/* Label with gradient on active */}
                   <span
-                    className="font-medium text-[13px] tracking-wide transition-all duration-300"
+                    className="font-medium text-xs tracking-wide transition-all duration-300"
                     style={{
                       color: isActive ? 'hsl(0 0% 98%)' : 'hsl(0 0% 55%)',
                       textShadow: isActive ? '0 0 12px hsl(var(--aurora-orange) / 0.4)' : 'none'
