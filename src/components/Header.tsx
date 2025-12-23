@@ -207,6 +207,7 @@ export const Header = memo(() => {
             <SheetHeader className="p-6 pb-5 border-b border-white/5">
               <SheetTitle className="flex items-center gap-3">
                 <motion.div
+                  className="relative"
                   initial={{ scale: 0.8, rotate: -10 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ 
@@ -217,6 +218,70 @@ export const Header = memo(() => {
                   }}
                 >
                   <AuraLogo className="w-11 h-11" />
+                  
+                  {/* Sparkle particles emanating from logo */}
+                  {[...Array(6)].map((_, i) => (
+                    <motion.span
+                      key={i}
+                      className="absolute w-1 h-1 rounded-full pointer-events-none"
+                      style={{
+                        background: i % 2 === 0 
+                          ? 'hsl(var(--aurora-orange))' 
+                          : 'hsl(var(--aurora-sunset))',
+                        top: '50%',
+                        left: '50%',
+                        boxShadow: `0 0 4px hsl(var(--aurora-orange) / 0.8)`
+                      }}
+                      initial={{ 
+                        x: 0, 
+                        y: 0, 
+                        opacity: 0, 
+                        scale: 0 
+                      }}
+                      animate={{ 
+                        x: Math.cos((i * 60) * Math.PI / 180) * 28,
+                        y: Math.sin((i * 60) * Math.PI / 180) * 28,
+                        opacity: [0, 1, 0],
+                        scale: [0, 1.2, 0]
+                      }}
+                      transition={{
+                        duration: 0.8,
+                        delay: 0.3 + (i * 0.05),
+                        ease: 'easeOut'
+                      }}
+                    />
+                  ))}
+                  
+                  {/* Secondary ring of smaller sparkles */}
+                  {[...Array(8)].map((_, i) => (
+                    <motion.span
+                      key={`ring2-${i}`}
+                      className="absolute w-0.5 h-0.5 rounded-full pointer-events-none"
+                      style={{
+                        background: 'hsl(0 0% 100%)',
+                        top: '50%',
+                        left: '50%',
+                        boxShadow: `0 0 3px hsl(var(--aurora-sunset) / 0.6)`
+                      }}
+                      initial={{ 
+                        x: 0, 
+                        y: 0, 
+                        opacity: 0, 
+                        scale: 0 
+                      }}
+                      animate={{ 
+                        x: Math.cos((i * 45 + 22.5) * Math.PI / 180) * 20,
+                        y: Math.sin((i * 45 + 22.5) * Math.PI / 180) * 20,
+                        opacity: [0, 0.8, 0],
+                        scale: [0, 1, 0]
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 0.4 + (i * 0.03),
+                        ease: 'easeOut'
+                      }}
+                    />
+                  ))}
                 </motion.div>
                 <motion.div 
                   className="flex flex-col"
