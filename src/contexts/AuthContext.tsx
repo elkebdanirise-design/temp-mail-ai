@@ -1,6 +1,7 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
 
 const REDIRECT_URL = 'https://temp-mail-ai.vercel.app/';
 
@@ -24,6 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const hasShownWelcomeToast = useRef(false);
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -33,11 +35,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(session?.user ?? null);
         setIsLoading(false);
         
-        // Create or update profile when user signs in
+        // Show welcome toast and create profile when user signs in
         if (event === 'SIGNED_IN' && session?.user) {
+          // Only show toast once per session
+          if (!hasShownWelcomeToast.current) {
+            hasShownWelcomeToast.current = true;
+            const userName = session.user.user_metadata?.full_name || 
+                           session.user.user_metadata?.name || 
+                           session.user.email?.split('@')[0] || 
+                           'there';
+            
+            setTimeout(() => {
+              toast({
+                title: `Welcome back, ${userName}! 👋`,
+                description: "You're now signed in to Temp Mail AI.",
+              });
+            }, 100);
+          }
+          
           setTimeout(() => {
             ensureUserProfile(session.user);
           }, 0);
+        }
+        
+        // Reset toast flag on sign out
+        if (event === 'SIGNED_OUT') {
+          hasShownWelcomeToast.current = false;
         }
       }
     );
