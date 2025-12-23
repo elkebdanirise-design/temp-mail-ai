@@ -285,6 +285,96 @@
       inset 0 0 16px hsl(var(--aurora-orange) / 0.05);
     transform: translateY(-1px);
   }
+
+  /* Geometric Diamond Button - Faceted obsidian with pulsing amber glow */
+  .geometric-diamond-btn {
+    position: relative;
+    overflow: hidden;
+    background: 
+      linear-gradient(135deg, hsl(0 0% 100% / 0.04) 0%, transparent 50%),
+      linear-gradient(225deg, hsl(0 0% 100% / 0.02) 0%, transparent 50%),
+      linear-gradient(
+        145deg, 
+        hsl(0 0% 10% / 0.95) 0%, 
+        hsl(0 0% 6% / 0.98) 50%,
+        hsl(0 0% 4% / 1) 100%
+      );
+    border: 1px solid hsl(var(--aurora-orange) / 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    animation: diamond-glow-pulse 3s ease-in-out infinite;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .geometric-diamond-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      repeating-linear-gradient(
+        60deg,
+        transparent 0px,
+        transparent 8px,
+        hsl(0 0% 100% / 0.015) 8px,
+        hsl(0 0% 100% / 0.015) 9px
+      ),
+      repeating-linear-gradient(
+        -60deg,
+        transparent 0px,
+        transparent 8px,
+        hsl(0 0% 100% / 0.015) 8px,
+        hsl(0 0% 100% / 0.015) 9px
+      );
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .geometric-diamond-btn::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--aurora-orange) / 0.3) 0%,
+      transparent 30%,
+      transparent 70%,
+      hsl(var(--aurora-sunset) / 0.2) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    padding: 1px;
+    pointer-events: none;
+  }
+
+  .geometric-diamond-btn:hover {
+    border-color: hsl(var(--aurora-orange) / 0.7);
+    transform: translateY(-2px);
+    animation: none;
+    box-shadow: 
+      0 0 28px hsl(var(--aurora-orange) / 0.35),
+      0 0 56px hsl(var(--aurora-sunset) / 0.15),
+      0 6px 20px hsl(0 0% 0% / 0.45),
+      inset 0 1px 0 hsl(0 0% 100% / 0.15);
+  }
+
+  @keyframes diamond-glow-pulse {
+    0%, 100% {
+      box-shadow: 
+        0 0 16px hsl(var(--aurora-orange) / 0.2),
+        0 0 32px hsl(var(--aurora-sunset) / 0.1),
+        0 3px 10px hsl(0 0% 0% / 0.4),
+        inset 0 1px 0 hsl(0 0% 100% / 0.1);
+    }
+    50% {
+      box-shadow: 
+        0 0 24px hsl(var(--aurora-orange) / 0.35),
+        0 0 48px hsl(var(--aurora-sunset) / 0.18),
+        0 4px 14px hsl(0 0% 0% / 0.45),
+        inset 0 1px 0 hsl(0 0% 100% / 0.12);
+    }
+  }
 }
 
 @layer utilities {
