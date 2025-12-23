@@ -127,12 +127,7 @@ export const Header = memo(() => {
                         Temp Mail
                       </span>
                       <span className="mx-0.5" />
-                      <span className="font-extrabold relative animate-ai-bloom" style={{
-                        background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #818cf8 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text'
-                      }}>
+                      <span className="font-extrabold relative animate-ai-bloom text-orange-500">
                         AI
                       </span>
                     </h1>
