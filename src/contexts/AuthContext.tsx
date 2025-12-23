@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
+const REDIRECT_URL = 'https://temp-mail-ai.vercel.app/';
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -10,6 +12,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signInWithGoogle: () => Promise<{ error: Error | null }>;
   signInWithApple: () => Promise<{ error: Error | null }>;
+  signInWithMicrosoft: () => Promise<{ error: Error | null }>;
   resendVerificationEmail: () => Promise<{ error: Error | null }>;
   updatePassword: (newPassword: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -29,6 +32,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoading(false);
+        
+        // Create or update profile when user signs in
+        if (event === 'SIGNED_IN' && session?.user) {
+          setTimeout(() => {
+            ensureUserProfile(session.user);
+          }, 0);
+        }
       }
     );
 
@@ -42,14 +52,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Ensure user has a profile in the profiles table
+  const ensureUserProfile = async (user: User) => {
+    try {
+      // Check if profile exists
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      // If no profile exists, create one
+      if (!existingProfile) {
+        await supabase
+          .from('profiles')
+          .insert({
+            user_id: user.id,
+            email: user.email,
+            is_pro: false
+          });
+      }
+    } catch (error) {
+      console.error('Error ensuring user profile:', error);
+    }
+  };
+
   const signUp = async (email: string, password: string) => {
-    const redirectUrl = `${window.location.origin}/`;
-    
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: redirectUrl
+        emailRedirectTo: REDIRECT_URL
       }
     });
     return { error };
@@ -67,7 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/`,
+        redirectTo: REDIRECT_URL,
       }
     });
     return { error };
@@ -77,7 +110,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: `${window.location.origin}/`,
+        redirectTo: REDIRECT_URL,
+      }
+    });
+    return { error };
+  };
+
+  const signInWithMicrosoft = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'azure',
+      options: {
+        redirectTo: REDIRECT_URL,
+        scopes: 'email profile openid',
       }
     });
     return { error };
@@ -92,7 +136,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       type: 'signup',
       email: user.email,
       options: {
-        emailRedirectTo: `${window.location.origin}/`,
+        emailRedirectTo: REDIRECT_URL,
       }
     });
     return { error };
@@ -110,7 +154,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, isLoading, signUp, signIn, signInWithGoogle, signInWithApple, resendVerificationEmail, updatePassword, signOut }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      session, 
+      isLoading, 
+      signUp, 
+      signIn, 
+      signInWithGoogle, 
+      signInWithApple, 
+      signInWithMicrosoft,
+      resendVerificationEmail, 
+      updatePassword, 
+      signOut 
+    }}>
       {children}
     </AuthContext.Provider>
   );
