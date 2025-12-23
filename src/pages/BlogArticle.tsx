@@ -172,7 +172,7 @@ export default function BlogArticle() {
   return (
     <>
       <Helmet>
-        <title>{post.title} | Temp Mail Aura Blog</title>
+        <title>{post.title} | Temp Mail AI Blog</title>
         <meta name="description" content={post.excerpt} />
       </Helmet>
 

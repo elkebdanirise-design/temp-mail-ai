@@ -1,7 +1,7 @@
 import { Shield, Eye, UserCheck, Zap, Lock, Globe, Cpu, FileWarning, Key, Fingerprint, Wifi, Database } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
-export type BlogCategory = 'All' | 'Privacy Tips' | 'Cyber Security' | 'Aura Updates' | 'Tech News';
+export type BlogCategory = 'All' | 'Privacy Tips' | 'Cyber Security' | 'Product Updates' | 'Tech News';
 
 export interface BlogPost {
   id: string;
@@ -19,7 +19,7 @@ export interface BlogPost {
   tableOfContents: { id: string; title: string }[];
 }
 
-export const blogCategories: BlogCategory[] = ['All', 'Privacy Tips', 'Cyber Security', 'Aura Updates', 'Tech News'];
+export const blogCategories: BlogCategory[] = ['All', 'Privacy Tips', 'Cyber Security', 'Product Updates', 'Tech News'];
 
 export const blogPosts: BlogPost[] = [
   {
@@ -54,7 +54,7 @@ Using a temporary email address for social media signups creates a protective ba
 
 ## Best Practices
 
-When using Temp Mail Aura for social media, consider these strategies:
+When using Temp Mail AI for social media, consider these strategies:
 
 - Use a unique temp email for each platform
 - Screenshot any important verification codes
@@ -62,7 +62,7 @@ When using Temp Mail Aura for social media, consider these strategies:
 
 ## Conclusion
 
-In an age where data is currency, protecting your email address is protecting your digital identity. Temp Mail Aura gives you the power to engage with social media on your own terms.
+In an age where data is currency, protecting your email address is protecting your digital identity. Temp Mail AI gives you the power to engage with social media on your own terms.
     `,
     date: 'Dec 18, 2026',
     category: 'Privacy Tips',
@@ -170,7 +170,7 @@ Old methods relied on obvious red flags. New attacks use:
 
 ## Temp Mail in the AI Age
 
-Temporary email services like Temp Mail Aura leverage AI to:
+Temporary email services like Temp Mail AI leverage AI to:
 
 - Filter sophisticated spam automatically
 - Detect malicious attachments instantly
@@ -197,13 +197,13 @@ The cat-and-mouse game between security and attackers continues, but AI gives de
   },
   {
     id: '4',
-    slug: 'aura-v2-major-update-announcement',
-    title: 'Temp Mail Aura V2.0: A Major Update',
+    slug: 'tempmail-ai-v2-major-update-announcement',
+    title: 'Temp Mail AI V2.0: A Major Update',
     excerpt: 'Introducing lightning-fast email generation, enhanced UI, and new premium features in our biggest update yet.',
     content: `
-## Introducing Temp Mail Aura V2.0
+## Introducing Temp Mail AI V2.0
 
-We're thrilled to announce the biggest update in Temp Mail Aura history. Version 2.0 brings revolutionary changes that redefine what a temporary email service can be.
+We're thrilled to announce the biggest update in Temp Mail AI history. Version 2.0 brings revolutionary changes that redefine what a temporary email service can be.
 
 ## What's New
 
@@ -249,13 +249,13 @@ Existing users will be automatically migrated. Your settings and preferences are
 This update wouldn't be possible without our amazing community. Your feedback shapes everything we build.
     `,
     date: 'Dec 10, 2026',
-    category: 'Aura Updates',
+    category: 'Product Updates',
     icon: Zap,
     gradient: 'from-[hsl(45,90%,55%)] to-[hsl(35,85%,50%)]',
     glowColor: 'hsl(45 90% 55% / 0.3)',
     readTime: '4 min read',
     tableOfContents: [
-      { id: 'introducing-temp-mail-aura-v20', title: 'Introducing V2.0' },
+      { id: 'introducing-temp-mail-ai-v20', title: 'Introducing V2.0' },
       { id: 'whats-new', title: "What's New" },
       { id: 'technical-under-the-hood', title: 'Technical Details' },
       { id: 'migration-guide', title: 'Migration' },
@@ -296,7 +296,7 @@ Traditional services can:
 
 Zero-knowledge eliminates these risks.
 
-## Temp Mail Aura's Approach
+## Temp Mail AI's Approach
 
 We implement zero-knowledge principles throughout:
 
@@ -327,7 +327,7 @@ Zero-knowledge is becoming the standard for privacy-respecting services. As comp
       { id: 'what-is-zero-knowledge-encryption', title: 'What is ZK?' },
       { id: 'how-it-works', title: 'How It Works' },
       { id: 'why-it-matters', title: 'Why It Matters' },
-      { id: 'temp-mail-auras-approach', title: 'Our Approach' },
+      { id: 'temp-mail-ais-approach', title: 'Our Approach' },
       { id: 'limitations-and-considerations', title: 'Limitations' },
       { id: 'the-future-of-privacy', title: 'The Future' },
     ],
@@ -451,7 +451,7 @@ New algorithms resistant to quantum attacks:
 - **SPHINCS+** - Stateless signatures
 - **BIKE/HQC** - Alternative approaches
 
-## Temp Mail Aura's Quantum Roadmap
+## Temp Mail AI's Quantum Roadmap
 
 We're preparing for the quantum future:
 
@@ -477,7 +477,7 @@ We're preparing for the quantum future:
       { id: 'how-quantum-breaks-encryption', title: 'Breaking Encryption' },
       { id: 'the-timeline', title: 'The Timeline' },
       { id: 'post-quantum-cryptography', title: 'Post-Quantum Crypto' },
-      { id: 'temp-mail-auras-quantum-roadmap', title: 'Our Roadmap' },
+      { id: 'temp-mail-ais-quantum-roadmap', title: 'Our Roadmap' },
       { id: 'what-you-can-do', title: 'What You Can Do' },
     ],
   },

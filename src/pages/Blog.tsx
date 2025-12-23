@@ -80,7 +80,7 @@ export default function Blog() {
   return (
     <>
       <Helmet>
-        <title>Privacy Insights & Cyber Security Blog | Temp Mail Aura</title>
+        <title>Privacy Insights & Cyber Security Blog | Temp Mail AI</title>
         <meta name="description" content="Stay informed about online privacy, security tips, and the latest updates in disposable email technology. Expert insights on protecting your digital identity." />
       </Helmet>
 

@@ -24,7 +24,7 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
       fetchProfile();
     } else {
       // Check localStorage for non-logged in users (legacy support)
-      const savedKey = localStorage.getItem('aura_license_key');
+      const savedKey = localStorage.getItem('tempmail_license_key');
       if (savedKey) {
         setLicenseKey(savedKey);
         setIsPremium(true);
@@ -63,7 +63,7 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
   const activatePremium = async (key: string): Promise<{ success: boolean; error?: string }> => {
     if (!user) {
       // Legacy mode for non-logged in users - just store in localStorage
-      localStorage.setItem('aura_license_key', key);
+      localStorage.setItem('tempmail_license_key', key);
       setLicenseKey(key);
       setIsPremium(true);
       toast.success('License key activated!');
@@ -130,7 +130,7 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const deactivatePremium = () => {
-    localStorage.removeItem('aura_license_key');
+    localStorage.removeItem('tempmail_license_key');
     setLicenseKey(null);
     setIsPremium(false);
   };
