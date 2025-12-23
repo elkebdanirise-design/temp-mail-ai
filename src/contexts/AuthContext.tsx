@@ -58,9 +58,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }, 0);
         }
         
-        // Reset toast flag on sign out
+        // Show goodbye toast and reset flag on sign out
         if (event === 'SIGNED_OUT') {
           hasShownWelcomeToast.current = false;
+          toast({
+            title: "See you soon! 👋",
+            description: "You've been signed out successfully.",
+          });
         }
       }
     );
