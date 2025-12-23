@@ -167,11 +167,27 @@ export const Header = memo(() => {
             boxShadow: '4px 0 60px hsl(var(--aurora-orange) / 0.15), inset 1px 0 0 hsl(0 0% 100% / 0.08)'
           }}
         >
-          {/* Top gradient accent line */}
-          <div 
+          {/* Top gradient accent line with glow pulse */}
+          <motion.div 
             className="absolute top-0 left-0 right-0 h-[2px]"
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ 
+              opacity: 1, 
+              scaleX: 1,
+              boxShadow: [
+                '0 0 10px hsl(var(--aurora-orange) / 0.3), 0 0 20px hsl(var(--aurora-sunset) / 0.2)',
+                '0 0 20px hsl(var(--aurora-orange) / 0.6), 0 0 40px hsl(var(--aurora-sunset) / 0.4)',
+                '0 0 10px hsl(var(--aurora-orange) / 0.3), 0 0 20px hsl(var(--aurora-sunset) / 0.2)'
+              ]
+            }}
+            transition={{ 
+              opacity: { duration: 0.3 },
+              scaleX: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
+              boxShadow: { duration: 2, repeat: Infinity, ease: 'easeInOut' }
+            }}
             style={{
-              background: 'linear-gradient(90deg, transparent, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)), hsl(var(--aurora-orange)), transparent)'
+              background: 'linear-gradient(90deg, transparent, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)), hsl(var(--aurora-orange)), transparent)',
+              transformOrigin: 'left'
             }}
           />
           
