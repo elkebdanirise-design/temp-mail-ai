@@ -189,21 +189,39 @@ export const Header = memo(() => {
                       }}
                     >
                       <div 
-                        className="w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center"
+                        className="w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center overflow-hidden relative"
                         style={{
                           background: isPremium 
                             ? 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)))'
-                            : 'hsl(0 0% 100% / 0.1)'
+                            : 'hsl(0 0% 100% / 0.1)',
+                          boxShadow: isPremium ? '0 0 12px hsl(var(--aurora-orange) / 0.4)' : 'none'
                         }}
                       >
-                        {isPremium ? (
+                        {user.user_metadata?.avatar_url || user.user_metadata?.picture ? (
+                          <img 
+                            src={user.user_metadata?.avatar_url || user.user_metadata?.picture}
+                            alt="Profile"
+                            className="w-full h-full object-cover"
+                            referrerPolicy="no-referrer"
+                          />
+                        ) : isPremium ? (
                           <Crown className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
                         ) : (
                           <User className="w-3.5 h-3.5 md:w-4 md:h-4 text-muted-foreground" />
                         )}
+                        {/* Premium ring indicator */}
+                        {isPremium && (user.user_metadata?.avatar_url || user.user_metadata?.picture) && (
+                          <div 
+                            className="absolute inset-0 rounded-full pointer-events-none"
+                            style={{
+                              border: '2px solid hsl(var(--aurora-orange))',
+                              boxShadow: 'inset 0 0 4px hsl(var(--aurora-orange) / 0.5)'
+                            }}
+                          />
+                        )}
                       </div>
                       <span className="hidden md:inline text-sm font-medium truncate max-w-[100px]" style={{ color: 'hsl(0 0% 70%)' }}>
-                        {user.email?.split('@')[0]}
+                        {user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0]}
                       </span>
                     </Button>
                   </DropdownMenuTrigger>
