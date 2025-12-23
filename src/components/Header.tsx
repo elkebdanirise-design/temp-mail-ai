@@ -223,6 +223,15 @@ export const Header = memo(() => {
                       )}
                     </div>
                     <DropdownMenuSeparator className="bg-white/5" />
+                    <DropdownMenuItem 
+                      asChild
+                      className="rounded-lg cursor-pointer gap-2 py-2.5"
+                    >
+                      <a href="/profile" style={{ color: 'hsl(0 0% 70%)' }}>
+                        <User className="w-4 h-4" />
+                        My Profile
+                      </a>
+                    </DropdownMenuItem>
                     {!isPremium && (
                       <DropdownMenuItem 
                         onClick={() => setShowPremiumModal(true)}
@@ -243,6 +252,7 @@ export const Header = memo(() => {
                         Manage VIP
                       </DropdownMenuItem>
                     )}
+                    <DropdownMenuSeparator className="bg-white/5" />
                     <DropdownMenuItem 
                       onClick={handleSignOut}
                       className="rounded-lg cursor-pointer gap-2 py-2.5 text-red-400 focus:text-red-400"
