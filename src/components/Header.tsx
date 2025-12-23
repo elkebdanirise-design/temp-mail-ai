@@ -191,24 +191,58 @@ export const Header = memo(() => {
             }}
           />
           
-          <SheetHeader className="p-6 pb-5 border-b border-white/5">
-            <SheetTitle className="flex items-center gap-3">
-              <AuraLogo className="w-11 h-11" />
-              <div className="flex flex-col">
-                <span className="font-display text-xl font-bold" style={{
-                  background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 80%) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}>
-                  Temp Mail AI
-                </span>
-                <span className="text-[9px] font-semibold uppercase tracking-[0.2em]" style={{ color: 'hsl(var(--aurora-orange) / 0.7)' }}>
-                  PRIVACY FIRST
-                </span>
-              </div>
-            </SheetTitle>
-          </SheetHeader>
+          {/* Inner content wrapper with spring bounce */}
+          <motion.div
+            initial={{ x: -10, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ 
+              type: 'spring',
+              stiffness: 400,
+              damping: 25,
+              mass: 0.8,
+              delay: 0.1
+            }}
+            className="h-full flex flex-col"
+          >
+            <SheetHeader className="p-6 pb-5 border-b border-white/5">
+              <SheetTitle className="flex items-center gap-3">
+                <motion.div
+                  initial={{ scale: 0.8, rotate: -10 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ 
+                    type: 'spring',
+                    stiffness: 500,
+                    damping: 20,
+                    delay: 0.2
+                  }}
+                >
+                  <AuraLogo className="w-11 h-11" />
+                </motion.div>
+                <motion.div 
+                  className="flex flex-col"
+                  initial={{ x: -15, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ 
+                    type: 'spring',
+                    stiffness: 400,
+                    damping: 25,
+                    delay: 0.25
+                  }}
+                >
+                  <span className="font-display text-xl font-bold" style={{
+                    background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 80%) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}>
+                    Temp Mail AI
+                  </span>
+                  <span className="text-[9px] font-semibold uppercase tracking-[0.2em]" style={{ color: 'hsl(var(--aurora-orange) / 0.7)' }}>
+                    PRIVACY FIRST
+                  </span>
+                </motion.div>
+              </SheetTitle>
+            </SheetHeader>
           
           <nav className="flex flex-col gap-2 p-5">
             {sidebarItems.map((item, index) => {
@@ -289,6 +323,7 @@ export const Header = memo(() => {
               );
             })}
           </nav>
+          </motion.div>
           
           {/* Bottom ambient glow */}
           <div 
