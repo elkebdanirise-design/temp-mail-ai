@@ -20,7 +20,6 @@ const PricingSection = lazy(() => import('@/components/PricingSection').then(m =
 const ComparisonTable = lazy(() => import('@/components/ComparisonTable').then(m => ({ default: m.ComparisonTable })));
 const TestimonialsSection = lazy(() => import('@/components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })));
 const FastestEmailSection = lazy(() => import('@/components/FastestEmailSection').then(m => ({ default: m.FastestEmailSection })));
-const FeaturesSection = lazy(() => import('@/components/FeaturesSection').then(m => ({ default: m.FeaturesSection })));
 
 // Minimal loading fallback
 const SectionFallback = memo(() => <div className="min-h-[100px]" />);
@@ -152,26 +151,23 @@ const Index = () => {
 
           {/* Lazy loaded sections with minimal fallback */}
           <Suspense fallback={<SectionFallback />}>
-            {/* 1. Features Section */}
-            <FeaturesSection />
-
-            {/* 2. Privacy Solution Section */}
+            {/* 1. Privacy Solution Section */}
             <PrivacySolutionSection />
 
-            {/* 3. Testimonials Section */}
+            {/* 2. Testimonials Section */}
             <TestimonialsSection />
 
-            {/* 4. SEO Section - Why Use Temp Mail AI */}
+            {/* 3. SEO Section - Why Use Temp Mail AI */}
             <SEOSection />
 
-            {/* 5. Blog Section */}
+            {/* 4. Blog Section */}
             <BlogSection />
 
-            {/* 6. Pricing & Comparison */}
+            {/* 5. Pricing & Comparison */}
             <PricingSection />
             <ComparisonTable />
 
-            {/* 7. The Fastest Disposable Email of 2026 - Before Footer */}
+            {/* 6. The Fastest Disposable Email of 2026 - Before Footer */}
             <FastestEmailSection />
           </Suspense>
 
