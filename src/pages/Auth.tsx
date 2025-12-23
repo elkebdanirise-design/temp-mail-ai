@@ -64,25 +64,31 @@ const Auth = () => {
   }
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.4 }}
         className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
         style={{
           background: 'linear-gradient(180deg, hsl(0 0% 2%) 0%, hsl(0 0% 4%) 50%, hsl(0 0% 2%) 100%)'
         }}
       >
         {/* Background glow effects - Amber theme */}
-        <div 
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
           className="absolute inset-0 pointer-events-none"
           style={{
             background: 'radial-gradient(ellipse 80% 50% at 50% 0%, hsl(35 100% 50% / 0.1) 0%, transparent 50%)'
           }}
         />
-        <div 
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className="absolute inset-0 pointer-events-none"
           style={{
             background: 'radial-gradient(ellipse 60% 40% at 50% 100%, hsl(25 90% 45% / 0.06) 0%, transparent 50%)'
@@ -99,6 +105,7 @@ const Auth = () => {
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{
               y: [0, -40, 0],
               opacity: [0.2, 0.7, 0.2],
@@ -107,20 +114,20 @@ const Auth = () => {
             transition={{
               duration: 4 + Math.random() * 3,
               repeat: Infinity,
-              delay: Math.random() * 2,
+              delay: 0.5 + Math.random() * 2,
             }}
           />
         ))}
 
         {/* Auth Card - Slide up animation */}
         <motion.div
-          initial={{ opacity: 0, y: 60, scale: 0.9 }}
+          initial={{ opacity: 0, y: 80, scale: 0.92 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 40, scale: 0.95 }}
           transition={{ 
-            duration: 0.5, 
+            duration: 0.6, 
             ease: [0.16, 1, 0.3, 1],
-            opacity: { duration: 0.3 }
+            opacity: { duration: 0.4 }
           }}
           className="relative w-full max-w-md"
         >
