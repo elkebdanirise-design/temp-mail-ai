@@ -215,7 +215,7 @@ export const Header = memo(() => {
             }}
           />
           
-          {/* Inner content wrapper with spring bounce */}
+          {/* Inner content wrapper with spring bounce + swipe to close */}
           <motion.div
             initial={{ x: -20, opacity: 0, scale: 0.98 }}
             animate={{ x: 0, opacity: 1, scale: 1 }}
@@ -226,7 +226,15 @@ export const Header = memo(() => {
               mass: 0.6,
               delay: 0.05
             }}
-            className="flex flex-col h-full overflow-hidden"
+            drag="x"
+            dragConstraints={{ left: -100, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -50 || info.velocity.x < -300) {
+                setSidebarOpen(false);
+              }
+            }}
+            className="flex flex-col h-full overflow-hidden touch-pan-y"
           >
             {/* Compact Brand Header */}
             <SheetHeader className="p-4 pb-3 border-b border-white/5 shrink-0">
