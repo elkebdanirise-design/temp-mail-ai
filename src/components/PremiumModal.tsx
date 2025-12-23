@@ -2,17 +2,19 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Key, Crown, Check, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface PremiumModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onActivate: (key: string) => void;
+  onActivate: (key: string) => Promise<{ success: boolean; error?: string }>;
 }
 
 export const PremiumModal = ({ isOpen, onClose, onActivate }: PremiumModalProps) => {
   const [licenseKey, setLicenseKey] = useState('');
   const [isActivating, setIsActivating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const handleActivate = async () => {
     if (!licenseKey.trim()) {
@@ -23,17 +25,13 @@ export const PremiumModal = ({ isOpen, onClose, onActivate }: PremiumModalProps)
     setIsActivating(true);
     setError(null);
 
-    // Simulate activation check
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // Valid format: AURA-PRO-2026-XXXX (where XXXX is any 4 characters)
-    const validKeyPattern = /^AURA-PRO-2026-.{4}$/;
+    const result = await onActivate(licenseKey.trim());
     
-    if (validKeyPattern.test(licenseKey.toUpperCase())) {
-      onActivate(licenseKey);
+    if (result.success) {
+      setLicenseKey('');
       onClose();
     } else {
-      setError('Invalid license key format. Expected: AURA-PRO-2026-XXXX');
+      setError(result.error || 'Invalid license key');
     }
 
     setIsActivating(false);
@@ -107,11 +105,13 @@ export const PremiumModal = ({ isOpen, onClose, onActivate }: PremiumModalProps)
                           backgroundClip: 'text',
                         }}
                       >
-                        Upgrade to Pro
+                        Redeem License Key
                       </span>
                       <Sparkles className="w-4 h-4" style={{ color: 'hsl(45 85% 55%)' }} />
                     </h3>
-                    <p className="text-sm" style={{ color: 'hsl(200 12% 50%)' }}>Unlock premium features</p>
+                    <p className="text-sm" style={{ color: 'hsl(200 12% 50%)' }}>
+                      {user ? 'Activate your VIP membership' : 'Sign in for full benefits'}
+                    </p>
                   </div>
                 </div>
 
@@ -140,6 +140,22 @@ export const PremiumModal = ({ isOpen, onClose, onActivate }: PremiumModalProps)
                     </motion.div>
                   ))}
                 </div>
+
+                {/* Not logged in warning */}
+                {!user && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-4 p-3 rounded-xl text-sm"
+                    style={{
+                      background: 'hsl(var(--aurora-orange) / 0.1)',
+                      border: '1px solid hsl(var(--aurora-orange) / 0.2)',
+                      color: 'hsl(var(--aurora-orange))'
+                    }}
+                  >
+                    <a href="/auth" className="font-medium hover:underline">Sign in</a> to save your VIP status across devices
+                  </motion.div>
+                )}
 
                 {/* Cyber-Capsule License Key Input */}
                 <div className="space-y-3">
