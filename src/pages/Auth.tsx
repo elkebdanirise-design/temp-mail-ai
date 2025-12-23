@@ -1,24 +1,64 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
-import { Sparkles, X, Shield } from 'lucide-react';
+import { Sparkles, X, Shield, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuraLogo } from '@/components/AuraLogo';
 import { useAuth } from '@/contexts/AuthContext';
+import confetti from 'canvas-confetti';
 
 const Auth = () => {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
   
   const { user, isLoading, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect if already logged in
+  // Confetti celebration function
+  const triggerConfetti = useCallback(() => {
+    const duration = 2000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+    const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+
+    const interval = setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+      if (timeLeft <= 0) return clearInterval(interval);
+
+      const particleCount = 50 * (timeLeft / duration);
+
+      // Amber/gold themed confetti
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+        colors: ['#f59e0b', '#fbbf24', '#d97706', '#fcd34d', '#ffffff'],
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+        colors: ['#f59e0b', '#fbbf24', '#d97706', '#fcd34d', '#ffffff'],
+      });
+    }, 250);
+  }, []);
+
+  // Handle successful login with celebration
   useEffect(() => {
-    if (!isLoading && user) {
-      navigate('/', { replace: true });
+    if (!isLoading && user && !showSuccess) {
+      setShowSuccess(true);
+      triggerConfetti();
+      
+      // Delay navigation to show success state
+      const timer = setTimeout(() => {
+        navigate('/', { replace: true });
+      }, 2000);
+      
+      return () => clearTimeout(timer);
     }
-  }, [user, isLoading, navigate]);
+  }, [user, isLoading, navigate, showSuccess, triggerConfetti]);
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
@@ -40,6 +80,86 @@ const Auth = () => {
   const handleClose = () => {
     navigate('/', { replace: true });
   };
+
+  // Show success celebration state
+  if (showSuccess) {
+    return (
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{
+          background: 'linear-gradient(180deg, hsl(0 0% 2%) 0%, hsl(0 0% 4%) 50%, hsl(0 0% 2%) 100%)'
+        }}
+      >
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          className="flex flex-col items-center gap-6"
+        >
+          {/* Success checkmark */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 15, delay: 0.1 }}
+            className="w-24 h-24 rounded-full flex items-center justify-center"
+            style={{
+              background: 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)))',
+              boxShadow: '0 0 60px hsl(var(--aurora-orange) / 0.5)'
+            }}
+          >
+            <Check className="w-12 h-12 text-white" strokeWidth={3} />
+          </motion.div>
+          
+          {/* Welcome text */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-center"
+          >
+            <h2 
+              className="text-2xl font-bold mb-2"
+              style={{
+                background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 80%) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              Welcome Back!
+            </h2>
+            <p style={{ color: 'hsl(0 0% 50%)' }}>
+              Redirecting you to the dashboard...
+            </p>
+          </motion.div>
+          
+          {/* Loading dots */}
+          <motion.div 
+            className="flex gap-1.5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={i}
+                className="w-2 h-2 rounded-full"
+                style={{ background: 'hsl(var(--aurora-orange))' }}
+                animate={{ 
+                  scale: [1, 1.3, 1],
+                  opacity: [0.5, 1, 0.5]
+                }}
+                transition={{
+                  duration: 0.8,
+                  repeat: Infinity,
+                  delay: i * 0.15
+                }}
+              />
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+  }
 
   // Show loading state while checking auth
   if (isLoading) {
