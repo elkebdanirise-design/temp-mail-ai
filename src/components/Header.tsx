@@ -282,60 +282,6 @@ export const Header = memo(() => {
                       }}
                     />
                   ))}
-                  
-                  {/* Expanding ring pulse */}
-                  <motion.span
-                    className="absolute rounded-full pointer-events-none"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      border: '2px solid hsl(var(--aurora-orange) / 0.6)',
-                      boxShadow: '0 0 15px hsl(var(--aurora-orange) / 0.4), inset 0 0 10px hsl(var(--aurora-sunset) / 0.2)'
-                    }}
-                    initial={{ 
-                      scale: 0.8, 
-                      opacity: 0 
-                    }}
-                    animate={{ 
-                      scale: [0.8, 1.8, 2.2],
-                      opacity: [0, 0.8, 0]
-                    }}
-                    transition={{
-                      duration: 1,
-                      delay: 0.5,
-                      ease: 'easeOut'
-                    }}
-                  />
-                  
-                  {/* Second ring pulse (slightly delayed) */}
-                  <motion.span
-                    className="absolute rounded-full pointer-events-none"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      border: '1px solid hsl(var(--aurora-sunset) / 0.5)',
-                      boxShadow: '0 0 10px hsl(var(--aurora-sunset) / 0.3)'
-                    }}
-                    initial={{ 
-                      scale: 0.8, 
-                      opacity: 0 
-                    }}
-                    animate={{ 
-                      scale: [0.8, 1.5, 1.9],
-                      opacity: [0, 0.6, 0]
-                    }}
-                    transition={{
-                      duration: 0.9,
-                      delay: 0.65,
-                      ease: 'easeOut'
-                    }}
-                  />
                 </motion.div>
                 <motion.div 
                   className="flex flex-col"
