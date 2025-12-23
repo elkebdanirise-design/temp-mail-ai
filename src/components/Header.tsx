@@ -103,20 +103,20 @@ export const Header = memo(() => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden w-7 h-7 text-muted-foreground hover:text-foreground hover:bg-white/5 shrink-0"
+                className="md:hidden w-8 h-8 text-muted-foreground hover:text-foreground hover:bg-white/5 shrink-0"
                 onClick={() => setSidebarOpen(true)}
                 aria-label="Open menu"
               >
-                <Menu className="w-3.5 h-3.5" />
+                <Menu className="w-4 h-4" />
               </Button>
 
-              {/* Unified brand unit - More compact on mobile (~15% smaller) */}
-              <div className="items-center gap-0 flex flex-row">
-                <AuraLogo className="w-7 h-7 sm:w-10 sm:h-10 md:w-[5rem] md:h-[5rem] lg:w-[6.25rem] lg:h-[6.25rem] -mr-0.5 sm:-mr-1 md:-mr-2" />
+              {/* Unified brand unit - Increased ~10-15% on mobile, shifted left */}
+              <div className="items-center gap-0 flex flex-row -ml-1">
+                <AuraLogo className="w-8 h-8 sm:w-11 sm:h-11 md:w-[5rem] md:h-[5rem] lg:w-[6.25rem] lg:h-[6.25rem] -mr-0.5 sm:-mr-1 md:-mr-2" />
                 
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1 md:gap-2">
-                    <h1 className="font-display text-sm sm:text-base md:text-[1.65rem] font-extrabold" style={{ letterSpacing: '-0.02em' }}>
+                    <h1 className="font-display text-[15px] sm:text-lg md:text-[1.65rem] font-extrabold whitespace-nowrap" style={{ letterSpacing: '-0.02em' }}>
                       <span style={{
                         background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 85%) 100%)',
                         WebkitBackgroundClip: 'text',
@@ -137,7 +137,7 @@ export const Header = memo(() => {
                     </h1>
                     {isPremium && <VIPBadge />}
                   </div>
-                  <span className="text-[5px] sm:text-[6px] md:text-[10px] font-semibold uppercase tracking-[0.1em] sm:tracking-[0.12em] md:tracking-[0.25em]" style={{ color: 'hsl(0 0% 45%)' }}>
+                  <span className="text-[6px] sm:text-[7px] md:text-[10px] font-semibold uppercase tracking-[0.1em] sm:tracking-[0.12em] md:tracking-[0.25em] text-center md:text-left" style={{ color: 'hsl(0 0% 45%)' }}>
                     AI-POWERED PRIVACY
                   </span>
                 </div>
@@ -291,25 +291,25 @@ export const Header = memo(() => {
                 </DropdownMenu>
               ) : (
                 <>
-                  {/* Pro Button - First on mobile */}
+                  {/* Pro Button - First on mobile - Unified dimensions */}
                   {!isPremium && (
-                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-lg md:rounded-xl h-7 md:h-10 px-2.5 md:px-4 text-[10px] md:text-sm">
-                      <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="flex items-center gap-1 md:gap-2">
-                        <Zap className="w-3 h-3 md:w-4 md:h-4" />
+                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-lg md:rounded-xl h-8 md:h-10 min-w-[60px] md:min-w-[120px] px-3 md:px-4 text-[11px] md:text-sm">
+                      <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="flex items-center justify-center gap-1.5 md:gap-2">
+                        <Zap className="w-3.5 h-3.5 md:w-4 md:h-4" />
                         <span className="hidden sm:inline">Get Pro Systems</span>
                         <span className="sm:hidden">Pro</span>
                       </a>
                     </Button>
                   )}
                   
-                  {/* Login Button - Diamond Glow style */}
+                  {/* Login Button - Diamond Glow style - Unified dimensions */}
                   <Button 
                     asChild 
                     variant="ghost" 
-                    className="diamond-glow-btn h-7 md:h-10 px-2.5 md:px-4 rounded-lg md:rounded-xl text-[10px] md:text-sm font-medium"
+                    className="diamond-glow-btn-synced h-8 md:h-10 min-w-[60px] md:min-w-[120px] px-3 md:px-4 rounded-lg md:rounded-xl text-[11px] md:text-sm font-semibold"
                   >
-                    <Link to="/auth" className="flex items-center gap-1 md:gap-2" style={{ color: 'hsl(var(--aurora-orange))' }}>
-                      <LogIn className="w-3 h-3 md:w-4 md:h-4" />
+                    <Link to="/auth" className="flex items-center justify-center gap-1.5 md:gap-2" style={{ color: 'hsl(var(--aurora-orange))' }}>
+                      <LogIn className="w-3.5 h-3.5 md:w-4 md:h-4" />
                       <span className="hidden sm:inline">Sign In</span>
                       <span className="sm:hidden">Login</span>
                     </Link>
@@ -317,11 +317,11 @@ export const Header = memo(() => {
                 </>
               )}
               
-              {/* Pro button for logged in non-premium users */}
+              {/* Pro button for logged in non-premium users - Unified dimensions */}
               {user && !isPremium && (
-                <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-lg md:rounded-xl h-7 md:h-10 px-2.5 md:px-4 text-[10px] md:text-sm">
-                  <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="flex items-center gap-1 md:gap-2">
-                    <Zap className="w-3 h-3 md:w-4 md:h-4" />
+                <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense hover:scale-102 transition-transform text-white font-semibold rounded-lg md:rounded-xl h-8 md:h-10 min-w-[60px] md:min-w-[120px] px-3 md:px-4 text-[11px] md:text-sm">
+                  <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="flex items-center justify-center gap-1.5 md:gap-2">
+                    <Zap className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     <span className="hidden sm:inline">Get Pro Systems</span>
                     <span className="sm:hidden">Pro</span>
                   </a>
