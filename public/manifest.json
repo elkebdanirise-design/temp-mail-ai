@@ -1,0 +1,25 @@
+{
+  "name": "Temp Mail AI",
+  "short_name": "TempMail AI",
+  "description": "AI-powered temporary email service for privacy protection",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#f97316",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/lovable-uploads/233fffab-b388-432b-94fa-4d216e249b1b.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/lovable-uploads/233fffab-b388-432b-94fa-4d216e249b1b.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities", "security"]
+}
