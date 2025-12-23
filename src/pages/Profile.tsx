@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { User, Crown, Mail, Calendar, Key, LogOut, ArrowLeft, Shield, Sparkles, Check, AlertCircle, RefreshCw, CheckCircle } from 'lucide-react';
+import { User, Crown, Mail, Calendar, Key, LogOut, ArrowLeft, Shield, Sparkles, Check, AlertCircle, RefreshCw, CheckCircle, Lock, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuraLogo } from '@/components/AuraLogo';
 import { VIPBadge } from '@/components/VIPBadge';
@@ -10,7 +10,7 @@ import { usePremium } from '@/contexts/PremiumContext';
 import { toast } from 'sonner';
 
 const Profile = () => {
-  const { user, signOut, resendVerificationEmail, isLoading: authLoading } = useAuth();
+  const { user, signOut, resendVerificationEmail, updatePassword, isLoading: authLoading } = useAuth();
   const { isPremium, licenseKey, activatePremium, isLoading: premiumLoading } = usePremium();
   const navigate = useNavigate();
   
@@ -19,9 +19,22 @@ const Profile = () => {
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [isResendingVerification, setIsResendingVerification] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
+  
+  // Password change state
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
 
   // Check if email is verified
   const isEmailVerified = user?.email_confirmed_at != null;
+  
+  // Check if user signed up with email (not OAuth)
+  const isEmailUser = user?.app_metadata?.provider === 'email' || 
+                      user?.identities?.some(id => id.provider === 'email');
 
   // Redirect if not logged in
   useEffect(() => {
@@ -68,6 +81,38 @@ const Profile = () => {
       toast.error('Failed to send verification email');
     } finally {
       setIsResendingVerification(false);
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    setPasswordError('');
+    
+    if (newPassword.length < 6) {
+      setPasswordError('Password must be at least 6 characters');
+      return;
+    }
+    
+    if (newPassword !== confirmPassword) {
+      setPasswordError('Passwords do not match');
+      return;
+    }
+    
+    setIsChangingPassword(true);
+    
+    try {
+      const { error } = await updatePassword(newPassword);
+      if (error) {
+        setPasswordError(error.message || 'Failed to update password');
+      } else {
+        toast.success('Password updated successfully!');
+        setShowPasswordChange(false);
+        setNewPassword('');
+        setConfirmPassword('');
+      }
+    } catch (err) {
+      setPasswordError('Failed to update password');
+    } finally {
+      setIsChangingPassword(false);
     }
   };
 
@@ -477,6 +522,137 @@ const Profile = () => {
                     </Button>
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Password Change Section (only for email users) */}
+            {isEmailUser && (
+              <div 
+                className="p-4 rounded-xl mb-6"
+                style={{
+                  background: 'hsl(0 0% 100% / 0.03)',
+                  border: '1px solid hsl(0 0% 100% / 0.05)'
+                }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold flex items-center gap-2" style={{ color: 'hsl(0 0% 70%)' }}>
+                    <Lock className="w-4 h-4" /> Password
+                  </h3>
+                  {!showPasswordChange && (
+                    <Button
+                      onClick={() => setShowPasswordChange(true)}
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 px-3 rounded-lg text-xs"
+                      style={{ color: 'hsl(var(--aurora-orange))' }}
+                    >
+                      Change Password
+                    </Button>
+                  )}
+                </div>
+                
+                <AnimatePresence>
+                  {showPasswordChange ? (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="space-y-3"
+                    >
+                      {/* New Password */}
+                      <div className="relative">
+                        <input
+                          type={showNewPassword ? 'text' : 'password'}
+                          placeholder="New password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          className="w-full h-10 px-3 pr-10 rounded-lg bg-black/30 border text-sm focus:outline-none"
+                          style={{ 
+                            borderColor: 'hsl(0 0% 100% / 0.1)',
+                            color: 'hsl(0 0% 80%)'
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowNewPassword(!showNewPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2"
+                          style={{ color: 'hsl(0 0% 50%)' }}
+                        >
+                          {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                      
+                      {/* Confirm Password */}
+                      <div className="relative">
+                        <input
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          placeholder="Confirm new password"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          className="w-full h-10 px-3 pr-10 rounded-lg bg-black/30 border text-sm focus:outline-none"
+                          style={{ 
+                            borderColor: 'hsl(0 0% 100% / 0.1)',
+                            color: 'hsl(0 0% 80%)'
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2"
+                          style={{ color: 'hsl(0 0% 50%)' }}
+                        >
+                          {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                      
+                      {/* Error Message */}
+                      {passwordError && (
+                        <p className="text-xs" style={{ color: 'hsl(0 70% 60%)' }}>{passwordError}</p>
+                      )}
+                      
+                      {/* Action Buttons */}
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => {
+                            setShowPasswordChange(false);
+                            setNewPassword('');
+                            setConfirmPassword('');
+                            setPasswordError('');
+                          }}
+                          variant="ghost"
+                          size="sm"
+                          className="flex-1 h-9 rounded-lg text-xs"
+                          style={{ color: 'hsl(0 0% 60%)' }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          onClick={handlePasswordChange}
+                          disabled={isChangingPassword || !newPassword || !confirmPassword}
+                          size="sm"
+                          className="flex-1 h-9 rounded-lg text-xs font-medium"
+                          style={{
+                            background: 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)))'
+                          }}
+                        >
+                          {isChangingPassword ? (
+                            <motion.div
+                              className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                            />
+                          ) : (
+                            'Update Password'
+                          )}
+                        </Button>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <p className="text-xs" style={{ color: 'hsl(0 0% 50%)' }}>
+                      ••••••••••••
+                    </p>
+                  )}
+                </AnimatePresence>
               </div>
             )}
 
