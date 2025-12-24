@@ -71,51 +71,21 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
-      // Check if the license key exists and is unused
-      const { data: keyData, error: keyError } = await supabase
-        .from('license_keys')
-        .select('*')
-        .eq('license_key', key)
-        .maybeSingle();
+      // Use atomic database function to prevent race conditions
+      const { data, error } = await supabase.rpc('redeem_license_key', {
+        key_to_redeem: key,
+        redeeming_user_id: user.id
+      });
 
-      if (keyError) {
-        return { success: false, error: 'Error validating license key' };
-      }
-
-      if (!keyData) {
-        return { success: false, error: 'Invalid license key' };
-      }
-
-      if (keyData.is_used) {
-        return { success: false, error: 'This license key has already been redeemed' };
-      }
-
-      // Mark the key as used
-      const { error: updateKeyError } = await supabase
-        .from('license_keys')
-        .update({
-          is_used: true,
-          used_by: user.id,
-          used_at: new Date().toISOString()
-        })
-        .eq('license_key', key);
-
-      if (updateKeyError) {
+      if (error) {
+        console.error('Error calling redeem_license_key:', error);
         return { success: false, error: 'Error redeeming license key' };
       }
 
-      // Update the user's profile to is_pro: true
-      const { error: updateProfileError } = await supabase
-        .from('profiles')
-        .update({
-          is_pro: true,
-          license_key: key,
-          activated_at: new Date().toISOString()
-        })
-        .eq('user_id', user.id);
-
-      if (updateProfileError) {
-        return { success: false, error: 'Error updating profile' };
+      const result = data as { success: boolean; error?: string };
+      
+      if (!result.success) {
+        return { success: false, error: result.error || 'Failed to redeem license key' };
       }
 
       setLicenseKey(key);
