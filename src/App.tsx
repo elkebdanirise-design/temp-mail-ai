@@ -17,6 +17,7 @@ import Privacy from "./pages/Privacy";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Sitemap from "./pages/Sitemap";
+import SitemapXML from "./pages/SitemapXML";
 import EmailView from "./pages/EmailView";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
@@ -47,6 +48,7 @@ const App = () => (
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/sitemap" element={<Sitemap />} />
+                <Route path="/sitemap.xml" element={<SitemapXML />} />
 
                 {/* Message view page */}
                 <Route path="/message/:id" element={<EmailView />} />

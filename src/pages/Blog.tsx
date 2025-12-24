@@ -1,7 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { Search, Loader2, ArrowLeft, X, Bookmark } from 'lucide-react';
+import { Search, Loader2, ArrowLeft, X, Bookmark, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -10,8 +10,9 @@ import { AuroraBackground } from '@/components/AuroraBackground';
 import { blogPosts, blogCategories, BlogCategory, getPostsByCategory } from '@/data/blogData';
 import { useBookmarks } from '@/hooks/useBookmarks';
 
-const POSTS_PER_PAGE = 6;
+const POSTS_PER_PAGE = 12; // Increased for better performance with large datasets
 const MAX_SEARCH_LENGTH = 100;
+const INFINITE_SCROLL_THRESHOLD = 300; // px from bottom to trigger load
 
 export default function Blog() {
   const [activeCategory, setActiveCategory] = useState<BlogCategory>('All');
@@ -19,6 +20,7 @@ export default function Blog() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
   
   const { bookmarks, bookmarkCount } = useBookmarks();
 
@@ -44,44 +46,96 @@ export default function Blog() {
     return posts;
   }, [activeCategory, searchQuery, showBookmarksOnly, bookmarks]);
 
-  const displayedPosts = filteredPosts.slice(0, visiblePosts);
+  const displayedPosts = useMemo(() => {
+    return filteredPosts.slice(0, visiblePosts);
+  }, [filteredPosts, visiblePosts]);
+  
   const hasMorePosts = visiblePosts < filteredPosts.length;
+  const remainingPosts = filteredPosts.length - visiblePosts;
 
-  const handleCategoryChange = (category: BlogCategory) => {
+  const handleCategoryChange = useCallback((category: BlogCategory) => {
     setActiveCategory(category);
     setVisiblePosts(POSTS_PER_PAGE);
     setShowBookmarksOnly(false);
-  };
+  }, []);
 
-  const toggleBookmarksFilter = () => {
+  const toggleBookmarksFilter = useCallback(() => {
     setShowBookmarksOnly(prev => !prev);
     setVisiblePosts(POSTS_PER_PAGE);
-  };
+  }, []);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.slice(0, MAX_SEARCH_LENGTH);
     setSearchQuery(value);
     setVisiblePosts(POSTS_PER_PAGE);
-  };
+  }, []);
 
-  const clearSearch = () => {
+  const clearSearch = useCallback(() => {
     setSearchQuery('');
     setVisiblePosts(POSTS_PER_PAGE);
-  };
+  }, []);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = useCallback(() => {
+    if (isLoading || !hasMorePosts) return;
+    
     setIsLoading(true);
+    // Simulate network delay - remove when using real DB
     setTimeout(() => {
-      setVisiblePosts(prev => prev + POSTS_PER_PAGE);
+      setVisiblePosts(prev => Math.min(prev + POSTS_PER_PAGE, filteredPosts.length));
       setIsLoading(false);
-    }, 500);
-  };
+    }, 300);
+  }, [isLoading, hasMorePosts, filteredPosts.length]);
+
+  // Infinite scroll with Intersection Observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMorePosts && !isLoading) {
+          handleLoadMore();
+        }
+      },
+      { rootMargin: `${INFINITE_SCROLL_THRESHOLD}px` }
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasMorePosts, isLoading, handleLoadMore]);
 
   return (
     <>
       <Helmet>
-        <title>Blog | Temp Mail AI</title>
-        <meta name="description" content="Stay informed about online privacy, security tips, and the latest updates in disposable email technology. Expert insights on protecting your digital identity." />
+        <title>Blog | Temp Mail AI - Privacy Tips & Cybersecurity Guides</title>
+        <meta name="description" content="Stay informed about online privacy, security tips, and the latest updates in disposable email technology. Expert insights on protecting your digital identity with Temp Mail AI." />
+        <meta property="og:title" content="Blog | Temp Mail AI - Privacy Insights" />
+        <meta property="og:description" content="Expert guides on protecting your digital identity, security best practices, and the latest in privacy technology." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://temp-mail-ai.vercel.app/blog" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Blog | Temp Mail AI" />
+        <meta name="twitter:description" content="Expert guides on protecting your digital identity and security best practices." />
+        <link rel="canonical" href="https://temp-mail-ai.vercel.app/blog" />
+        
+        {/* Blog JSON-LD */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "name": "Temp Mail AI Blog",
+            "description": "Privacy tips, cybersecurity guides, and updates on disposable email technology",
+            "url": "https://temp-mail-ai.vercel.app/blog",
+            "publisher": {
+              "@type": "Organization",
+              "name": "Temp Mail AI",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://temp-mail-ai.vercel.app/favicon-mail.png"
+              }
+            }
+          })}
+        </script>
       </Helmet>
 
       <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
@@ -276,17 +330,15 @@ export default function Blog() {
               </AnimatePresence>
             </div>
 
-            {/* Load More Button */}
-            {hasMorePosts && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex justify-center"
-              >
-                <button
+            {/* Load More / Infinite Scroll Trigger */}
+            <div ref={loadMoreRef} className="flex justify-center py-8">
+              {hasMorePosts && (
+                <motion.button
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
                   onClick={handleLoadMore}
                   disabled={isLoading}
-                  className="relative px-8 py-3.5 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 disabled:hover:scale-100"
+                  className="relative px-8 py-3.5 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 disabled:hover:scale-100 flex items-center gap-2"
                   style={{
                     background: 'linear-gradient(145deg, hsl(220 30% 10%), hsl(220 30% 6%))',
                     border: '1px solid hsl(var(--glass-border))',
@@ -308,12 +360,21 @@ export default function Blog() {
                         Loading...
                       </>
                     ) : (
-                      'Load More Articles'
+                      <>
+                        <ChevronDown className="w-4 h-4" />
+                        Load {Math.min(remainingPosts, POSTS_PER_PAGE)} More Articles
+                      </>
                     )}
                   </span>
-                </button>
-              </motion.div>
-            )}
+                </motion.button>
+              )}
+              
+              {!hasMorePosts && filteredPosts.length > 0 && (
+                <p className="text-sm" style={{ color: 'hsl(200 15% 50%)' }}>
+                  Showing all {filteredPosts.length} articles
+                </p>
+              )}
+            </div>
 
             {/* No Results */}
             {filteredPosts.length === 0 && (
@@ -323,7 +384,12 @@ export default function Blog() {
                 className="text-center py-16"
               >
                 <p style={{ color: 'hsl(200 15% 55%)' }}>
-                  No articles found in this category.
+                  {showBookmarksOnly 
+                    ? 'No saved articles yet. Bookmark articles to see them here!'
+                    : searchQuery 
+                      ? `No articles found for "${searchQuery}"`
+                      : 'No articles found in this category.'
+                  }
                 </p>
               </motion.div>
             )}

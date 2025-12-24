@@ -1,8 +1,13 @@
+# Temp Mail AI - Robots.txt
+# https://temp-mail-ai.vercel.app
+
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Twitterbot
 Allow: /
@@ -12,3 +17,12 @@ Allow: /
 
 User-agent: *
 Allow: /
+Crawl-delay: 2
+
+# Sitemap location
+Sitemap: https://temp-mail-ai.vercel.app/sitemap.xml
+
+# Disallow sensitive paths
+Disallow: /api/
+Disallow: /message/
+Disallow: /email/

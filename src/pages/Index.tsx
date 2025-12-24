@@ -58,17 +58,34 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Temp Mail AI</title>
+        <title>Temp Mail AI - Free Disposable Email Generator | Secure Anonymous Inbox</title>
         <meta 
           name="description" 
           content="Generate free disposable email addresses instantly with AI verification. Temp Mail AI provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest AI-powered temp mail service of 2026." 
         />
-        <meta name="keywords" content="temp mail ai, temp mail, disposable email, temporary email, anonymous email, ai email, secure inbox, free email, spam protection" />
-        <meta property="og:title" content="Temp Mail AI" />
-        <meta property="og:description" content="Generate AI-verified anonymous temporary email addresses instantly. No signup required. Real-time inbox with military-grade privacy and AI-powered security." />
+        <meta name="keywords" content="temp mail, temp mail ai, disposable email, temporary email, anonymous email, ai email, secure inbox, free email, spam protection, burner email, fake email, throwaway email" />
+        
+        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://tempmail-ai.com/og-image.png" />
-        <link rel="canonical" href="https://tempmail-ai.com" />
+        <meta property="og:url" content="https://temp-mail-ai.vercel.app/" />
+        <meta property="og:title" content="Temp Mail AI - Free Disposable Email Generator" />
+        <meta property="og:description" content="Generate AI-verified anonymous temporary email addresses instantly. No signup required. Real-time inbox with military-grade privacy and AI-powered security." />
+        <meta property="og:image" content="https://temp-mail-ai.vercel.app/lovable-uploads/66b4771e-6d49-4f11-816b-03204f1186b3.png" />
+        <meta property="og:site_name" content="Temp Mail AI" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://temp-mail-ai.vercel.app/" />
+        <meta name="twitter:title" content="Temp Mail AI - Free Disposable Email Generator" />
+        <meta name="twitter:description" content="Generate AI-verified anonymous temporary email addresses instantly. No signup required. Real-time inbox with military-grade privacy." />
+        <meta name="twitter:image" content="https://temp-mail-ai.vercel.app/lovable-uploads/66b4771e-6d49-4f11-816b-03204f1186b3.png" />
+        
+        {/* Additional SEO */}
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="author" content="Temp Mail AI" />
+        <meta name="theme-color" content="#FF6B35" />
+        <link rel="canonical" href="https://temp-mail-ai.vercel.app/" />
         
         {/* JSON-LD Schema Markup for SoftwareApplication */}
         <script type="application/ld+json">
@@ -78,8 +95,10 @@ const Index = () => {
             "name": "Temp Mail AI",
             "applicationCategory": "UtilitiesApplication",
             "operatingSystem": "Web",
-            "description": "AI-powered disposable email service for instant, secure, anonymous temporary email addresses with AI verification",
-            "url": "https://tempmail-ai.com",
+            "description": "AI-powered disposable email service for instant, secure, anonymous temporary email addresses with AI verification. Generate free temp mail in seconds.",
+            "url": "https://temp-mail-ai.vercel.app",
+            "image": "https://temp-mail-ai.vercel.app/lovable-uploads/66b4771e-6d49-4f11-816b-03204f1186b3.png",
+            "screenshot": "https://temp-mail-ai.vercel.app/lovable-uploads/66b4771e-6d49-4f11-816b-03204f1186b3.png",
             "offers": {
               "@type": "Offer",
               "price": "0",
@@ -88,15 +107,55 @@ const Index = () => {
             "aggregateRating": {
               "@type": "AggregateRating",
               "ratingValue": "4.9",
-              "ratingCount": "12847"
+              "ratingCount": "12847",
+              "bestRating": "5",
+              "worstRating": "1"
             },
             "featureList": [
               "AI-verified email generation",
               "Real-time inbox",
               "Zero tracking",
               "Encrypted messages",
-              "AI Smart Shield protection"
-            ]
+              "AI Smart Shield protection",
+              "Instant disposable addresses",
+              "No signup required"
+            ],
+            "author": {
+              "@type": "Organization",
+              "name": "Temp Mail AI"
+            }
+          })}
+        </script>
+        
+        {/* Organization Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Temp Mail AI",
+            "url": "https://temp-mail-ai.vercel.app",
+            "logo": "https://temp-mail-ai.vercel.app/favicon-mail.png",
+            "sameAs": [],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "customer service",
+              "url": "https://temp-mail-ai.vercel.app/contact"
+            }
+          })}
+        </script>
+        
+        {/* WebSite Schema for Search Box */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Temp Mail AI",
+            "url": "https://temp-mail-ai.vercel.app",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://temp-mail-ai.vercel.app/blog?search={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
           })}
         </script>
       </Helmet>
