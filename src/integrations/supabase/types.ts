@@ -90,7 +90,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      redeem_license_key: {
+        Args: { key_to_redeem: string; redeeming_user_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
