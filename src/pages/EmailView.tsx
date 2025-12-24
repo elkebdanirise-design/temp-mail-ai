@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns';
+import DOMPurify from 'dompurify';
 
 import { LegalPageLayout } from '@/components/LegalPageLayout';
 import { Button } from '@/components/ui/button';
@@ -25,9 +26,9 @@ const API_BASE = 'https://api.mail.tm';
 
 const normalizeHtml = (html: MessageDetail['html']) => {
   if (!html) return null;
-  if (Array.isArray(html)) return html.join('');
-  if (typeof html === 'string') return html;
-  return null;
+  const rawHtml = Array.isArray(html) ? html.join('') : typeof html === 'string' ? html : null;
+  // Sanitize HTML content to prevent XSS attacks from malicious emails
+  return rawHtml ? DOMPurify.sanitize(rawHtml) : null;
 };
 
 const EmailView = () => {

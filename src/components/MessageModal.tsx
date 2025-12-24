@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, User, Clock, ArrowLeft, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { formatDistanceToNow } from 'date-fns';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import DOMPurify from 'dompurify';
 
 interface MessageDetail {
   id: string;
@@ -31,6 +32,12 @@ interface MessageModalProps {
 
 export const MessageModal = ({ message, isOpen, onClose, onDelete, isLoading }: MessageModalProps) => {
   const [showHtml, setShowHtml] = useState(true);
+
+  // Sanitize HTML content to prevent XSS attacks from malicious emails
+  const sanitizedHtml = useMemo(() => {
+    if (!message?.html || message.html.length === 0) return null;
+    return DOMPurify.sanitize(message.html.join(''));
+  }, [message?.html]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -171,7 +178,7 @@ export const MessageModal = ({ message, isOpen, onClose, onDelete, isLoading }: 
                 {/* Email Content - Scrollable */}
                 <ScrollArea className="flex-1 min-h-0">
                   <div className="p-4 sm:p-6 md:p-8">
-                    {message.html && message.html.length > 0 && showHtml ? (
+                    {sanitizedHtml && showHtml ? (
                       <div
                         className="prose prose-invert prose-sm sm:prose-base max-w-none 
                           prose-headings:text-foreground prose-p:text-foreground/85 
@@ -181,7 +188,7 @@ export const MessageModal = ({ message, isOpen, onClose, onDelete, isLoading }: 
                           wordBreak: 'break-word',
                           overflowWrap: 'break-word',
                         }}
-                        dangerouslySetInnerHTML={{ __html: message.html.join('') }}
+                        dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
                       />
                     ) : (
                       <pre 
