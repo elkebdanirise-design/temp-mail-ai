@@ -20,6 +20,7 @@ const PricingSection = lazy(() => import('@/components/PricingSection').then(m =
 const ComparisonTable = lazy(() => import('@/components/ComparisonTable').then(m => ({ default: m.ComparisonTable })));
 const TestimonialsSection = lazy(() => import('@/components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })));
 const FastestEmailSection = lazy(() => import('@/components/FastestEmailSection').then(m => ({ default: m.FastestEmailSection })));
+const LimitedOfferBanner = lazy(() => import('@/components/LimitedOfferBanner').then(m => ({ default: m.LimitedOfferBanner })));
 
 // Minimal loading fallback
 const SectionFallback = memo(() => <div className="min-h-[100px]" />);
@@ -222,7 +223,8 @@ const Index = () => {
             {/* 4. Blog Section */}
             <BlogSection />
 
-            {/* 5. Pricing & Comparison */}
+            {/* 5. Limited Offer Banner + Pricing & Comparison */}
+            <LimitedOfferBanner />
             <PricingSection />
             <ComparisonTable />
 

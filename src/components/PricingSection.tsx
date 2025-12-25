@@ -22,7 +22,7 @@ const proFeatures = [
 
 export const PricingSection = () => {
   return (
-    <section id="pricing" className="py-16 md:py-24">
+    <section id="pricing-section" className="py-16 md:py-24">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <motion.div
