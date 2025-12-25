@@ -187,39 +187,61 @@ export const useEmailSessions = () => {
     return `${hours}h ${minutes}m`;
   }, []);
 
-  // Migrate anonymous sessions to user account on login
+  // Migrate anonymous sessions to user account on login (Google OAuth, etc.)
   const migrateSessionsToUser = useCallback(async () => {
     if (!user) return;
 
     try {
-      // Find anonymous sessions with this browser session ID
-      const { data: anonSessions } = await supabase
+      console.log('[EmailSessions] Starting migration for user:', user.id);
+      
+      // Find anonymous sessions with this browser session ID that haven't been migrated
+      const { data: anonSessions, error: fetchError } = await supabase
         .from('email_sessions')
         .select('*')
         .eq('session_id', browserSessionId)
-        .is('user_id', null);
+        .is('user_id', null)
+        .gt('expires_at', new Date().toISOString()); // Only migrate non-expired sessions
+
+      if (fetchError) {
+        console.error('[EmailSessions] Error fetching anonymous sessions:', fetchError);
+        return;
+      }
 
       if (anonSessions && anonSessions.length > 0) {
-        // Calculate new expiry for pro users
-        const { data: expiryData } = await supabase.rpc('calculate_retention_expiry', {
+        console.log(`[EmailSessions] Found ${anonSessions.length} anonymous sessions to migrate`);
+        
+        // Calculate new expiry based on user's pro status
+        const { data: expiryData, error: expiryError } = await supabase.rpc('calculate_retention_expiry', {
           p_user_id: user.id
         });
 
-        // Migrate sessions to user
-        for (const session of anonSessions) {
-          await supabase
-            .from('email_sessions')
-            .update({ 
-              user_id: user.id,
-              expires_at: expiryData || session.expires_at
-            })
-            .eq('id', session.id);
+        if (expiryError) {
+          console.error('[EmailSessions] Error calculating expiry:', expiryError);
         }
+
+        // Migrate all sessions in a single batch update for efficiency
+        const sessionIds = anonSessions.map(s => s.id);
+        const { error: updateError } = await supabase
+          .from('email_sessions')
+          .update({ 
+            user_id: user.id,
+            expires_at: expiryData || new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+          })
+          .in('id', sessionIds);
+
+        if (updateError) {
+          console.error('[EmailSessions] Error migrating sessions:', updateError);
+        } else {
+          console.log(`[EmailSessions] Successfully migrated ${anonSessions.length} sessions to user ${user.id}`);
+        }
+      } else {
+        console.log('[EmailSessions] No anonymous sessions to migrate');
       }
 
+      // Refresh sessions after migration
       await fetchSessions();
     } catch (err) {
-      console.error('Error migrating sessions:', err);
+      console.error('[EmailSessions] Unexpected error during migration:', err);
     }
   }, [user, browserSessionId, fetchSessions]);
 
