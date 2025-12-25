@@ -1,11 +1,24 @@
 import { motion } from 'framer-motion';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, Shield, Lock, Zap, Globe, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { blogPosts as allBlogPosts } from '@/data/blogData';
+import { useBlogPosts } from '@/hooks/useBlogPosts';
 
-const blogPosts = allBlogPosts.slice(0, 3);
+// Category to icon/gradient mapping for styling
+const categoryStyles: Record<string, { icon: any; gradient: string; glowColor: string }> = {
+  'Privacy Tips': { icon: Shield, gradient: 'from-fuchsia-500 to-purple-600', glowColor: 'hsl(280 80% 60%)' },
+  'Cyber Security': { icon: Lock, gradient: 'from-emerald-400 to-cyan-500', glowColor: 'hsl(170 70% 50%)' },
+  'Platform Updates': { icon: Zap, gradient: 'from-amber-400 to-orange-500', glowColor: 'hsl(35 90% 55%)' },
+  'Tech News': { icon: Globe, gradient: 'from-blue-400 to-indigo-500', glowColor: 'hsl(230 70% 60%)' },
+};
+
+const defaultStyle = { icon: User, gradient: 'from-gray-400 to-gray-600', glowColor: 'hsl(0 0% 50%)' };
 
 export const BlogSection = () => {
+  const { displayedPosts, isLoading } = useBlogPosts({ postsPerPage: 3 });
+  
+  // Get only first 3 posts for homepage
+  const blogPosts = displayedPosts.slice(0, 3);
+
   return (
     <section id="blog-section" className="py-12 md:py-16 relative overflow-hidden">
       {/* Subtle neon fog */}
@@ -93,72 +106,93 @@ export const BlogSection = () => {
 
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {blogPosts.map((post, index) => {
-            const Icon = post.icon;
-            return (
-              <motion.article
-                key={post.id}
-                initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
-                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.12, duration: 0.6 }}
-                className="group cursor-pointer relative"
-              >
-                <Link to={`/blog/${post.slug}`}>
-                  <div 
-                    className="relative rounded-2xl p-5 md:p-6 transition-all duration-500 overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(145deg, hsl(220 30% 5% / 0.95), hsl(220 30% 3% / 0.98))',
-                      border: '1px solid hsl(var(--glass-border))',
-                    }}
-                  >
-                    {/* Border trace on hover */}
+          {isLoading ? (
+            // Loading skeleton
+            Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="rounded-2xl p-5 md:p-6 animate-pulse" style={{ background: 'hsl(220 30% 5% / 0.95)' }}>
+                <div className="w-full h-32 md:h-40 rounded-xl bg-muted/20 mb-4" />
+                <div className="h-4 w-24 bg-muted/20 rounded mb-2" />
+                <div className="h-6 w-full bg-muted/20 rounded mb-2" />
+                <div className="h-4 w-3/4 bg-muted/20 rounded" />
+              </div>
+            ))
+          ) : blogPosts.length === 0 ? (
+            // No posts fallback
+            <div className="col-span-full text-center py-12" style={{ color: 'hsl(200 15% 55%)' }}>
+              <p>No articles available yet. Check back soon!</p>
+            </div>
+          ) : (
+            blogPosts.map((post, index) => {
+              const style = categoryStyles[post.category] || defaultStyle;
+              const Icon = style.icon;
+              const formattedDate = post.published_at 
+                ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                : new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+              
+              return (
+                <motion.article
+                  key={post.id}
+                  initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+                  whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.12, duration: 0.6 }}
+                  className="group cursor-pointer relative"
+                >
+                  <Link to={`/blog/${post.slug}`}>
                     <div 
-                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      className="relative rounded-2xl p-5 md:p-6 transition-all duration-500 overflow-hidden"
                       style={{
-                        background: `linear-gradient(90deg, transparent, ${post.glowColor}, transparent)`,
-                        backgroundSize: '200% 100%',
-                        animation: 'border-trace 2s linear infinite',
-                        WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                        WebkitMaskComposite: 'xor',
-                        maskComposite: 'exclude',
-                        padding: '1px',
+                        background: 'linear-gradient(145deg, hsl(220 30% 5% / 0.95), hsl(220 30% 3% / 0.98))',
+                        border: '1px solid hsl(var(--glass-border))',
                       }}
-                    />
-
-                    {/* Image Area with Cyber-Glass Icon */}
-                    <div 
-                      className={`relative w-full h-32 md:h-40 rounded-xl bg-gradient-to-br ${post.gradient} mb-4 flex items-center justify-center overflow-hidden`}
                     >
+                      {/* Border trace on hover */}
                       <div 
-                        className="absolute inset-0"
-                        style={{ background: 'linear-gradient(to top, hsl(220 30% 3% / 0.8), transparent)' }}
-                      />
-                      
-                      {/* Cyber-glass icon pedestal */}
-                      <div 
-                        className="relative p-4 rounded-xl group-hover:scale-110 transition-all duration-500"
+                        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                         style={{
-                          background: 'linear-gradient(145deg, hsl(0 0% 100% / 0.08), hsl(0 0% 100% / 0.02))',
-                          border: '1px solid hsl(0 0% 100% / 0.1)',
-                          backdropFilter: 'blur(8px)',
-                          boxShadow: `0 8px 32px hsl(0 0% 0% / 0.3)`,
+                          background: `linear-gradient(90deg, transparent, ${style.glowColor}, transparent)`,
+                          backgroundSize: '200% 100%',
+                          animation: 'border-trace 2s linear infinite',
+                          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                          WebkitMaskComposite: 'xor',
+                          maskComposite: 'exclude',
+                          padding: '1px',
                         }}
-                      >
-                        {/* Icon glow on hover */}
-                        <div 
-                          className="absolute inset-[-4px] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"
-                          style={{ background: post.glowColor }}
-                        />
-                        <Icon className="relative w-8 h-8 text-white/80 group-hover:text-white transition-colors duration-300" />
-                      </div>
-                    </div>
+                      />
 
-                    {/* Date */}
-                    <div className="flex items-center gap-2 text-xs mb-2" style={{ color: 'hsl(200 12% 50%)' }}>
-                      <Calendar className="w-3 h-3" />
-                      <span>{post.date}</span>
-                    </div>
+                      {/* Image Area with Cyber-Glass Icon */}
+                      <div 
+                        className={`relative w-full h-32 md:h-40 rounded-xl bg-gradient-to-br ${style.gradient} mb-4 flex items-center justify-center overflow-hidden`}
+                      >
+                        <div 
+                          className="absolute inset-0"
+                          style={{ background: 'linear-gradient(to top, hsl(220 30% 3% / 0.8), transparent)' }}
+                        />
+                        
+                        {/* Cyber-glass icon pedestal */}
+                        <div 
+                          className="relative p-4 rounded-xl group-hover:scale-110 transition-all duration-500"
+                          style={{
+                            background: 'linear-gradient(145deg, hsl(0 0% 100% / 0.08), hsl(0 0% 100% / 0.02))',
+                            border: '1px solid hsl(0 0% 100% / 0.1)',
+                            backdropFilter: 'blur(8px)',
+                            boxShadow: `0 8px 32px hsl(0 0% 0% / 0.3)`,
+                          }}
+                        >
+                          {/* Icon glow on hover */}
+                          <div 
+                            className="absolute inset-[-4px] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"
+                            style={{ background: style.glowColor }}
+                          />
+                          <Icon className="relative w-8 h-8 text-white/80 group-hover:text-white transition-colors duration-300" />
+                        </div>
+                      </div>
+
+                      {/* Date */}
+                      <div className="flex items-center gap-2 text-xs mb-2" style={{ color: 'hsl(200 12% 50%)' }}>
+                        <Calendar className="w-3 h-3" />
+                        <span>{formattedDate}</span>
+                      </div>
 
                     {/* Chrome Title */}
                     <h3 
@@ -178,7 +212,7 @@ export const BlogSection = () => {
                       className="text-sm mb-4 line-clamp-2"
                       style={{ color: 'hsl(200 12% 50%)', lineHeight: '1.6' }}
                     >
-                      {post.excerpt}
+                      {post.excerpt || 'Read this article to learn more...'}
                     </p>
 
                     {/* Read More */}
@@ -197,8 +231,9 @@ export const BlogSection = () => {
                   </div>
                 </Link>
               </motion.article>
-            );
-          })}
+              );
+            })
+          )}
         </div>
 
         {/* View All Articles Button */}
