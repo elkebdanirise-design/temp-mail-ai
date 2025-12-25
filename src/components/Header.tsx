@@ -114,13 +114,13 @@ export const Header = memo(() => {
                 <Menu className="w-4 h-4" />
               </Button>
 
-              {/* Unified brand unit - Compact on mobile */}
-              <div className="flex items-center gap-0 scale-100 md:scale-100">
-                <BrandLogo className="w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-18 lg:h-18 -mr-0.5 md:-mr-2" />
+              {/* Unified brand unit - Optimized for mobile UX */}
+              <div className="flex items-center gap-0">
+                <BrandLogo className="w-9 h-9 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-18 lg:h-18 -mr-0.5 md:-mr-2" />
                 
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1 md:gap-2">
-                    <h1 className="font-display text-[13px] sm:text-sm md:text-lg lg:text-xl font-extrabold whitespace-nowrap" style={{ letterSpacing: '-0.02em' }}>
+                    <h1 className="font-display text-[14px] sm:text-[15px] md:text-lg lg:text-xl font-extrabold whitespace-nowrap" style={{ letterSpacing: '-0.02em' }}>
                       <span style={{
                         background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 85%) 100%)',
                         WebkitBackgroundClip: 'text',
@@ -136,12 +136,15 @@ export const Header = memo(() => {
                     </h1>
                     {isPremium && <VIPBadge />}
                   </div>
-                  <span className="text-[5px] sm:text-[5.5px] md:text-[8px] lg:text-[9px] font-semibold uppercase tracking-[0.04em] sm:tracking-[0.06em] md:tracking-[0.18em] text-center md:text-left" style={{ color: 'hsl(0 0% 45%)' }}>
+                  <span className="text-[5.5px] sm:text-[6px] md:text-[8px] lg:text-[9px] font-semibold uppercase tracking-[0.05em] sm:tracking-[0.06em] md:tracking-[0.18em] text-center md:text-left" style={{ color: 'hsl(0 0% 45%)' }}>
                     AI-POWERED PRIVACY
                   </span>
                 </div>
               </div>
             </div>
+
+            {/* Flexible spacer for mobile - creates balanced spacing */}
+            <div className="flex-1 md:hidden" />
 
             {/* Navigation - Visible on Tablet (md) and Desktop (lg+) */}
             <nav className="hidden md:flex items-center gap-1">
