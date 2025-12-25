@@ -26,10 +26,14 @@ export type Database = {
           id: string
           is_published: boolean
           published_at: string | null
+          rating_count: number
+          rating_sum: number
           reading_time: number
           slug: string
           title: string
           updated_at: string
+          views_base: number
+          views_count: number
         }
         Insert: {
           author_avatar?: string | null
@@ -42,10 +46,14 @@ export type Database = {
           id?: string
           is_published?: boolean
           published_at?: string | null
+          rating_count?: number
+          rating_sum?: number
           reading_time?: number
           slug: string
           title: string
           updated_at?: string
+          views_base?: number
+          views_count?: number
         }
         Update: {
           author_avatar?: string | null
@@ -58,12 +66,48 @@ export type Database = {
           id?: string
           is_published?: boolean
           published_at?: string | null
+          rating_count?: number
+          rating_sum?: number
           reading_time?: number
           slug?: string
           title?: string
           updated_at?: string
+          views_base?: number
+          views_count?: number
         }
         Relationships: []
+      }
+      blog_ratings: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          rating: number
+          user_fingerprint: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          rating: number
+          user_fingerprint: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          rating?: number
+          user_fingerprint?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_ratings_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       license_keys: {
         Row: {
@@ -168,6 +212,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      increment_post_views: {
+        Args: { post_id_input: string }
+        Returns: undefined
       }
       redeem_license_key: {
         Args: { key_to_redeem: string; redeeming_user_id: string }
