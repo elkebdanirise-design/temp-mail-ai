@@ -98,29 +98,29 @@ export const Header = memo(() => {
 
   return (
     <>
-      <header className="py-4 md:py-8 lg:py-10 relative z-20 animate-fade-in">
-        <div className="container mx-auto px-2 sm:px-6 md:px-8">
-          <div className="flex items-center justify-between gap-6 sm:gap-8 md:gap-12">
-            {/* Left section: Mobile menu + Logo - positioned at far left edge */}
-            <div className="flex items-center gap-0 md:gap-0 ml-0">
+      <header className="py-3 md:py-8 lg:py-10 relative z-20 animate-fade-in">
+        <div className="container mx-auto px-3 sm:px-6 md:px-8">
+          <div className="flex items-center justify-between">
+            {/* Left section: Mobile menu + Logo */}
+            <div className="flex items-center gap-0 md:gap-0 shrink-0">
               {/* Mobile hamburger menu - LEFT side, only visible on mobile */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden w-8 h-8 text-muted-foreground hover:text-foreground hover:bg-white/5 shrink-0"
+                className="md:hidden w-7 h-7 text-muted-foreground hover:text-foreground hover:bg-white/5 shrink-0 -ml-1"
                 onClick={() => setSidebarOpen(true)}
                 aria-label="Open menu"
               >
                 <Menu className="w-4 h-4" />
               </Button>
 
-              {/* Unified brand unit - Larger on mobile, shifted left */}
-              <div className="flex items-center gap-0 scale-[1.2] origin-left md:scale-100 -ml-1 md:ml-0">
-                <BrandLogo className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-18 lg:h-18 -mr-0.5 sm:-mr-1 md:-mr-2" />
+              {/* Unified brand unit - Compact on mobile */}
+              <div className="flex items-center gap-0 scale-100 md:scale-100">
+                <BrandLogo className="w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 lg:w-18 lg:h-18 -mr-0.5 md:-mr-2" />
                 
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1 md:gap-2">
-                    <h1 className="font-display text-[15px] sm:text-base md:text-lg lg:text-xl font-extrabold whitespace-nowrap" style={{ letterSpacing: '-0.02em' }}>
+                    <h1 className="font-display text-[13px] sm:text-sm md:text-lg lg:text-xl font-extrabold whitespace-nowrap" style={{ letterSpacing: '-0.02em' }}>
                       <span style={{
                         background: 'linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 85%) 100%)',
                         WebkitBackgroundClip: 'text',
@@ -136,7 +136,7 @@ export const Header = memo(() => {
                     </h1>
                     {isPremium && <VIPBadge />}
                   </div>
-                  <span className="text-[5.5px] sm:text-[6px] md:text-[8px] lg:text-[9px] font-semibold uppercase tracking-[0.06em] sm:tracking-[0.08em] md:tracking-[0.18em] text-center md:text-left" style={{ color: 'hsl(0 0% 45%)' }}>
+                  <span className="text-[5px] sm:text-[5.5px] md:text-[8px] lg:text-[9px] font-semibold uppercase tracking-[0.04em] sm:tracking-[0.06em] md:tracking-[0.18em] text-center md:text-left" style={{ color: 'hsl(0 0% 45%)' }}>
                     AI-POWERED PRIVACY
                   </span>
                 </div>
