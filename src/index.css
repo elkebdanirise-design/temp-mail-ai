@@ -817,4 +817,18 @@
     box-shadow: 0 0 70px var(--avatar-glow, hsl(var(--aurora-orange) / 0.6)),
                 0 0 100px var(--avatar-glow, hsl(var(--aurora-orange) / 0.3));
   }
+
+  /* Shimmer animation for banners */
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s ease-in-out infinite;
+  }
 }
