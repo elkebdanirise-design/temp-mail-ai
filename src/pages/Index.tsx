@@ -11,7 +11,7 @@ import { Footer } from '@/components/Footer';
 import { MobileNav } from '@/components/MobileNav';
 import ScrollToTop from '@/components/ScrollToTop';
 import { useMailTm } from '@/hooks/useMailTm';
-
+import { useEmailSessions } from '@/hooks/useEmailSessions';
 // Lazy load below-the-fold sections for faster initial load
 const SEOSection = lazy(() => import('@/components/SEOSection').then(m => ({ default: m.SEOSection })));
 const PrivacySolutionSection = lazy(() => import('@/components/PrivacySolutionSection').then(m => ({ default: m.PrivacySolutionSection })));
