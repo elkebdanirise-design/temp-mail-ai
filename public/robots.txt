@@ -3,6 +3,7 @@
 
 User-agent: Googlebot
 Allow: /
+Allow: /sitemap.xml
 Crawl-delay: 1
 
 User-agent: Bingbot
