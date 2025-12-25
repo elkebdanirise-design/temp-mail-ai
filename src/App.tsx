@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PremiumProvider } from "@/contexts/PremiumContext";
+import { AvatarProvider } from "@/contexts/AvatarContext";
 import Index from "./pages/Index";
 import Blog from "./pages/Blog";
 import BlogArticle from "./pages/BlogArticle";
@@ -29,7 +30,8 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <PremiumProvider>
-          <TooltipProvider>
+          <AvatarProvider>
+            <TooltipProvider>
           <Toaster />
           <Sonner />
           <Analytics />
@@ -59,7 +61,8 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
-          </TooltipProvider>
+            </TooltipProvider>
+          </AvatarProvider>
         </PremiumProvider>
       </AuthProvider>
     </QueryClientProvider>

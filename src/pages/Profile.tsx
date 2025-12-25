@@ -7,12 +7,14 @@ import { BrandLogo } from '@/components/BrandLogo';
 import { VIPBadge } from '@/components/VIPBadge';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
+import { useAvatar } from '@/contexts/AvatarContext';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
 const Profile = () => {
   const { user, signOut, resendVerificationEmail, updatePassword, isLoading: authLoading } = useAuth();
   const { isPremium, licenseKey, activatePremium, isLoading: premiumLoading } = usePremium();
+  const { avatarUrl, updateAvatar } = useAvatar();
   const navigate = useNavigate();
   
   const [showRedeemInput, setShowRedeemInput] = useState(false);
@@ -23,7 +25,6 @@ const Profile = () => {
   
   // Avatar upload state
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Password change state
@@ -48,29 +49,6 @@ const Profile = () => {
       navigate('/auth');
     }
   }, [user, authLoading, navigate]);
-
-  // Load avatar URL from profile or user metadata
-  useEffect(() => {
-    const loadAvatar = async () => {
-      if (!user) return;
-      
-      // First check profile table
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('avatar_url')
-        .eq('user_id', user.id)
-        .single();
-      
-      if (profile?.avatar_url) {
-        setAvatarUrl(profile.avatar_url);
-      } else if (user.user_metadata?.avatar_url || user.user_metadata?.picture) {
-        // Fallback to Google profile picture
-        setAvatarUrl(user.user_metadata?.avatar_url || user.user_metadata?.picture);
-      }
-    };
-    
-    loadAvatar();
-  }, [user]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -158,7 +136,7 @@ const Profile = () => {
       
       if (updateError) throw updateError;
       
-      setAvatarUrl(urlWithCacheBuster);
+      updateAvatar(urlWithCacheBuster);
       toast.success('Profile picture updated!');
     } catch (error) {
       console.error('Error uploading avatar:', error);
