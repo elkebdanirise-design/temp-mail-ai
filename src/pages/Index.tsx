@@ -59,12 +59,12 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Temp Mail AI - Free Disposable Email Generator | Secure Anonymous Inbox</title>
+        <title>Free AI Temporary Email 2026 | Temp Mail AI - Disposable Anonymous Inbox</title>
         <meta 
           name="description" 
-          content="Generate free disposable email addresses instantly with AI verification. Temp Mail AI provides secure, anonymous temporary email for signups, trials, and spam protection. The fastest AI-powered temp mail service of 2026." 
+          content="Free AI temporary email generator for 2026. Create instant disposable email addresses with AI verification. Secure anonymous inbox for signups, trials & spam protection. #1 temp mail service." 
         />
-        <meta name="keywords" content="temp mail, temp mail ai, disposable email, temporary email, anonymous email, ai email, secure inbox, free email, spam protection, burner email, fake email, throwaway email" />
+        <meta name="keywords" content="free ai temporary email, disposable email 2026, anonymous inbox, temp mail ai, temporary email generator, burner email, fake email, throwaway email, secure email, spam protection, ai email verification" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />

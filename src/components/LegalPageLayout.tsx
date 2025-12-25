@@ -32,7 +32,7 @@ export const LegalPageLayout = ({
         <title>{title}</title>
         <meta name="description" content={description} />
         {noIndex ? <meta name="robots" content="noindex, nofollow" /> : null}
-        <link rel="canonical" href={`https://tempmail-ai.com${canonicalPath}`} />
+        <link rel="canonical" href={`https://temp-mail-ai.vercel.app${canonicalPath}`} />
       </Helmet>
 
       <AuroraBackground />

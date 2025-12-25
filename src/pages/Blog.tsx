@@ -82,8 +82,9 @@ export default function Blog() {
   return (
     <>
       <Helmet>
-        <title>Blog | Temp Mail AI - Privacy Tips & Cybersecurity Guides</title>
-        <meta name="description" content="Stay informed about online privacy, security tips, and the latest updates in disposable email technology. Expert insights on protecting your digital identity with Temp Mail AI." />
+        <title>Privacy Blog 2026 | Temp Mail AI - Cybersecurity Tips & Disposable Email Guides</title>
+        <meta name="description" content="Expert privacy tips & cybersecurity guides for 2026. Learn about anonymous inbox protection, disposable email best practices, and AI-powered email security. Free temporary email insights." />
+        <meta name="keywords" content="privacy tips 2026, cybersecurity guides, disposable email guide, anonymous inbox tips, temp mail blog, email security, digital privacy, ai email protection" />
         <meta property="og:title" content="Blog | Temp Mail AI - Privacy Insights" />
         <meta property="og:description" content="Expert guides on protecting your digital identity, security best practices, and the latest in privacy technology." />
         <meta property="og:type" content="website" />
