@@ -48,22 +48,69 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     const initializeAuth = async () => {
       try {
-        // Check if this is an OAuth callback with hash fragment
-        const hashFragment = window.location.hash;
-        const hasAccessToken = hashFragment.includes('access_token');
+        // Check if we have a stored OAuth hash from main.tsx
+        const storedHash = sessionStorage.getItem('supabase_auth_hash');
         
-        if (hasAccessToken) {
-          console.log('[Auth] OAuth callback detected, processing hash fragment...');
-          // Supabase will automatically parse the hash and establish the session
-          // We just need to wait for getSession to complete
+        if (storedHash) {
+          console.log('[Auth] Processing stored OAuth hash...');
+          sessionStorage.removeItem('supabase_auth_hash');
+          
+          // Parse the hash fragment to extract tokens
+          const hashParams = new URLSearchParams(storedHash.substring(1));
+          const accessToken = hashParams.get('access_token');
+          const refreshToken = hashParams.get('refresh_token');
+          
+          if (accessToken && refreshToken) {
+            // Use setSession to establish the session from tokens
+            const { data: { session }, error } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken,
+            });
+            
+            console.log('[Auth] OAuth session established:', { hasSession: !!session, error });
+            
+            if (isMounted) {
+              if (error) {
+                console.error('[Auth] OAuth error:', error);
+                toast({
+                  variant: 'destructive',
+                  title: 'Sign-in failed',
+                  description: error.message,
+                });
+                setIsLoading(false);
+                return;
+              }
+              
+              setSession(session);
+              setUser(session?.user ?? null);
+              setIsLoading(false);
+              
+              // Sync profile and show welcome modal
+              if (session?.user) {
+                const profileReady = await ensureUserProfile(session.user);
+                if (profileReady && !hasShownWelcomeModal.current) {
+                  hasShownWelcomeModal.current = true;
+                  const userName =
+                    session.user.user_metadata?.full_name ||
+                    session.user.user_metadata?.name ||
+                    session.user.email?.split('@')[0] ||
+                    'there';
+                  const avatarUrl =
+                    session.user.user_metadata?.avatar_url ||
+                    session.user.user_metadata?.picture ||
+                    null;
+                  setWelcomeData({ isOpen: true, userName, avatarUrl });
+                }
+              }
+            }
+            return;
+          }
         }
-        
-        // Surface OAuth callback errors
+
+        // Surface OAuth callback errors from URL params
         const params = new URLSearchParams(window.location.search);
-        const hashParams = new URLSearchParams(hashFragment.substring(1));
-        
-        const oauthError = params.get('error') || hashParams.get('error');
-        const oauthErrorDescription = params.get('error_description') || hashParams.get('error_description');
+        const oauthError = params.get('error');
+        const oauthErrorDescription = params.get('error_description');
         
         if (oauthError) {
           toast({
@@ -76,43 +123,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           return;
         }
 
-        // Get the session - this will also process any OAuth hash fragments
+        // Normal session check (no OAuth callback)
         const { data: { session }, error } = await supabase.auth.getSession();
         
         console.log('[Auth] getSession result:', { hasSession: !!session, error });
-        
-        if (error) {
-          console.error('[Auth] getSession error:', error);
-        }
         
         if (isMounted) {
           setSession(session);
           setUser(session?.user ?? null);
           setIsLoading(false);
           
-          // Clean URL after successful OAuth callback
-          if (hasAccessToken) {
-            window.history.replaceState({}, document.title, window.location.pathname);
-            console.log('[Auth] Cleaned OAuth hash from URL');
-          }
-          
           // Sync profile if user exists
           if (session?.user) {
-            const profileReady = await ensureUserProfile(session.user);
-            // Show welcome modal for fresh OAuth logins
-            if (hasAccessToken && profileReady && !hasShownWelcomeModal.current) {
-              hasShownWelcomeModal.current = true;
-              const userName =
-                session.user.user_metadata?.full_name ||
-                session.user.user_metadata?.name ||
-                session.user.email?.split('@')[0] ||
-                'there';
-              const avatarUrl =
-                session.user.user_metadata?.avatar_url ||
-                session.user.user_metadata?.picture ||
-                null;
-              setWelcomeData({ isOpen: true, userName, avatarUrl });
-            }
+            await ensureUserProfile(session.user);
           }
         }
       } catch (err) {
@@ -133,7 +156,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(false);
         
         // Handle sign-in events (not from initial OAuth callback)
-        if (event === 'SIGNED_IN' && session?.user && !window.location.hash.includes('access_token')) {
+        if (event === 'SIGNED_IN' && session?.user) {
           const userName =
             session.user.user_metadata?.full_name ||
             session.user.user_metadata?.name ||
