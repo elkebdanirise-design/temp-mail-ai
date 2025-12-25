@@ -1,28 +1,31 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, Calendar, Clock, ChevronRight, Twitter, Linkedin, LinkIcon, Bookmark, Shield, Lock, Zap, Globe, User, Loader2 } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, ChevronRight, Bookmark, Shield, Lock, Zap, Globe, User, Loader2, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ArticleCard } from '@/components/ArticleCard';
 import { AuroraBackground } from '@/components/AuroraBackground';
+import { StarRating } from '@/components/StarRating';
+import { SocialShare } from '@/components/SocialShare';
 import { useBlogPost, useBlogPosts, BlogPost } from '@/hooks/useBlogPosts';
 import { useBookmarks } from '@/hooks/useBookmarks';
+import { supabase } from '@/integrations/supabase/client';
 
 // Category styles mapping
 const categoryStyles: Record<string, { gradient: string; glowColor: string }> = {
   'Privacy Tips': { gradient: 'from-fuchsia-500 to-purple-600', glowColor: 'hsl(280 80% 60%)' },
   'Cyber Security': { gradient: 'from-emerald-400 to-cyan-500', glowColor: 'hsl(170 70% 50%)' },
-  'Aura Updates': { gradient: 'from-amber-400 to-orange-500', glowColor: 'hsl(35 90% 55%)' },
+  'Platform Updates': { gradient: 'from-amber-400 to-orange-500', glowColor: 'hsl(35 90% 55%)' },
   'Tech News': { gradient: 'from-blue-400 to-indigo-500', glowColor: 'hsl(230 70% 60%)' },
 };
 
 const categoryIcons: Record<string, any> = {
   'Privacy Tips': Shield,
   'Cyber Security': Lock,
-  'Aura Updates': Zap,
+  'Platform Updates': Zap,
   'Tech News': Globe,
 };
 
@@ -38,9 +41,27 @@ export default function BlogArticle() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
+  const viewIncrementedRef = useRef(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
+
+  // Increment view count on page load (only once per visit)
+  useEffect(() => {
+    const incrementViews = async () => {
+      if (!post?.id || viewIncrementedRef.current) return;
+      viewIncrementedRef.current = true;
+      
+      try {
+        await supabase.rpc('increment_post_views', { post_id_input: post.id });
+      } catch (err) {
+        console.error('Failed to increment views:', err);
+      }
+    };
+
+    incrementViews();
+  }, [post?.id]);
 
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const bookmarked = post ? isBookmarked(post.id) : false;
@@ -95,34 +116,7 @@ export default function BlogArticle() {
     );
   }
 
-  // Share Button Component
-  const ShareButton = ({ 
-    icon: IconComponent, 
-    label, 
-    onClick, 
-    glowColor 
-  }: { 
-    icon: React.ElementType; 
-    label: string; 
-    onClick: () => void; 
-    glowColor: string;
-  }) => (
-    <button
-      onClick={onClick}
-      aria-label={label}
-      className="group relative p-2.5 rounded-full transition-all duration-300 hover:scale-110"
-      style={{
-        background: 'linear-gradient(145deg, hsl(220 30% 10%), hsl(220 30% 6%))',
-        border: '1px solid hsl(var(--glass-border))',
-      }}
-    >
-      <div 
-        className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{ background: glowColor, filter: 'blur(8px)' }}
-      />
-      <IconComponent className="relative w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-    </button>
-  );
+  const articleUrl = typeof window !== 'undefined' ? window.location.href : '';
 
   // Convert markdown-like content to HTML
   const renderContent = (content: string) => {
@@ -316,59 +310,31 @@ export default function BlogArticle() {
                       <Clock className="w-4 h-4" />
                       <span>{readTime}</span>
                     </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Eye className="w-4 h-4" />
+                      <span>{post.views_count?.toLocaleString() || 0} views</span>
+                    </div>
                   </div>
 
-                  {/* Social Share Buttons */}
-                  <div className="flex items-center gap-2">
-                    <ShareButton
-                      icon={Twitter}
-                      label="Share on Twitter"
-                      onClick={() => {
-                        const url = window.location.href;
-                        const text = `Check out: ${post.title}`;
-                        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
-                      }}
-                      glowColor="hsl(200 90% 50% / 0.3)"
+                  {/* Bookmark Button */}
+                  <button
+                    onClick={handleBookmarkClick}
+                    aria-label={bookmarked ? 'Remove bookmark' : 'Bookmark article'}
+                    className="group relative p-2.5 rounded-full transition-all duration-300 hover:scale-110"
+                    style={{
+                      background: bookmarked 
+                        ? 'linear-gradient(135deg, hsl(45 90% 50%), hsl(35 85% 45%))'
+                        : 'linear-gradient(145deg, hsl(220 30% 10%), hsl(220 30% 6%))',
+                      border: '1px solid hsl(var(--glass-border))',
+                      boxShadow: bookmarked ? '0 0 16px hsl(45 90% 50% / 0.4)' : 'none',
+                    }}
+                  >
+                    <div 
+                      className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{ background: 'hsl(45 90% 50% / 0.3)', filter: 'blur(8px)' }}
                     />
-                    <ShareButton
-                      icon={Linkedin}
-                      label="Share on LinkedIn"
-                      onClick={() => {
-                        const url = window.location.href;
-                        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
-                      }}
-                      glowColor="hsl(210 80% 50% / 0.3)"
-                    />
-                    <ShareButton
-                      icon={LinkIcon}
-                      label="Copy Link"
-                      onClick={() => {
-                        navigator.clipboard.writeText(window.location.href);
-                        toast.success('Link copied to clipboard!');
-                      }}
-                      glowColor="hsl(var(--aurora-purple) / 0.3)"
-                    />
-                    
-                    {/* Bookmark Button */}
-                    <button
-                      onClick={handleBookmarkClick}
-                      aria-label={bookmarked ? 'Remove bookmark' : 'Bookmark article'}
-                      className="group relative p-2.5 rounded-full transition-all duration-300 hover:scale-110"
-                      style={{
-                        background: bookmarked 
-                          ? 'linear-gradient(135deg, hsl(45 90% 50%), hsl(35 85% 45%))'
-                          : 'linear-gradient(145deg, hsl(220 30% 10%), hsl(220 30% 6%))',
-                        border: '1px solid hsl(var(--glass-border))',
-                        boxShadow: bookmarked ? '0 0 16px hsl(45 90% 50% / 0.4)' : 'none',
-                      }}
-                    >
-                      <div 
-                        className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        style={{ background: 'hsl(45 90% 50% / 0.3)', filter: 'blur(8px)' }}
-                      />
-                      <Bookmark className={`relative w-4 h-4 transition-colors ${bookmarked ? 'fill-white text-white' : 'text-muted-foreground group-hover:text-foreground'}`} />
-                    </button>
-                  </div>
+                    <Bookmark className={`relative w-4 h-4 transition-colors ${bookmarked ? 'fill-white text-white' : 'text-muted-foreground group-hover:text-foreground'}`} />
+                  </button>
                 </motion.div>
 
                 {/* Title */}
@@ -395,6 +361,24 @@ export default function BlogArticle() {
                   className="prose prose-invert max-w-none"
                 >
                   {renderContent(post.content)}
+                </motion.div>
+
+                {/* Engagement Section */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="mt-12 grid gap-6 md:grid-cols-2"
+                >
+                  <StarRating 
+                    postId={post.id}
+                    initialRatingSum={post.rating_sum || 0}
+                    initialRatingCount={post.rating_count || 0}
+                  />
+                  <SocialShare 
+                    title={post.title}
+                    url={articleUrl}
+                  />
                 </motion.div>
               </article>
 

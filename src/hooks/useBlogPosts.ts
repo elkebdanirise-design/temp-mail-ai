@@ -2,9 +2,9 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 // Blog categories type
-export type BlogCategory = 'All' | 'Privacy Tips' | 'Cyber Security' | 'Aura Updates' | 'Tech News';
+export type BlogCategory = 'All' | 'Privacy Tips' | 'Cyber Security' | 'Platform Updates' | 'Tech News';
 
-export const blogCategories: BlogCategory[] = ['All', 'Privacy Tips', 'Cyber Security', 'Aura Updates', 'Tech News'];
+export const blogCategories: BlogCategory[] = ['All', 'Privacy Tips', 'Cyber Security', 'Platform Updates', 'Tech News'];
 
 // Blog post type matching database schema
 export interface BlogPost {
@@ -22,6 +22,10 @@ export interface BlogPost {
   published_at: string | null;
   created_at: string;
   updated_at: string;
+  views_count: number;
+  views_base: number;
+  rating_sum: number;
+  rating_count: number;
 }
 
 interface UseBlogPostsOptions {
