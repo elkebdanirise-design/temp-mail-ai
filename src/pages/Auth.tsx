@@ -45,9 +45,13 @@ const Auth = () => {
     }, 250);
   }, []);
 
-  // Handle successful login with celebration
+  // Handle successful login with celebration - prevent infinite loops
   useEffect(() => {
-    if (!isLoading && user && !showSuccess) {
+    // Skip if still loading auth state
+    if (isLoading) return;
+    
+    // If user is authenticated and we haven't shown success yet
+    if (user && !showSuccess) {
       setShowSuccess(true);
       triggerConfetti();
       
