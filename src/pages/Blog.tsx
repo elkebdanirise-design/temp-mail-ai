@@ -7,91 +7,66 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ArticleCard } from '@/components/ArticleCard';
 import { AuroraBackground } from '@/components/AuroraBackground';
-import { blogPosts, blogCategories, BlogCategory, getPostsByCategory } from '@/data/blogData';
+import { useBlogPosts, blogCategories, BlogCategory } from '@/hooks/useBlogPosts';
 import { useBookmarks } from '@/hooks/useBookmarks';
 
-const POSTS_PER_PAGE = 12; // Increased for better performance with large datasets
+const POSTS_PER_PAGE = 12;
 const MAX_SEARCH_LENGTH = 100;
-const INFINITE_SCROLL_THRESHOLD = 300; // px from bottom to trigger load
+const INFINITE_SCROLL_THRESHOLD = 300;
 
 export default function Blog() {
-  const [activeCategory, setActiveCategory] = useState<BlogCategory>('All');
-  const [visiblePosts, setVisiblePosts] = useState(POSTS_PER_PAGE);
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   
   const { bookmarks, bookmarkCount } = useBookmarks();
-
-  // Filter posts by category, search query, and bookmarks
-  const filteredPosts = useMemo(() => {
-    let posts = getPostsByCategory(activeCategory);
-    
-    // Filter by bookmarks if enabled
-    if (showBookmarksOnly) {
-      posts = posts.filter(post => bookmarks.includes(post.id));
-    }
-    
-    const trimmedQuery = searchQuery.trim().toLowerCase();
-    if (trimmedQuery) {
-      posts = posts.filter(post => 
-        post.title.toLowerCase().includes(trimmedQuery) ||
-        post.excerpt.toLowerCase().includes(trimmedQuery) ||
-        post.content.toLowerCase().includes(trimmedQuery) ||
-        post.category.toLowerCase().includes(trimmedQuery)
-      );
-    }
-    
-    return posts;
-  }, [activeCategory, searchQuery, showBookmarksOnly, bookmarks]);
-
-  const displayedPosts = useMemo(() => {
-    return filteredPosts.slice(0, visiblePosts);
-  }, [filteredPosts, visiblePosts]);
   
-  const hasMorePosts = visiblePosts < filteredPosts.length;
-  const remainingPosts = filteredPosts.length - visiblePosts;
+  const {
+    displayedPosts,
+    isLoading,
+    hasMore,
+    activeCategory,
+    searchQuery,
+    loadMore,
+    setCategory,
+    setSearch,
+    clearSearch,
+    posts: filteredPosts,
+  } = useBlogPosts({ postsPerPage: POSTS_PER_PAGE });
+
+  // Filter displayed posts by bookmarks if enabled
+  const postsToShow = useMemo(() => {
+    if (showBookmarksOnly) {
+      return displayedPosts.filter(post => bookmarks.includes(post.id));
+    }
+    return displayedPosts;
+  }, [displayedPosts, showBookmarksOnly, bookmarks]);
+
+  const remainingPosts = filteredPosts.length - displayedPosts.length;
 
   const handleCategoryChange = useCallback((category: BlogCategory) => {
-    setActiveCategory(category);
-    setVisiblePosts(POSTS_PER_PAGE);
+    setCategory(category);
     setShowBookmarksOnly(false);
-  }, []);
+  }, [setCategory]);
 
   const toggleBookmarksFilter = useCallback(() => {
     setShowBookmarksOnly(prev => !prev);
-    setVisiblePosts(POSTS_PER_PAGE);
   }, []);
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.slice(0, MAX_SEARCH_LENGTH);
-    setSearchQuery(value);
-    setVisiblePosts(POSTS_PER_PAGE);
-  }, []);
+    setSearch(value);
+  }, [setSearch]);
 
-  const clearSearch = useCallback(() => {
-    setSearchQuery('');
-    setVisiblePosts(POSTS_PER_PAGE);
-  }, []);
-
-  const handleLoadMore = useCallback(() => {
-    if (isLoading || !hasMorePosts) return;
-    
-    setIsLoading(true);
-    // Simulate network delay - remove when using real DB
-    setTimeout(() => {
-      setVisiblePosts(prev => Math.min(prev + POSTS_PER_PAGE, filteredPosts.length));
-      setIsLoading(false);
-    }, 300);
-  }, [isLoading, hasMorePosts, filteredPosts.length]);
+  const handleClearSearch = useCallback(() => {
+    clearSearch();
+  }, [clearSearch]);
 
   // Infinite scroll with Intersection Observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMorePosts && !isLoading) {
-          handleLoadMore();
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          loadMore();
         }
       },
       { rootMargin: `${INFINITE_SCROLL_THRESHOLD}px` }
@@ -102,7 +77,7 @@ export default function Blog() {
     }
 
     return () => observer.disconnect();
-  }, [hasMorePosts, isLoading, handleLoadMore]);
+  }, [hasMore, isLoading, loadMore]);
 
   return (
     <>
@@ -332,11 +307,11 @@ export default function Blog() {
 
             {/* Load More / Infinite Scroll Trigger */}
             <div ref={loadMoreRef} className="flex justify-center py-8">
-              {hasMorePosts && (
+              {hasMore && (
                 <motion.button
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  onClick={handleLoadMore}
+                  onClick={loadMore}
                   disabled={isLoading}
                   className="relative px-8 py-3.5 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 disabled:hover:scale-100 flex items-center gap-2"
                   style={{
@@ -369,7 +344,7 @@ export default function Blog() {
                 </motion.button>
               )}
               
-              {!hasMorePosts && filteredPosts.length > 0 && (
+              {!hasMore && filteredPosts.length > 0 && (
                 <p className="text-sm" style={{ color: 'hsl(200 15% 50%)' }}>
                   Showing all {filteredPosts.length} articles
                 </p>

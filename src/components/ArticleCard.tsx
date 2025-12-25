@@ -1,9 +1,19 @@
-import { memo, useCallback } from 'react';
-import { Calendar, ArrowRight, Clock, Bookmark } from 'lucide-react';
+import { memo, useCallback, useMemo } from 'react';
+import { Calendar, ArrowRight, Clock, Bookmark, Shield, Lock, Zap, Globe, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { BlogPost } from '@/data/blogData';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { toast } from 'sonner';
+import type { BlogPost } from '@/hooks/useBlogPosts';
+
+// Category to icon/gradient mapping
+const categoryStyles: Record<string, { icon: any; gradient: string; glowColor: string }> = {
+  'Privacy Tips': { icon: Shield, gradient: 'from-fuchsia-500 to-purple-600', glowColor: 'hsl(280 80% 60%)' },
+  'Cyber Security': { icon: Lock, gradient: 'from-emerald-400 to-cyan-500', glowColor: 'hsl(170 70% 50%)' },
+  'Aura Updates': { icon: Zap, gradient: 'from-amber-400 to-orange-500', glowColor: 'hsl(35 90% 55%)' },
+  'Tech News': { icon: Globe, gradient: 'from-blue-400 to-indigo-500', glowColor: 'hsl(230 70% 60%)' },
+};
+
+const defaultStyle = { icon: User, gradient: 'from-gray-400 to-gray-600', glowColor: 'hsl(0 0% 50%)' };
 
 interface ArticleCardProps {
   post: BlogPost;
@@ -11,9 +21,28 @@ interface ArticleCardProps {
 }
 
 export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
-  const Icon = post.icon;
+  const style = categoryStyles[post.category] || defaultStyle;
+  const Icon = style.icon;
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const bookmarked = isBookmarked(post.id);
+
+  // Format date
+  const formattedDate = useMemo(() => {
+    if (post.published_at) {
+      return new Date(post.published_at).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      });
+    }
+    return new Date(post.created_at).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  }, [post.published_at, post.created_at]);
+
+  const readTime = `${post.reading_time} min read`;
 
   const handleBookmarkClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -39,7 +68,7 @@ export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
           <div 
             className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
             style={{
-              background: `linear-gradient(90deg, transparent, ${post.glowColor}, transparent)`,
+              background: `linear-gradient(90deg, transparent, ${style.glowColor}, transparent)`,
               backgroundSize: '200% 100%',
               animation: 'border-trace 2s linear infinite',
               WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
@@ -51,8 +80,17 @@ export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
 
           {/* Image Area with Gradient & Icon */}
           <div 
-            className={`relative w-full h-40 sm:h-48 bg-gradient-to-br ${post.gradient} flex items-center justify-center overflow-hidden`}
+            className={`relative w-full h-40 sm:h-48 bg-gradient-to-br ${style.gradient} flex items-center justify-center overflow-hidden`}
           >
+            {/* Featured image if available */}
+            {post.featured_image && (
+              <img 
+                src={post.featured_image} 
+                alt={post.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
+            
             {/* Overlay */}
             <div 
               className="absolute inset-0"
@@ -62,7 +100,7 @@ export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
             {/* Zoom effect on hover - CSS only */}
             <div 
               className="absolute inset-0 scale-100 group-hover:scale-110 transition-transform duration-700 ease-out opacity-30"
-              style={{ background: `radial-gradient(circle at center, ${post.glowColor}, transparent 70%)` }}
+              style={{ background: `radial-gradient(circle at center, ${style.glowColor}, transparent 70%)` }}
             />
             
             {/* Cyber-glass icon pedestal */}
@@ -77,7 +115,7 @@ export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
             >
               <div 
                 className="absolute inset-[-6px] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg"
-                style={{ background: post.glowColor }}
+                style={{ background: style.glowColor }}
               />
               <Icon className="relative w-10 h-10 text-white/90 group-hover:text-white transition-colors duration-300" />
             </div>
@@ -122,11 +160,11 @@ export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
             <div className="flex items-center gap-4 text-xs mb-3" style={{ color: 'hsl(200 12% 50%)' }}>
               <div className="flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5" />
-                <span>{post.date}</span>
+                <span>{formattedDate}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
-                <span>{post.readTime}</span>
+                <span>{readTime}</span>
               </div>
             </div>
 
@@ -148,7 +186,7 @@ export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
               className="text-sm mb-4 line-clamp-2"
               style={{ color: 'hsl(200 12% 55%)', lineHeight: '1.65' }}
             >
-              {post.excerpt}
+              {post.excerpt || 'Read this article to learn more...'}
             </p>
 
             {/* Read More Button */}

@@ -1,20 +1,38 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, Calendar, Clock, ChevronRight, Twitter, Linkedin, LinkIcon, Bookmark } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, ChevronRight, Twitter, Linkedin, LinkIcon, Bookmark, Shield, Lock, Zap, Globe, User, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ArticleCard } from '@/components/ArticleCard';
 import { AuroraBackground } from '@/components/AuroraBackground';
-import { getPostBySlug, getRelatedPosts } from '@/data/blogData';
+import { useBlogPost, useBlogPosts, BlogPost } from '@/hooks/useBlogPosts';
 import { useBookmarks } from '@/hooks/useBookmarks';
+
+// Category styles mapping
+const categoryStyles: Record<string, { gradient: string; glowColor: string }> = {
+  'Privacy Tips': { gradient: 'from-fuchsia-500 to-purple-600', glowColor: 'hsl(280 80% 60%)' },
+  'Cyber Security': { gradient: 'from-emerald-400 to-cyan-500', glowColor: 'hsl(170 70% 50%)' },
+  'Aura Updates': { gradient: 'from-amber-400 to-orange-500', glowColor: 'hsl(35 90% 55%)' },
+  'Tech News': { gradient: 'from-blue-400 to-indigo-500', glowColor: 'hsl(230 70% 60%)' },
+};
+
+const categoryIcons: Record<string, any> = {
+  'Privacy Tips': Shield,
+  'Cyber Security': Lock,
+  'Aura Updates': Zap,
+  'Tech News': Globe,
+};
+
+const defaultStyle = { gradient: 'from-gray-400 to-gray-600', glowColor: 'hsl(0 0% 50%)' };
 
 export default function BlogArticle() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const post = slug ? getPostBySlug(slug) : undefined;
+  const { post, isLoading, error } = useBlogPost(slug || '');
+  const { posts: allPosts } = useBlogPosts();
 
   // Reading progress
   const { scrollYProgress } = useScroll();
@@ -24,7 +42,47 @@ export default function BlogArticle() {
     window.scrollTo(0, 0);
   }, [slug]);
 
-  if (!post) {
+  const { isBookmarked, toggleBookmark } = useBookmarks();
+  const bookmarked = post ? isBookmarked(post.id) : false;
+
+  // Get related posts (same category, excluding current)
+  const relatedPosts = useMemo(() => {
+    if (!post || !allPosts.length) return [];
+    return allPosts
+      .filter(p => p.category === post.category && p.id !== post.id)
+      .slice(0, 3);
+  }, [post, allPosts]);
+
+  const style = post ? (categoryStyles[post.category] || defaultStyle) : defaultStyle;
+  const Icon = post ? (categoryIcons[post.category] || User) : User;
+  const readTime = post ? `${post.reading_time} min read` : '';
+
+  const handleBookmarkClick = () => {
+    if (!post) return;
+    const newState = toggleBookmark(post.id);
+    toast.success(newState ? 'Article bookmarked!' : 'Bookmark removed');
+  };
+
+  // Format date
+  const formattedDate = useMemo(() => {
+    if (!post) return '';
+    const dateStr = post.published_at || post.created_at;
+    return new Date(dateStr).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  }, [post]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!post || error) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -36,16 +94,6 @@ export default function BlogArticle() {
       </div>
     );
   }
-
-  const relatedPosts = getRelatedPosts(post, 3);
-  const Icon = post.icon;
-  const { isBookmarked, toggleBookmark } = useBookmarks();
-  const bookmarked = isBookmarked(post.id);
-
-  const handleBookmarkClick = () => {
-    const newState = toggleBookmark(post.id);
-    toast.success(newState ? 'Article bookmarked!' : 'Bookmark removed');
-  };
 
   // Share Button Component
   const ShareButton = ({ 
@@ -218,7 +266,7 @@ export default function BlogArticle() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
-                  className={`relative w-full h-48 sm:h-64 md:h-80 rounded-2xl bg-gradient-to-br ${post.gradient} flex items-center justify-center overflow-hidden mb-8`}
+                  className={`relative w-full h-48 sm:h-64 md:h-80 rounded-2xl bg-gradient-to-br ${style.gradient} flex items-center justify-center overflow-hidden mb-8`}
                 >
                   <div 
                     className="absolute inset-0"
@@ -232,7 +280,7 @@ export default function BlogArticle() {
                       background: 'linear-gradient(145deg, hsl(0 0% 100% / 0.1), hsl(0 0% 100% / 0.02))',
                       border: '1px solid hsl(0 0% 100% / 0.15)',
                       backdropFilter: 'blur(12px)',
-                      boxShadow: `0 16px 48px hsl(0 0% 0% / 0.5), 0 0 60px ${post.glowColor}`,
+                      boxShadow: `0 16px 48px hsl(0 0% 0% / 0.5), 0 0 60px ${style.glowColor}`,
                     }}
                   >
                     <Icon className="w-12 h-12 md:w-16 md:h-16 text-white" />
@@ -262,11 +310,11 @@ export default function BlogArticle() {
                   <div className="flex items-center gap-4" style={{ color: 'hsl(200 12% 50%)' }}>
                     <div className="flex items-center gap-2 text-sm">
                       <Calendar className="w-4 h-4" />
-                      <span>{post.date}</span>
+                      <span>{formattedDate}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Clock className="w-4 h-4" />
-                      <span>{post.readTime}</span>
+                      <span>{readTime}</span>
                     </div>
                   </div>
 
@@ -366,24 +414,11 @@ export default function BlogArticle() {
                     className="text-sm font-semibold uppercase tracking-wider mb-4"
                     style={{ color: 'hsl(200 15% 60%)' }}
                   >
-                    Table of Contents
+                    About This Article
                   </h4>
-                  <nav className="space-y-2">
-                    {post.tableOfContents.map((item) => (
-                      <a
-                        key={item.id}
-                        href={`#${item.id}`}
-                        className="flex items-center gap-2 text-sm py-1.5 transition-all duration-200 hover:translate-x-1 group"
-                        style={{ color: 'hsl(200 15% 55%)' }}
-                      >
-                        <ChevronRight 
-                          className="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity" 
-                          style={{ color: 'hsl(190 80% 55%)' }}
-                        />
-                        <span className="group-hover:text-foreground transition-colors">{item.title}</span>
-                      </a>
-                    ))}
-                  </nav>
+                  <p className="text-sm" style={{ color: 'hsl(200 15% 55%)' }}>
+                    {post.excerpt || 'Read this article to learn more about this topic.'}
+                  </p>
                 </motion.div>
               </aside>
             </div>

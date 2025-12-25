@@ -1,5 +1,28 @@
-import { useState, useCallback, useMemo } from 'react';
-import { blogPosts, BlogPost, BlogCategory, getPostsByCategory } from '@/data/blogData';
+import { useState, useCallback, useMemo, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+
+// Blog categories type
+export type BlogCategory = 'All' | 'Privacy Tips' | 'Cyber Security' | 'Aura Updates' | 'Tech News';
+
+export const blogCategories: BlogCategory[] = ['All', 'Privacy Tips', 'Cyber Security', 'Aura Updates', 'Tech News'];
+
+// Blog post type matching database schema
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string;
+  category: string;
+  author_name: string;
+  author_avatar: string | null;
+  featured_image: string | null;
+  reading_time: number;
+  is_published: boolean;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
 interface UseBlogPostsOptions {
   initialCategory?: BlogCategory;
@@ -25,27 +48,60 @@ interface UseBlogPostsReturn {
 export const useBlogPosts = (options: UseBlogPostsOptions = {}): UseBlogPostsReturn => {
   const { initialCategory = 'All', postsPerPage = 12 } = options;
   
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
   const [activeCategory, setActiveCategory] = useState<BlogCategory>(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleCount, setVisibleCount] = useState(postsPerPage);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch posts from database
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('blog_posts')
+          .select('*')
+          .eq('is_published', true)
+          .order('published_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching blog posts:', error);
+        } else {
+          setAllPosts(data || []);
+        }
+      } catch (err) {
+        console.error('Error fetching blog posts:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   // Filter posts based on category and search
   const filteredPosts = useMemo(() => {
-    let posts = getPostsByCategory(activeCategory);
+    let posts = allPosts;
     
+    // Filter by category
+    if (activeCategory !== 'All') {
+      posts = posts.filter(post => post.category === activeCategory);
+    }
+    
+    // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
       posts = posts.filter(post => 
         post.title.toLowerCase().includes(query) ||
-        post.excerpt.toLowerCase().includes(query) ||
+        (post.excerpt?.toLowerCase().includes(query) || false) ||
         post.category.toLowerCase().includes(query) ||
         post.content.toLowerCase().includes(query)
       );
     }
     
     return posts;
-  }, [activeCategory, searchQuery]);
+  }, [allPosts, activeCategory, searchQuery]);
 
   // Get currently displayed posts
   const displayedPosts = useMemo(() => {
@@ -55,17 +111,10 @@ export const useBlogPosts = (options: UseBlogPostsOptions = {}): UseBlogPostsRet
   const hasMore = visibleCount < filteredPosts.length;
   const totalCount = filteredPosts.length;
 
-  // Load more posts with simulated loading state
+  // Load more posts
   const loadMore = useCallback(() => {
     if (isLoading || !hasMore) return;
-    
-    setIsLoading(true);
-    
-    // Simulate network delay for smooth UX
-    setTimeout(() => {
-      setVisibleCount(prev => Math.min(prev + postsPerPage, filteredPosts.length));
-      setIsLoading(false);
-    }, 300);
+    setVisibleCount(prev => Math.min(prev + postsPerPage, filteredPosts.length));
   }, [isLoading, hasMore, postsPerPage, filteredPosts.length]);
 
   // Reset visible count
@@ -108,14 +157,41 @@ export const useBlogPosts = (options: UseBlogPostsOptions = {}): UseBlogPostsRet
   };
 };
 
-// Future database hook placeholder
-// This can be replaced with actual Supabase queries when n8n content is ready
-export const useBlogPostsFromDB = async (): Promise<BlogPost[]> => {
-  // TODO: Replace with Supabase query when database-driven content is enabled
-  // const { data, error } = await supabase
-  //   .from('blog_posts')
-  //   .select('*')
-  //   .order('created_at', { ascending: false });
-  
-  return blogPosts;
+// Get a single post by slug
+export const useBlogPost = (slug: string) => {
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        const { data, error: fetchError } = await supabase
+          .from('blog_posts')
+          .select('*')
+          .eq('slug', slug)
+          .eq('is_published', true)
+          .maybeSingle();
+
+        if (fetchError) {
+          setError(fetchError.message);
+        } else {
+          setPost(data);
+        }
+      } catch (err) {
+        setError('Failed to fetch post');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (slug) {
+      fetchPost();
+    }
+  }, [slug]);
+
+  return { post, isLoading, error };
 };
