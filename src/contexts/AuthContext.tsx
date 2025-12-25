@@ -2,8 +2,15 @@ import { createContext, useContext, useState, useEffect, useRef, ReactNode } fro
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { WelcomeModal } from '@/components/WelcomeModal';
 
 const REDIRECT_URL = 'https://temp-mail-ai.vercel.app/';
+
+interface WelcomeData {
+  isOpen: boolean;
+  userName: string;
+  avatarUrl: string | null;
+}
 
 interface AuthContextType {
   user: User | null;
@@ -25,7 +32,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const hasShownWelcomeToast = useRef(false);
+  const hasShownWelcomeModal = useRef(false);
+  const [welcomeData, setWelcomeData] = useState<WelcomeData>({
+    isOpen: false,
+    userName: '',
+    avatarUrl: null,
+  });
+
+  const closeWelcomeModal = () => {
+    setWelcomeData(prev => ({ ...prev, isOpen: false }));
+  };
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -35,20 +51,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(session?.user ?? null);
         setIsLoading(false);
         
-        // Show welcome toast and create profile when user signs in
+        // Show welcome modal and create profile when user signs in
         if (event === 'SIGNED_IN' && session?.user) {
-          // Only show toast once per session
-          if (!hasShownWelcomeToast.current) {
-            hasShownWelcomeToast.current = true;
+          // Only show modal once per session
+          if (!hasShownWelcomeModal.current) {
+            hasShownWelcomeModal.current = true;
             const userName = session.user.user_metadata?.full_name || 
                            session.user.user_metadata?.name || 
                            session.user.email?.split('@')[0] || 
                            'there';
+            const avatarUrl = session.user.user_metadata?.avatar_url || 
+                             session.user.user_metadata?.picture || 
+                             null;
             
             setTimeout(() => {
-              toast({
-                title: `Welcome back, ${userName}! 👋`,
-                description: "You're now signed in to Temp Mail AI.",
+              setWelcomeData({
+                isOpen: true,
+                userName,
+                avatarUrl,
               });
             }, 100);
           }
@@ -60,7 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         // Show goodbye toast and reset flag on sign out
         if (event === 'SIGNED_OUT') {
-          hasShownWelcomeToast.current = false;
+          hasShownWelcomeModal.current = false;
           toast({
             title: "See you soon! 👋",
             description: "You've been signed out successfully.",
@@ -79,7 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Ensure user has a profile in the profiles table
+  // Ensure user has a profile in the profiles table (fallback if trigger fails)
   const ensureUserProfile = async (user: User) => {
     try {
       // Check if profile exists
@@ -87,15 +107,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .from('profiles')
         .select('id')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
-      // If no profile exists, create one
+      // If no profile exists, create one with OAuth data
       if (!existingProfile) {
+        const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
         await supabase
           .from('profiles')
           .insert({
             user_id: user.id,
             email: user.email,
+            avatar_url: avatarUrl,
             is_pro: false
           });
       }
@@ -195,6 +217,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       signOut 
     }}>
       {children}
+      <WelcomeModal
+        isOpen={welcomeData.isOpen}
+        onClose={closeWelcomeModal}
+        userName={welcomeData.userName}
+        avatarUrl={welcomeData.avatarUrl}
+      />
     </AuthContext.Provider>
   );
 };
