@@ -1,20 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { User, Crown, Mail, Calendar, Key, LogOut, ArrowLeft, Shield, Sparkles, Check, AlertCircle, RefreshCw, CheckCircle, Lock, Eye, EyeOff, Camera, Loader2 } from 'lucide-react';
+import { User, Crown, Mail, Calendar, Key, LogOut, ArrowLeft, Shield, Sparkles, Check, AlertCircle, RefreshCw, CheckCircle, Lock, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BrandLogo } from '@/components/BrandLogo';
 import { VIPBadge } from '@/components/VIPBadge';
+import { LetterAvatar } from '@/components/LetterAvatar';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useAvatar } from '@/contexts/AvatarContext';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
 
 const Profile = () => {
   const { user, signOut, resendVerificationEmail, updatePassword, isLoading: authLoading } = useAuth();
   const { isPremium, licenseKey, activatePremium, isLoading: premiumLoading } = usePremium();
-  const { avatarUrl, updateAvatar } = useAvatar();
+  const { avatarUrl, userName } = useAvatar();
   const navigate = useNavigate();
   
   const [showRedeemInput, setShowRedeemInput] = useState(false);
@@ -22,10 +22,6 @@ const Profile = () => {
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [isResendingVerification, setIsResendingVerification] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
-  
-  // Avatar upload state
-  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Password change state
   const [showPasswordChange, setShowPasswordChange] = useState(false);
@@ -91,60 +87,6 @@ const Profile = () => {
     }
   };
 
-  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || !user) return;
-    
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file');
-      return;
-    }
-    
-    // Validate file size (max 2MB)
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error('Image must be less than 2MB');
-      return;
-    }
-    
-    setIsUploadingAvatar(true);
-    
-    try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}/avatar.${fileExt}`;
-      
-      // Upload to storage
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(fileName, file, { upsert: true });
-      
-      if (uploadError) throw uploadError;
-      
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(fileName);
-      
-      // Add cache buster to force refresh
-      const urlWithCacheBuster = `${publicUrl}?t=${Date.now()}`;
-      
-      // Update profile with new avatar URL
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ avatar_url: urlWithCacheBuster })
-        .eq('user_id', user.id);
-      
-      if (updateError) throw updateError;
-      
-      updateAvatar(urlWithCacheBuster);
-      toast.success('Profile picture updated!');
-    } catch (error) {
-      console.error('Error uploading avatar:', error);
-      toast.error('Failed to upload profile picture');
-    } finally {
-      setIsUploadingAvatar(false);
-    }
-  };
 
   const handlePasswordChange = async () => {
     setPasswordError('');
@@ -267,32 +209,31 @@ const Profile = () => {
           >
             {/* Avatar and Name Section */}
             <div className="flex flex-col items-center gap-6 mb-8">
-              {/* Large Avatar with Edit Button */}
-              <div className="relative group">
+              {/* Large Avatar - Clean, minimal design */}
+              <div className="relative">
                 <motion.div 
-                  className="w-28 h-28 sm:w-36 sm:h-36 rounded-full flex items-center justify-center relative overflow-hidden"
-                  style={{
-                    background: isPremium 
-                      ? 'linear-gradient(135deg, hsl(45 80% 50%), hsl(35 90% 45%))' 
-                      : 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)))',
-                    boxShadow: isPremium 
-                      ? '0 0 50px hsl(45 80% 50% / 0.5), inset 0 0 30px hsl(0 0% 0% / 0.2)' 
-                      : '0 0 50px hsl(var(--aurora-orange) / 0.4), inset 0 0 30px hsl(0 0% 0% / 0.2)'
-                  }}
+                  className="relative"
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: 'spring', stiffness: 300 }}
                 >
                   {avatarUrl ? (
-                    <img 
-                      src={avatarUrl}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  ) : isPremium ? (
-                    <Crown className="w-14 h-14 sm:w-16 sm:h-16 text-white" />
+                    <div 
+                      className="w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden"
+                      style={{
+                        boxShadow: isPremium 
+                          ? '0 0 50px hsl(45 80% 50% / 0.5)' 
+                          : '0 0 50px hsl(var(--aurora-orange) / 0.4)'
+                      }}
+                    >
+                      <img 
+                        src={avatarUrl}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
                   ) : (
-                    <User className="w-14 h-14 sm:w-16 sm:h-16 text-white" />
+                    <LetterAvatar name={userName} size="xl" />
                   )}
                   
                   {/* Premium ring */}
@@ -306,35 +247,6 @@ const Profile = () => {
                     />
                   )}
                 </motion.div>
-                
-                {/* Edit button overlay */}
-                <motion.button
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={isUploadingAvatar}
-                  className="absolute bottom-1 right-1 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center cursor-pointer transition-all"
-                  style={{
-                    background: 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)))',
-                    boxShadow: '0 4px 20px hsl(0 0% 0% / 0.4), inset 0 1px 0 hsl(0 0% 100% / 0.2)',
-                    border: '2px solid hsl(0 0% 8%)'
-                  }}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {isUploadingAvatar ? (
-                    <Loader2 className="w-5 h-5 text-white animate-spin" />
-                  ) : (
-                    <Camera className="w-5 h-5 text-white" />
-                  )}
-                </motion.button>
-                
-                {/* Hidden file input */}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleAvatarUpload}
-                  className="hidden"
-                />
               </div>
               
               {/* Name and Email */}
@@ -346,9 +258,6 @@ const Profile = () => {
                   {isPremium && <VIPBadge />}
                 </div>
                 <p className="text-sm" style={{ color: 'hsl(0 0% 50%)' }}>{user.email}</p>
-                <p className="text-xs mt-1" style={{ color: 'hsl(0 0% 40%)' }}>
-                  Click the camera icon to change your photo
-                </p>
               </div>
             </div>
 

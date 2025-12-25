@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, X, Fingerprint, Lock, Zap } from 'lucide-react';
+import { LetterAvatar } from './LetterAvatar';
 
 interface WelcomeModalProps {
   isOpen: boolean;
@@ -169,11 +170,11 @@ export const WelcomeModal = ({ isOpen, onClose, userName, avatarUrl }: WelcomeMo
                     <img
                       src={avatarUrl}
                       alt="Profile"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover rounded-full"
                       referrerPolicy="no-referrer"
                     />
                   ) : (
-                    <Shield className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
+                    <LetterAvatar name={userName} size="lg" />
                   )}
                 </div>
                 
