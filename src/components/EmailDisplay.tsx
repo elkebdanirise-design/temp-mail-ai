@@ -39,7 +39,7 @@ export const EmailDisplay = memo(({
       return `${days}d ${hours % 24}h`;
     }
     return `${hours}h ${minutes}m`;
-
+  };
 
   const handleCopy = useCallback(async () => {
     if (!email || loading) return;
