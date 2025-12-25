@@ -109,6 +109,98 @@ export type Database = {
           },
         ]
       }
+      email_messages: {
+        Row: {
+          created_at: string
+          email_session_id: string
+          from_address: string
+          from_name: string | null
+          html_content: string | null
+          id: string
+          intro: string | null
+          is_seen: boolean
+          mail_tm_message_id: string
+          received_at: string
+          subject: string
+          text_content: string | null
+        }
+        Insert: {
+          created_at?: string
+          email_session_id: string
+          from_address: string
+          from_name?: string | null
+          html_content?: string | null
+          id?: string
+          intro?: string | null
+          is_seen?: boolean
+          mail_tm_message_id: string
+          received_at?: string
+          subject: string
+          text_content?: string | null
+        }
+        Update: {
+          created_at?: string
+          email_session_id?: string
+          from_address?: string
+          from_name?: string | null
+          html_content?: string | null
+          id?: string
+          intro?: string | null
+          is_seen?: boolean
+          mail_tm_message_id?: string
+          received_at?: string
+          subject?: string
+          text_content?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_messages_email_session_id_fkey"
+            columns: ["email_session_id"]
+            isOneToOne: false
+            referencedRelation: "email_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_sessions: {
+        Row: {
+          created_at: string
+          email_address: string
+          expires_at: string
+          id: string
+          is_active: boolean
+          mail_tm_account_id: string
+          mail_tm_password: string
+          mail_tm_token: string
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email_address: string
+          expires_at: string
+          id?: string
+          is_active?: boolean
+          mail_tm_account_id: string
+          mail_tm_password: string
+          mail_tm_token: string
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email_address?: string
+          expires_at?: string
+          id?: string
+          is_active?: boolean
+          mail_tm_account_id?: string
+          mail_tm_password?: string
+          mail_tm_token?: string
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       license_keys: {
         Row: {
           created_at: string
@@ -209,6 +301,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_retention_expiry: {
+        Args: { p_user_id: string }
+        Returns: string
+      }
+      cleanup_expired_sessions: { Args: never; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

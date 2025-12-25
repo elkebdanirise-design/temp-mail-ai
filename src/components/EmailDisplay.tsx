@@ -1,23 +1,45 @@
 import { useState, useRef, memo, useCallback } from 'react';
-import { Copy, Check, RefreshCw, Loader2, ShieldCheck } from 'lucide-react';
+import { Copy, Check, RefreshCw, Loader2, ShieldCheck, Clock, Crown } from 'lucide-react';
+import { RecentAddressesDropdown } from './RecentAddressesDropdown';
+import { EmailSession } from '@/hooks/useEmailSessions';
+import { usePremium } from '@/contexts/PremiumContext';
 
 interface EmailDisplayProps {
   email: string | null;
   loading: boolean;
   onRefresh: () => void;
   onDelete: () => void;
+  onSessionSwitch?: (session: EmailSession) => void;
+  retentionExpiry?: string | null;
 }
 
 export const EmailDisplay = memo(({ 
   email, 
   loading, 
   onRefresh, 
-  onDelete 
+  onDelete,
+  onSessionSwitch,
+  retentionExpiry
 }: EmailDisplayProps) => {
   const [copied, setCopied] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showCopiedOverlay, setShowCopiedOverlay] = useState(false);
   const capsuleRef = useRef<HTMLDivElement>(null);
+  const { isPremium } = usePremium();
+
+  const getTimeRemaining = (expiresAt: string): string => {
+    const diff = new Date(expiresAt).getTime() - Date.now();
+    if (diff <= 0) return 'Expired';
+    
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    
+    if (hours >= 24) {
+      const days = Math.floor(hours / 24);
+      return `${days}d ${hours % 24}h`;
+    }
+    return `${hours}h ${minutes}m`;
+
 
   const handleCopy = useCallback(async () => {
     if (!email || loading) return;
@@ -53,23 +75,61 @@ export const EmailDisplay = memo(({
           </span>
         </div>
         {/* AI Smart Shield Badge */}
-        <div 
-          className="flex items-center gap-1.5 px-2 py-1 rounded-full animate-pulse-neon"
-          style={{
-            background: 'hsl(var(--aurora-orange) / 0.08)',
-            border: '1px solid hsl(var(--aurora-orange) / 0.2)',
-          }}
-        >
-          <ShieldCheck 
-            className="w-3 h-3" 
-            style={{ color: 'hsl(var(--aurora-orange))' }}
-          />
-          <span 
-            className="text-[8px] font-semibold uppercase tracking-[0.1em]"
-            style={{ color: 'hsl(var(--aurora-orange))' }}
+        <div className="flex items-center gap-2">
+          {/* Retention Timer */}
+          {retentionExpiry && (
+            <div 
+              className="flex items-center gap-1 px-2 py-1 rounded-full"
+              style={{
+                background: isPremium 
+                  ? 'hsl(var(--aurora-orange) / 0.08)' 
+                  : 'hsl(0 0% 50% / 0.08)',
+                border: `1px solid ${isPremium 
+                  ? 'hsl(var(--aurora-orange) / 0.2)' 
+                  : 'hsl(0 0% 50% / 0.2)'}`,
+              }}
+            >
+              {isPremium ? (
+                <Crown className="w-3 h-3" style={{ color: 'hsl(var(--aurora-orange))' }} />
+              ) : (
+                <Clock className="w-3 h-3 text-muted-foreground" />
+              )}
+              <span 
+                className="text-[8px] font-medium uppercase tracking-[0.05em]"
+                style={{ color: isPremium ? 'hsl(var(--aurora-orange))' : 'hsl(var(--muted-foreground))' }}
+              >
+                {getTimeRemaining(retentionExpiry)}
+              </span>
+            </div>
+          )}
+
+          {/* Recent Addresses Dropdown */}
+          {onSessionSwitch && (
+            <RecentAddressesDropdown 
+              onSwitch={onSessionSwitch} 
+              currentEmail={email} 
+            />
+          )}
+
+          {/* AI Verified Badge */}
+          <div 
+            className="flex items-center gap-1.5 px-2 py-1 rounded-full animate-pulse-neon"
+            style={{
+              background: 'hsl(var(--aurora-orange) / 0.08)',
+              border: '1px solid hsl(var(--aurora-orange) / 0.2)',
+            }}
           >
-            AI-Verified
-          </span>
+            <ShieldCheck 
+              className="w-3 h-3" 
+              style={{ color: 'hsl(var(--aurora-orange))' }}
+            />
+            <span 
+              className="text-[8px] font-semibold uppercase tracking-[0.1em]"
+              style={{ color: 'hsl(var(--aurora-orange))' }}
+            >
+              AI-Verified
+            </span>
+          </div>
         </div>
       </div>
 
