@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { WelcomeModal } from '@/components/WelcomeModal';
 
-const REDIRECT_URL = 'https://temp-mail-ai.vercel.app/';
+const getRedirectUrl = () => `${window.location.origin}/`;
 
 interface WelcomeData {
   isOpen: boolean;
@@ -44,6 +44,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    // Surface OAuth callback errors (e.g. misconfigured provider) directly in the UI
+    const params = new URLSearchParams(window.location.search);
+    const oauthError = params.get('error');
+    const oauthErrorDescription = params.get('error_description');
+    if (oauthError) {
+      toast({
+        variant: 'destructive',
+        title: 'Google sign-in failed',
+        description: oauthErrorDescription ?? oauthError,
+      });
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -123,6 +136,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (upsertError) {
         console.error('Profile upsert failed:', upsertError);
+        toast({
+          variant: 'destructive',
+          title: 'Profile sync failed',
+          description: upsertError.message,
+        });
         return false;
       }
 
@@ -149,7 +167,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       email,
       password,
       options: {
-        emailRedirectTo: REDIRECT_URL
+        emailRedirectTo: getRedirectUrl()
       }
     });
     return { error };
@@ -167,7 +185,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: REDIRECT_URL,
+        redirectTo: getRedirectUrl(),
       }
     });
     return { error };
@@ -177,7 +195,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: REDIRECT_URL,
+        redirectTo: getRedirectUrl(),
       }
     });
     return { error };
@@ -187,7 +205,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'azure',
       options: {
-        redirectTo: REDIRECT_URL,
+        redirectTo: getRedirectUrl(),
         scopes: 'email profile openid',
       }
     });
@@ -203,7 +221,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       type: 'signup',
       email: user.email,
       options: {
-        emailRedirectTo: REDIRECT_URL,
+        emailRedirectTo: getRedirectUrl(),
       }
     });
     return { error };
