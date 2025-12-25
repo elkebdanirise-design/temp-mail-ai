@@ -56,7 +56,7 @@ serve(async (req) => {
             content: data.content,
             excerpt: data.excerpt || null,
             category: data.category || 'Tech News',
-            author_name: data.author_name || 'Aura Team',
+            author_name: data.author_name || 'Temp Mail AI Team',
             author_avatar: data.author_avatar || null,
             featured_image: data.featured_image || null,
             reading_time: data.reading_time || 5,
