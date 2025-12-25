@@ -53,28 +53,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         // Show welcome modal and create profile when user signs in
         if (event === 'SIGNED_IN' && session?.user) {
-          // Only show modal once per session
-          if (!hasShownWelcomeModal.current) {
-            hasShownWelcomeModal.current = true;
-            const userName = session.user.user_metadata?.full_name || 
-                           session.user.user_metadata?.name || 
-                           session.user.email?.split('@')[0] || 
-                           'there';
-            const avatarUrl = session.user.user_metadata?.avatar_url || 
-                             session.user.user_metadata?.picture || 
-                             null;
-            
-            setTimeout(() => {
-              setWelcomeData({
-                isOpen: true,
-                userName,
-                avatarUrl,
-              });
-            }, 100);
-          }
-          
-          setTimeout(() => {
-            ensureUserProfile(session.user);
+          const userName =
+            session.user.user_metadata?.full_name ||
+            session.user.user_metadata?.name ||
+            session.user.email?.split('@')[0] ||
+            'there';
+
+          const avatarUrl =
+            session.user.user_metadata?.avatar_url ||
+            session.user.user_metadata?.picture ||
+            null;
+
+          // Sync profile first; only then show the welcome UI
+          setTimeout(async () => {
+            const profileReady = await ensureUserProfile(session.user);
+            if (profileReady && !hasShownWelcomeModal.current) {
+              hasShownWelcomeModal.current = true;
+              setWelcomeData({ isOpen: true, userName, avatarUrl });
+            }
           }, 0);
         }
         
@@ -94,35 +90,57 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
+
+      // If a user exists but their profile row is missing, force a sync.
+      if (session?.user) {
+        setTimeout(() => {
+          ensureUserProfile(session.user);
+        }, 0);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  // Ensure user has a profile in the profiles table (fallback if trigger fails)
-  const ensureUserProfile = async (user: User) => {
+  // Ensure user has a profile in the profiles table
+  const ensureUserProfile = async (user: User): Promise<boolean> => {
     try {
-      // Check if profile exists
-      const { data: existingProfile } = await supabase
+      const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
+      const fullName = user.user_metadata?.full_name || user.user_metadata?.name || null;
+
+      // Upsert ensures the row exists without overwriting premium/license fields.
+      const { error: upsertError } = await supabase
+        .from('profiles')
+        .upsert(
+          ({
+            user_id: user.id,
+            email: user.email ?? null,
+            full_name: fullName,
+            avatar_url: avatarUrl,
+          } as any),
+          { onConflict: 'user_id' }
+        );
+
+      if (upsertError) {
+        console.error('Profile upsert failed:', upsertError);
+        return false;
+      }
+
+      const { data, error: fetchError } = await supabase
         .from('profiles')
         .select('id')
         .eq('user_id', user.id)
         .maybeSingle();
 
-      // If no profile exists, create one with OAuth data
-      if (!existingProfile) {
-        const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
-        await supabase
-          .from('profiles')
-          .insert({
-            user_id: user.id,
-            email: user.email,
-            avatar_url: avatarUrl,
-            is_pro: false
-          });
+      if (fetchError) {
+        console.error('Profile fetch failed:', fetchError);
+        return false;
       }
+
+      return !!data?.id;
     } catch (error) {
       console.error('Error ensuring user profile:', error);
+      return false;
     }
   };
 
