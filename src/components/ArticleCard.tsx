@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo } from 'react';
-import { Calendar, ArrowRight, Clock, Bookmark, Shield, Lock, Zap, Globe, User } from 'lucide-react';
+import { Calendar, ArrowRight, Clock, Bookmark, Shield, Lock, Zap, Globe, User, Eye, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { toast } from 'sonner';
@@ -14,6 +14,16 @@ const categoryStyles: Record<string, { icon: any; gradient: string; glowColor: s
 };
 
 const defaultStyle = { icon: User, gradient: 'from-gray-400 to-gray-600', glowColor: 'hsl(0 0% 50%)' };
+
+// AI-themed placeholder images based on category
+const placeholderImages: Record<string, string> = {
+  'Privacy Tips': 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&h=400&fit=crop',
+  'Cyber Security': 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&h=400&fit=crop',
+  'Platform Updates': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop',
+  'Tech News': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=400&fit=crop',
+};
+
+const defaultPlaceholder = 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&h=400&fit=crop';
 
 interface ArticleCardProps {
   post: BlogPost;
@@ -43,6 +53,15 @@ export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
   }, [post.published_at, post.created_at]);
 
   const readTime = `${post.reading_time} min read`;
+
+  // Calculate average rating
+  const averageRating = useMemo(() => {
+    if (!post.rating_count || post.rating_count === 0) return 0;
+    return (post.rating_sum || 0) / post.rating_count;
+  }, [post.rating_sum, post.rating_count]);
+
+  // Get image URL with fallback
+  const imageUrl = post.featured_image || placeholderImages[post.category] || defaultPlaceholder;
 
   const handleBookmarkClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -78,47 +97,55 @@ export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
             }}
           />
 
-          {/* Image Area with Gradient & Icon */}
-          <div 
-            className={`relative w-full h-40 sm:h-48 bg-gradient-to-br ${style.gradient} flex items-center justify-center overflow-hidden`}
-          >
-            {/* Featured image if available */}
-            {post.featured_image && (
-              <img 
-                src={post.featured_image} 
-                alt={post.title}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            )}
-            
-            {/* Overlay */}
-            <div 
-              className="absolute inset-0"
-              style={{ background: 'linear-gradient(to top, hsl(220 30% 3% / 0.9), transparent 60%)' }}
+          {/* Image Area with Featured Image or Placeholder */}
+          <div className="relative w-full h-40 sm:h-48 overflow-hidden">
+            {/* Featured image or placeholder */}
+            <img 
+              src={imageUrl} 
+              alt={post.title}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              loading="lazy"
             />
             
-            {/* Zoom effect on hover - CSS only */}
+            {/* Gradient overlay */}
             <div 
-              className="absolute inset-0 scale-100 group-hover:scale-110 transition-transform duration-700 ease-out opacity-30"
+              className="absolute inset-0"
+              style={{ background: 'linear-gradient(to top, hsl(220 30% 3% / 0.95), hsl(220 30% 3% / 0.3) 50%, transparent 80%)' }}
+            />
+            
+            {/* Color tint overlay based on category */}
+            <div 
+              className={`absolute inset-0 opacity-40 bg-gradient-to-br ${style.gradient}`}
+            />
+            
+            {/* Glow effect on hover */}
+            <div 
+              className="absolute inset-0 scale-100 group-hover:scale-110 transition-transform duration-700 ease-out opacity-0 group-hover:opacity-30"
               style={{ background: `radial-gradient(circle at center, ${style.glowColor}, transparent 70%)` }}
             />
             
-            {/* Cyber-glass icon pedestal */}
-            <div 
-              className="relative p-4 rounded-xl group-hover:scale-110 transition-all duration-500"
-              style={{
-                background: 'linear-gradient(145deg, hsl(0 0% 100% / 0.1), hsl(0 0% 100% / 0.02))',
-                border: '1px solid hsl(0 0% 100% / 0.15)',
-                backdropFilter: 'blur(8px)',
-                boxShadow: `0 8px 32px hsl(0 0% 0% / 0.4)`,
-              }}
-            >
+            {/* Cyber-glass icon pedestal - only show if no featured image */}
+            {!post.featured_image && (
               <div 
-                className="absolute inset-[-6px] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg"
-                style={{ background: style.glowColor }}
-              />
-              <Icon className="relative w-10 h-10 text-white/90 group-hover:text-white transition-colors duration-300" />
-            </div>
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <div 
+                  className="relative p-4 rounded-xl group-hover:scale-110 transition-all duration-500"
+                  style={{
+                    background: 'linear-gradient(145deg, hsl(0 0% 100% / 0.1), hsl(0 0% 100% / 0.02))',
+                    border: '1px solid hsl(0 0% 100% / 0.15)',
+                    backdropFilter: 'blur(8px)',
+                    boxShadow: `0 8px 32px hsl(0 0% 0% / 0.4)`,
+                  }}
+                >
+                  <div 
+                    className="absolute inset-[-6px] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg"
+                    style={{ background: style.glowColor }}
+                  />
+                  <Icon className="relative w-10 h-10 text-white/90 group-hover:text-white transition-colors duration-300" />
+                </div>
+              </div>
+            )}
 
             {/* Category Tag */}
             <div 
@@ -156,8 +183,8 @@ export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
 
           {/* Content */}
           <div className="p-5">
-            {/* Meta info */}
-            <div className="flex items-center gap-4 text-xs mb-3" style={{ color: 'hsl(200 12% 50%)' }}>
+            {/* Meta info with views and rating */}
+            <div className="flex items-center gap-3 text-xs mb-3 flex-wrap" style={{ color: 'hsl(200 12% 50%)' }}>
               <div className="flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5" />
                 <span>{formattedDate}</span>
@@ -166,6 +193,23 @@ export const ArticleCard = memo(({ post, index }: ArticleCardProps) => {
                 <Clock className="w-3.5 h-3.5" />
                 <span>{readTime}</span>
               </div>
+              {/* View count - social proof */}
+              <div className="flex items-center gap-1.5">
+                <Eye className="w-3.5 h-3.5" />
+                <span>{(post.views_count || 0).toLocaleString()}</span>
+              </div>
+              {/* Star rating - social proof */}
+              {post.rating_count && post.rating_count > 0 && (
+                <div className="flex items-center gap-1">
+                  <Star 
+                    className="w-3.5 h-3.5 fill-current" 
+                    style={{ color: 'hsl(45 90% 55%)' }} 
+                  />
+                  <span style={{ color: 'hsl(45 90% 55%)' }}>
+                    {averageRating.toFixed(1)}
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Title */}

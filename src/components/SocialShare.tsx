@@ -11,36 +11,49 @@ export const SocialShare = ({ title, url }: SocialShareProps) => {
   const encodedTitle = encodeURIComponent(title);
   const encodedUrl = encodeURIComponent(url);
 
-  const shareButtons = [
+  const shareConfigs = [
     {
       name: 'X (Twitter)',
       icon: Twitter,
-      href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+      getUrl: () => `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
       color: 'hsl(200 10% 90%)',
       hoverGlow: 'hsl(200 10% 90% / 0.5)',
     },
     {
       name: 'LinkedIn',
       icon: Linkedin,
-      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      getUrl: () => `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
       color: 'hsl(210 80% 55%)',
       hoverGlow: 'hsl(210 80% 55% / 0.5)',
     },
     {
       name: 'WhatsApp',
       icon: MessageCircle,
-      href: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`,
+      getUrl: () => `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`,
       color: 'hsl(145 70% 50%)',
       hoverGlow: 'hsl(145 70% 50% / 0.5)',
     },
     {
       name: 'Facebook',
       icon: Facebook,
-      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      getUrl: () => `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedTitle}`,
       color: 'hsl(220 70% 55%)',
       hoverGlow: 'hsl(220 70% 55% / 0.5)',
     },
   ];
+
+  const openSharePopup = useCallback((url: string, name: string) => {
+    const width = 600;
+    const height = 400;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+    
+    window.open(
+      url,
+      `share-${name}`,
+      `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes,resizable=yes`
+    );
+  }, []);
 
   const handleCopyLink = useCallback(async () => {
     try {
@@ -67,12 +80,10 @@ export const SocialShare = ({ title, url }: SocialShareProps) => {
       </h4>
 
       <div className="flex items-center gap-3 flex-wrap justify-center">
-        {shareButtons.map(({ name, icon: Icon, href, color, hoverGlow }) => (
-          <a
+        {shareConfigs.map(({ name, icon: Icon, getUrl, color, hoverGlow }) => (
+          <button
             key={name}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={() => openSharePopup(getUrl(), name)}
             className="group p-3 rounded-xl transition-all duration-300 hover:scale-110"
             style={{
               background: 'hsl(220 30% 12%)',
@@ -81,17 +92,19 @@ export const SocialShare = ({ title, url }: SocialShareProps) => {
             aria-label={`Share on ${name}`}
           >
             <Icon
-              className="w-5 h-5 transition-all duration-300"
+              className="w-5 h-5 transition-all duration-300 group-hover:drop-shadow-lg"
               style={{ 
                 color: color,
+                filter: 'none',
+              }}
+              onMouseEnter={(e) => {
+                (e.target as HTMLElement).style.filter = `drop-shadow(0 0 8px ${hoverGlow}) drop-shadow(0 0 16px ${hoverGlow})`;
+              }}
+              onMouseLeave={(e) => {
+                (e.target as HTMLElement).style.filter = 'none';
               }}
             />
-            <style>{`
-              a:hover .lucide-${name.toLowerCase().replace(/[^a-z]/g, '')} {
-                filter: drop-shadow(0 0 8px ${hoverGlow}) drop-shadow(0 0 16px ${hoverGlow});
-              }
-            `}</style>
-          </a>
+          </button>
         ))}
 
         {/* Copy Link Button */}
@@ -105,7 +118,7 @@ export const SocialShare = ({ title, url }: SocialShareProps) => {
           aria-label="Copy link"
         >
           <Link2
-            className="w-5 h-5 transition-all duration-300 group-hover:text-aurora-orange"
+            className="w-5 h-5 transition-all duration-300 group-hover:drop-shadow-lg"
             style={{ 
               color: 'hsl(var(--aurora-orange))',
             }}
