@@ -31,6 +31,16 @@ const categoryIcons: Record<string, any> = {
 
 const defaultStyle = { gradient: 'from-gray-400 to-gray-600', glowColor: 'hsl(0 0% 50%)' };
 
+// AI-themed placeholder images based on category
+const placeholderImages: Record<string, string> = {
+  'Privacy Tips': 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&h=600&fit=crop',
+  'Cyber Security': 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=600&fit=crop',
+  'Platform Updates': 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=600&fit=crop',
+  'Tech News': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=600&fit=crop',
+};
+
+const defaultPlaceholder = 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&h=600&fit=crop';
+
 export default function BlogArticle() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -260,25 +270,42 @@ export default function BlogArticle() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
-                  className={`relative w-full h-48 sm:h-64 md:h-80 rounded-2xl bg-gradient-to-br ${style.gradient} flex items-center justify-center overflow-hidden mb-8`}
+                  className="relative w-full h-48 sm:h-64 md:h-80 rounded-2xl overflow-hidden mb-8"
                 >
-                  <div 
-                    className="absolute inset-0"
-                    style={{ background: 'linear-gradient(to top, hsl(220 30% 3% / 0.95), transparent 70%)' }}
+                  {/* Featured image or placeholder */}
+                  <img 
+                    src={post.featured_image || placeholderImages[post.category] || defaultPlaceholder}
+                    alt={post.title}
+                    className="absolute inset-0 w-full h-full object-cover"
                   />
                   
-                  {/* Cyber-glass icon pedestal */}
+                  {/* Gradient overlay */}
                   <div 
-                    className="relative p-6 md:p-8 rounded-2xl"
-                    style={{
-                      background: 'linear-gradient(145deg, hsl(0 0% 100% / 0.1), hsl(0 0% 100% / 0.02))',
-                      border: '1px solid hsl(0 0% 100% / 0.15)',
-                      backdropFilter: 'blur(12px)',
-                      boxShadow: `0 16px 48px hsl(0 0% 0% / 0.5), 0 0 60px ${style.glowColor}`,
-                    }}
-                  >
-                    <Icon className="w-12 h-12 md:w-16 md:h-16 text-white" />
-                  </div>
+                    className="absolute inset-0"
+                    style={{ background: 'linear-gradient(to top, hsl(220 30% 3% / 0.95), hsl(220 30% 3% / 0.3) 50%, transparent 80%)' }}
+                  />
+                  
+                  {/* Color tint overlay based on category */}
+                  <div 
+                    className={`absolute inset-0 opacity-30 bg-gradient-to-br ${style.gradient}`}
+                  />
+                  
+                  {/* Cyber-glass icon pedestal - only show if no featured image */}
+                  {!post.featured_image && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div 
+                        className="relative p-6 md:p-8 rounded-2xl"
+                        style={{
+                          background: 'linear-gradient(145deg, hsl(0 0% 100% / 0.1), hsl(0 0% 100% / 0.02))',
+                          border: '1px solid hsl(0 0% 100% / 0.15)',
+                          backdropFilter: 'blur(12px)',
+                          boxShadow: `0 16px 48px hsl(0 0% 0% / 0.5), 0 0 60px ${style.glowColor}`,
+                        }}
+                      >
+                        <Icon className="w-12 h-12 md:w-16 md:h-16 text-white" />
+                      </div>
+                    </div>
+                  )}
 
                   {/* Category Tag */}
                   <div 
