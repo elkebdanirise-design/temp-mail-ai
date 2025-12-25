@@ -53,7 +53,7 @@ export const PremiumModal = ({ isOpen, onClose, onActivate }: PremiumModalProps)
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent 
-        className="!fixed !left-1/2 !top-1/2 !-translate-x-1/2 !-translate-y-1/2 sm:max-w-md w-[90vw] max-w-[420px] max-h-[90vh] overflow-y-auto p-0 z-[100] rounded-2xl"
+        className="!fixed !left-1/2 !top-1/2 !-translate-x-1/2 !-translate-y-1/2 sm:max-w-md w-[90vw] max-w-[420px] p-0 z-[100] rounded-2xl overflow-hidden"
         style={{
           background: 'linear-gradient(180deg, hsl(0 0% 8% / 0.95), hsl(0 0% 4% / 0.98))',
           backdropFilter: 'blur(24px)',
