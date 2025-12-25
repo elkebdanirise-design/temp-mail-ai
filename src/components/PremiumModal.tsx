@@ -53,15 +53,20 @@ export const PremiumModal = ({ isOpen, onClose, onActivate }: PremiumModalProps)
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent 
-        className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] sm:max-w-md w-[calc(100%-2rem)] max-h-[90vh] overflow-y-auto border-0 p-0 z-50"
+        className="!fixed !left-1/2 !top-1/2 !-translate-x-1/2 !-translate-y-1/2 sm:max-w-md w-[90vw] max-w-[420px] max-h-[90vh] overflow-y-auto p-0 z-[100] rounded-2xl"
         style={{
-          background: 'linear-gradient(180deg, hsl(0 0% 8% / 0.98), hsl(0 0% 4% / 0.99))',
+          background: 'linear-gradient(180deg, hsl(0 0% 8% / 0.95), hsl(0 0% 4% / 0.98))',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          border: '2px solid transparent',
+          backgroundClip: 'padding-box',
           boxShadow: `
-            0 0 80px hsl(45 80% 50% / 0.15),
-            0 25px 60px hsl(0 0% 0% / 0.6),
-            inset 0 1px 0 hsl(0 0% 100% / 0.08)
+            0 0 0 2px hsl(35 90% 50% / 0.4),
+            0 0 60px hsl(35 90% 50% / 0.2),
+            0 0 100px hsl(35 90% 50% / 0.1),
+            0 25px 80px hsl(0 0% 0% / 0.8),
+            inset 0 1px 0 hsl(0 0% 100% / 0.1)
           `,
-          backdropFilter: 'blur(20px)',
         }}
       >
         {/* Gold accent line */}
