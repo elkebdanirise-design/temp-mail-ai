@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Key, Crown, Check, Sparkles } from 'lucide-react';
+import { Key, Crown, Check, Sparkles, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 interface PremiumModalProps {
   isOpen: boolean;
@@ -37,205 +43,198 @@ export const PremiumModal = ({ isOpen, onClose, onActivate }: PremiumModalProps)
     setIsActivating(false);
   };
 
+  const benefits = [
+    'Remove all advertisements',
+    'Priority email delivery',
+    'Extended inbox retention',
+    'VIP Gold badge',
+  ];
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-md z-50"
-            onClick={onClose}
-          />
-          
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 30 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md p-4"
-          >
-            <div 
-              className="relative rounded-2xl p-6 shadow-2xl overflow-hidden"
-              style={{
-                background: 'linear-gradient(145deg, hsl(220 30% 5% / 0.98), hsl(220 30% 3% / 0.99))',
-                border: '1px solid hsl(45 80% 50% / 0.15)',
-              }}
-            >
-              {/* Gold glow effect */}
-              <div 
-                className="absolute -inset-1 rounded-2xl blur-xl opacity-30"
-                style={{ background: 'linear-gradient(135deg, hsl(45 80% 55% / 0.2), hsl(35 90% 50% / 0.2))' }}
-              />
-              
-              <div className="relative">
-                {/* Close button */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute -right-2 -top-2 rounded-full border hover:bg-destructive/20"
-                  style={{ 
-                    background: 'hsl(220 30% 6%)',
-                    borderColor: 'hsl(0 0% 100% / 0.08)',
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent 
+        className="sm:max-w-md border-0 p-0 overflow-hidden"
+        style={{
+          background: 'linear-gradient(180deg, hsl(0 0% 8% / 0.98), hsl(0 0% 4% / 0.99))',
+          boxShadow: `
+            0 0 80px hsl(45 80% 50% / 0.15),
+            0 25px 60px hsl(0 0% 0% / 0.6),
+            inset 0 1px 0 hsl(0 0% 100% / 0.08)
+          `,
+        }}
+      >
+        {/* Gold accent line */}
+        <motion.div
+          className="absolute top-0 left-0 right-0 h-[2px]"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          style={{
+            background: 'linear-gradient(90deg, transparent, hsl(45 80% 55%), hsl(35 90% 50%), hsl(45 80% 55%), transparent)',
+            transformOrigin: 'center',
+          }}
+        />
+
+        {/* Ambient glow */}
+        <div 
+          className="absolute -inset-px rounded-xl pointer-events-none opacity-50"
+          style={{ 
+            background: 'radial-gradient(ellipse at top, hsl(45 80% 50% / 0.1) 0%, transparent 60%)',
+          }}
+        />
+
+        <div className="relative p-6 sm:p-8">
+          <DialogHeader className="mb-6">
+            <div className="flex items-center gap-3">
+              <motion.div 
+                className="p-3 rounded-xl"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: 'spring', damping: 15, stiffness: 200 }}
+                style={{
+                  background: 'linear-gradient(145deg, hsl(45 70% 50% / 0.15), hsl(35 80% 45% / 0.1))',
+                  border: '1px solid hsl(45 70% 55% / 0.25)',
+                  boxShadow: '0 0 30px hsl(45 80% 50% / 0.15)',
+                }}
+              >
+                <Crown className="w-6 h-6" style={{ color: 'hsl(45 85% 55%)' }} />
+              </motion.div>
+              <div>
+                <DialogTitle 
+                  className="text-xl font-bold flex items-center gap-2"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(45 80% 60%), hsl(35 90% 55%))',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
                   }}
-                  onClick={onClose}
                 >
-                  <X className="w-4 h-4" />
-                </Button>
-
-                {/* Header */}
-                <div className="flex items-center gap-3 mb-6">
-                  <div 
-                    className="p-3 rounded-xl"
-                    style={{
-                      background: 'linear-gradient(145deg, hsl(45 70% 50% / 0.15), hsl(35 80% 45% / 0.1))',
-                      border: '1px solid hsl(45 70% 55% / 0.2)',
-                    }}
-                  >
-                    <Crown className="w-6 h-6" style={{ color: 'hsl(45 85% 55%)' }} />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold flex items-center gap-2">
-                      <span 
-                        style={{
-                          background: 'linear-gradient(135deg, hsl(45 80% 60%), hsl(35 90% 55%))',
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          backgroundClip: 'text',
-                        }}
-                      >
-                        Redeem License Key
-                      </span>
-                      <Sparkles className="w-4 h-4" style={{ color: 'hsl(45 85% 55%)' }} />
-                    </h3>
-                    <p className="text-sm" style={{ color: 'hsl(200 12% 50%)' }}>
-                      {user ? 'Activate your VIP membership' : 'Sign in for full benefits'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Benefits */}
-                <div className="space-y-3 mb-6">
-                  {[
-                    'Remove all advertisements',
-                    'Priority email delivery',
-                    'Extended inbox retention',
-                    'VIP Gold badge',
-                  ].map((benefit, i) => (
-                    <motion.div
-                      key={benefit}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      className="flex items-center gap-3"
-                    >
-                      <div 
-                        className="p-1 rounded-full"
-                        style={{ background: 'hsl(150 60% 40% / 0.15)' }}
-                      >
-                        <Check className="w-3 h-3" style={{ color: 'hsl(150 70% 50%)' }} />
-                      </div>
-                      <span className="text-sm" style={{ color: 'hsl(200 12% 55%)' }}>{benefit}</span>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Not logged in warning */}
-                {!user && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-4 p-3 rounded-xl text-sm"
-                    style={{
-                      background: 'hsl(var(--aurora-orange) / 0.1)',
-                      border: '1px solid hsl(var(--aurora-orange) / 0.2)',
-                      color: 'hsl(var(--aurora-orange))'
-                    }}
-                  >
-                    <a href="/auth" className="font-medium hover:underline">Sign in</a> to save your VIP status across devices
-                  </motion.div>
-                )}
-
-                {/* Cyber-Capsule License Key Input */}
-                <div className="space-y-3">
-                  <div 
-                    className="relative rounded-full overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(145deg, hsl(220 30% 6%), hsl(220 30% 4%))',
-                      border: '1.5px solid hsl(45 70% 50% / 0.2)',
-                      boxShadow: '0 0 20px hsl(45 80% 50% / 0.08)',
-                    }}
-                  >
-                    <Key 
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4"
-                      style={{ color: 'hsl(45 70% 55% / 0.6)' }}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Enter your license key..."
-                      value={licenseKey}
-                      onChange={(e) => setLicenseKey(e.target.value)}
-                      className="w-full py-3.5 pl-11 pr-4 bg-transparent text-sm font-mono placeholder:text-muted-foreground/50 focus:outline-none"
-                      style={{ 
-                        fontFamily: "'JetBrains Mono', monospace",
-                        letterSpacing: '0.03em',
-                      }}
-                    />
-                  </div>
-
-                  {error && (
-                    <motion.p
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-sm text-destructive pl-2"
-                    >
-                      {error}
-                    </motion.p>
-                  )}
-
-                  <Button
-                    onClick={handleActivate}
-                    disabled={isActivating}
-                    className="w-full rounded-full font-semibold"
-                    style={{
-                      background: 'linear-gradient(135deg, hsl(45 80% 50%), hsl(35 90% 50%))',
-                      color: 'hsl(220 30% 8%)',
-                    }}
-                  >
-                    {isActivating ? (
-                      <div className="flex items-center gap-2">
-                        <div 
-                          className="w-4 h-4 border-2 rounded-full animate-spin"
-                          style={{ 
-                            borderColor: 'hsl(220 30% 8%)',
-                            borderTopColor: 'transparent',
-                          }}
-                        />
-                        Activating...
-                      </div>
-                    ) : (
-                      'Activate License'
-                    )}
-                  </Button>
-
-                  <p className="text-xs text-center" style={{ color: 'hsl(200 12% 45%)' }}>
-                    Don't have a key?{' '}
-                    <a
-                      href="#pro-systems"
-                      onClick={onClose}
-                      style={{ color: 'hsl(45 80% 55%)' }}
-                      className="hover:underline"
-                    >
-                      Get Pro Systems
-                    </a>
-                  </p>
-                </div>
+                  Activate VIP Access
+                  <Sparkles className="w-4 h-4" style={{ color: 'hsl(45 85% 55%)' }} />
+                </DialogTitle>
+                <p className="text-sm mt-1" style={{ color: 'hsl(0 0% 50%)' }}>
+                  {user ? 'Unlock premium features' : 'Sign in for full benefits'}
+                </p>
               </div>
             </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+          </DialogHeader>
+
+          {/* Benefits List */}
+          <div className="space-y-3 mb-6">
+            {benefits.map((benefit, i) => (
+              <motion.div
+                key={benefit}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 + i * 0.08 }}
+                className="flex items-center gap-3"
+              >
+                <div 
+                  className="p-1.5 rounded-full"
+                  style={{ background: 'hsl(150 60% 40% / 0.15)' }}
+                >
+                  <Check className="w-3 h-3" style={{ color: 'hsl(150 70% 50%)' }} />
+                </div>
+                <span className="text-sm" style={{ color: 'hsl(0 0% 60%)' }}>{benefit}</span>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Not logged in warning */}
+          <AnimatePresence>
+            {!user && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="mb-5 p-3 rounded-xl text-sm"
+                style={{
+                  background: 'hsl(var(--aurora-orange) / 0.1)',
+                  border: '1px solid hsl(var(--aurora-orange) / 0.2)',
+                  color: 'hsl(var(--aurora-orange))'
+                }}
+              >
+                <a href="/auth" className="font-medium hover:underline">Sign in</a> to save your VIP status
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* License Key Input */}
+          <div className="space-y-4">
+            <div 
+              className="relative rounded-xl overflow-hidden"
+              style={{
+                background: 'linear-gradient(180deg, hsl(0 0% 6%), hsl(0 0% 4%))',
+                border: '1.5px solid hsl(45 70% 50% / 0.2)',
+                boxShadow: '0 0 30px hsl(45 80% 50% / 0.08), inset 0 2px 4px hsl(0 0% 0% / 0.3)',
+              }}
+            >
+              <Key 
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4"
+                style={{ color: 'hsl(45 70% 55% / 0.6)' }}
+              />
+              <input
+                type="text"
+                placeholder="AURA-PRO-2026-XXXX"
+                value={licenseKey}
+                onChange={(e) => setLicenseKey(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleActivate()}
+                className="w-full py-4 pl-12 pr-4 bg-transparent text-sm font-mono placeholder:text-muted-foreground/40 focus:outline-none"
+                style={{ 
+                  fontFamily: "'JetBrains Mono', monospace",
+                  letterSpacing: '0.05em',
+                  color: 'hsl(0 0% 90%)',
+                }}
+              />
+            </div>
+
+            <AnimatePresence>
+              {error && (
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="text-sm text-destructive pl-1"
+                >
+                  {error}
+                </motion.p>
+              )}
+            </AnimatePresence>
+
+            <Button
+              onClick={handleActivate}
+              disabled={isActivating}
+              className="w-full h-12 rounded-xl font-semibold text-base transition-all hover:scale-[1.02] active:scale-[0.98]"
+              style={{
+                background: 'linear-gradient(135deg, hsl(45 80% 50%), hsl(35 90% 48%))',
+                color: 'hsl(0 0% 8%)',
+                boxShadow: '0 4px 20px hsl(45 80% 50% / 0.3), inset 0 1px 0 hsl(0 0% 100% / 0.2)',
+              }}
+            >
+              {isActivating ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Activating...
+                </div>
+              ) : (
+                'Activate License'
+              )}
+            </Button>
+
+            <p className="text-xs text-center pt-2" style={{ color: 'hsl(0 0% 45%)' }}>
+              Need a license?{' '}
+              <a
+                href="#pro-systems"
+                onClick={onClose}
+                style={{ color: 'hsl(45 80% 55%)' }}
+                className="font-medium hover:underline"
+              >
+                Get Pro Systems
+              </a>
+            </p>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };

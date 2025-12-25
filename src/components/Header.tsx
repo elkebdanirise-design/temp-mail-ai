@@ -8,6 +8,7 @@ import { VIPBadge } from './VIPBadge';
 import { PremiumModal } from './PremiumModal';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useAvatar } from '@/contexts/AvatarContext';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import {
   Sheet,
@@ -42,6 +43,7 @@ export const Header = memo(() => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { isPremium, activatePremium } = usePremium();
   const { user, isLoading: isAuthLoading, signOut } = useAuth();
+  const { avatarUrl } = useAvatar();
   const { handleAnchorClick } = useSmoothScroll();
   const [activeNav, setActiveNav] = useState('Home');
   const navigate = useNavigate();
@@ -194,9 +196,9 @@ export const Header = memo(() => {
                           boxShadow: isPremium ? '0 0 12px hsl(var(--aurora-orange) / 0.4)' : 'none'
                         }}
                       >
-                        {user.user_metadata?.avatar_url || user.user_metadata?.picture ? (
+                        {avatarUrl ? (
                           <img 
-                            src={user.user_metadata?.avatar_url || user.user_metadata?.picture}
+                            src={avatarUrl}
                             alt="Profile"
                             className="w-full h-full object-cover"
                             referrerPolicy="no-referrer"
@@ -207,7 +209,7 @@ export const Header = memo(() => {
                           <User className="w-3 h-3 md:w-4 md:h-4 text-muted-foreground" />
                         )}
                         {/* Premium ring indicator */}
-                        {isPremium && (user.user_metadata?.avatar_url || user.user_metadata?.picture) && (
+                        {isPremium && avatarUrl && (
                           <div 
                             className="absolute inset-0 rounded-full pointer-events-none"
                             style={{
