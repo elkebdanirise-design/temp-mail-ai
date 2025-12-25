@@ -53,7 +53,7 @@ export const PremiumModal = ({ isOpen, onClose, onActivate }: PremiumModalProps)
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent 
-        className="sm:max-w-md border-0 p-0 overflow-hidden"
+        className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] sm:max-w-md w-[calc(100%-2rem)] max-h-[90vh] overflow-y-auto border-0 p-0 z-50"
         style={{
           background: 'linear-gradient(180deg, hsl(0 0% 8% / 0.98), hsl(0 0% 4% / 0.99))',
           boxShadow: `
@@ -61,6 +61,7 @@ export const PremiumModal = ({ isOpen, onClose, onActivate }: PremiumModalProps)
             0 25px 60px hsl(0 0% 0% / 0.6),
             inset 0 1px 0 hsl(0 0% 100% / 0.08)
           `,
+          backdropFilter: 'blur(20px)',
         }}
       >
         {/* Gold accent line */}

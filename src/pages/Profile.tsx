@@ -209,45 +209,52 @@ const Profile = () => {
           >
             {/* Avatar and Name Section */}
             <div className="flex flex-col items-center gap-6 mb-8">
-              {/* Large Avatar - Clean, minimal design */}
-              <div className="relative">
-                <motion.div 
-                  className="relative"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
-                >
-                  {avatarUrl ? (
-                    <div 
-                      className="w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden"
-                      style={{
-                        boxShadow: isPremium 
-                          ? '0 0 50px hsl(45 80% 50% / 0.5)' 
-                          : '0 0 50px hsl(var(--aurora-orange) / 0.4)'
-                      }}
-                    >
-                      <img 
-                        src={avatarUrl}
-                        alt="Profile"
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                    </div>
-                  ) : (
-                    <LetterAvatar name={userName} size="xl" />
-                  )}
-                  
-                  {/* Premium ring */}
-                  {isPremium && (
-                    <div 
-                      className="absolute inset-0 rounded-full pointer-events-none"
-                      style={{
-                        border: '3px solid hsl(45 80% 55%)',
-                        boxShadow: 'inset 0 0 10px hsl(45 80% 50% / 0.3)'
-                      }}
+              {/* Large Avatar - Animated premium design */}
+              <motion.div 
+                className="relative profile-avatar-container"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ 
+                  type: 'spring', 
+                  stiffness: 260, 
+                  damping: 20,
+                  delay: 0.15
+                }}
+              >
+                {avatarUrl ? (
+                  <div 
+                    className="profile-avatar-glow w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden"
+                    style={{
+                      '--avatar-glow': isPremium 
+                        ? 'hsl(45 80% 50% / 0.5)' 
+                        : 'hsl(var(--aurora-orange) / 0.4)'
+                    } as React.CSSProperties}
+                  >
+                    <img 
+                      src={avatarUrl}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
                     />
-                  )}
-                </motion.div>
-              </div>
+                  </div>
+                ) : (
+                  <LetterAvatar name={userName} size="xl" interactive={false} className="profile-avatar-glow" />
+                )}
+                
+                {/* Premium ring */}
+                {isPremium && (
+                  <motion.div 
+                    className="absolute inset-0 rounded-full pointer-events-none"
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3, duration: 0.4 }}
+                    style={{
+                      border: '3px solid hsl(45 80% 55%)',
+                      boxShadow: 'inset 0 0 10px hsl(45 80% 50% / 0.3)'
+                    }}
+                  />
+                )}
+              </motion.div>
               
               {/* Name and Email */}
               <div className="text-center">
