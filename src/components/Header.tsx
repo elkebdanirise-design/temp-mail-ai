@@ -1,11 +1,12 @@
 import { useState, memo, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { Zap, Key, Menu, Home, BookOpen, DollarSign, Sparkles, FileText, LogIn, LogOut, User, Crown } from 'lucide-react';
+import { Zap, Key, Menu, Home, BookOpen, DollarSign, Sparkles, FileText, LogIn, LogOut, Crown, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BrandLogo } from './BrandLogo';
 import { VIPBadge } from './VIPBadge';
 import { PremiumModal } from './PremiumModal';
+import { LetterAvatar } from './LetterAvatar';
 import { usePremium } from '@/contexts/PremiumContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAvatar } from '@/contexts/AvatarContext';
@@ -43,7 +44,7 @@ export const Header = memo(() => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { isPremium, activatePremium } = usePremium();
   const { user, isLoading: isAuthLoading, signOut } = useAuth();
-  const { avatarUrl } = useAvatar();
+  const { avatarUrl, userName } = useAvatar();
   const { handleAnchorClick } = useSmoothScroll();
   const [activeNav, setActiveNav] = useState('Home');
   const navigate = useNavigate();
@@ -187,38 +188,35 @@ export const Header = memo(() => {
                         border: isPremium ? '1px solid hsl(var(--aurora-orange) / 0.3)' : '1px solid hsl(0 0% 100% / 0.1)'
                       }}
                     >
-                      <div 
-                        className="w-5 h-5 md:w-7 md:h-7 rounded-full flex items-center justify-center overflow-hidden relative"
-                        style={{
-                          background: isPremium 
-                            ? 'linear-gradient(135deg, hsl(var(--aurora-orange)), hsl(var(--aurora-sunset)))'
-                            : 'hsl(0 0% 100% / 0.1)',
-                          boxShadow: isPremium ? '0 0 12px hsl(var(--aurora-orange) / 0.4)' : 'none'
-                        }}
-                      >
-                        {avatarUrl ? (
+                    <div className="relative">
+                      {avatarUrl ? (
+                        <div 
+                          className="w-5 h-5 md:w-7 md:h-7 rounded-full overflow-hidden"
+                          style={{
+                            boxShadow: isPremium ? '0 0 12px hsl(var(--aurora-orange) / 0.4)' : 'none'
+                          }}
+                        >
                           <img 
                             src={avatarUrl}
                             alt="Profile"
                             className="w-full h-full object-cover"
                             referrerPolicy="no-referrer"
                           />
-                        ) : isPremium ? (
-                          <Crown className="w-3 h-3 md:w-4 md:h-4 text-white" />
-                        ) : (
-                          <User className="w-3 h-3 md:w-4 md:h-4 text-muted-foreground" />
-                        )}
-                        {/* Premium ring indicator */}
-                        {isPremium && avatarUrl && (
-                          <div 
-                            className="absolute inset-0 rounded-full pointer-events-none"
-                            style={{
-                              border: '2px solid hsl(var(--aurora-orange))',
-                              boxShadow: 'inset 0 0 4px hsl(var(--aurora-orange) / 0.5)'
-                            }}
-                          />
-                        )}
-                      </div>
+                        </div>
+                      ) : (
+                        <LetterAvatar name={userName} size="sm" />
+                      )}
+                      {/* Premium ring indicator */}
+                      {isPremium && (
+                        <div 
+                          className="absolute inset-0 rounded-full pointer-events-none"
+                          style={{
+                            border: '2px solid hsl(var(--aurora-orange))',
+                            boxShadow: 'inset 0 0 4px hsl(var(--aurora-orange) / 0.5)'
+                          }}
+                        />
+                      )}
+                    </div>
                       <span className="hidden md:inline text-sm font-medium truncate max-w-[100px]" style={{ color: 'hsl(0 0% 70%)' }}>
                         {user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0]}
                       </span>

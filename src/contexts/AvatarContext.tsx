@@ -1,11 +1,10 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
 
 interface AvatarContextType {
   avatarUrl: string | null;
-  updateAvatar: (url: string) => void;
-  refreshAvatar: () => Promise<void>;
+  userName: string;
+  refreshAvatar: () => void;
 }
 
 const AvatarContext = createContext<AvatarContextType | undefined>(undefined);
@@ -14,39 +13,29 @@ export const AvatarProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-  const refreshAvatar = useCallback(async () => {
+  const refreshAvatar = useCallback(() => {
     if (!user) {
       setAvatarUrl(null);
       return;
     }
 
-    // First check profile table for custom avatar
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('avatar_url')
-      .eq('user_id', user.id)
-      .single();
-
-    if (profile?.avatar_url) {
-      setAvatarUrl(profile.avatar_url);
-    } else if (user.user_metadata?.avatar_url || user.user_metadata?.picture) {
-      // Fallback to OAuth provider avatar
-      setAvatarUrl(user.user_metadata?.avatar_url || user.user_metadata?.picture);
-    } else {
-      setAvatarUrl(null);
-    }
+    // Use Google OAuth avatar if available
+    const googleAvatar = user.user_metadata?.avatar_url || user.user_metadata?.picture;
+    setAvatarUrl(googleAvatar || null);
   }, [user]);
 
   useEffect(() => {
     refreshAvatar();
   }, [refreshAvatar]);
 
-  const updateAvatar = useCallback((url: string) => {
-    setAvatarUrl(url);
-  }, []);
+  // Get user display name for letter avatar fallback
+  const userName = user?.user_metadata?.full_name || 
+                   user?.user_metadata?.name || 
+                   user?.email?.split('@')[0] || 
+                   'User';
 
   return (
-    <AvatarContext.Provider value={{ avatarUrl, updateAvatar, refreshAvatar }}>
+    <AvatarContext.Provider value={{ avatarUrl, userName, refreshAvatar }}>
       {children}
     </AvatarContext.Provider>
   );
