@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { usePremium } from '@/contexts/PremiumContext';
+import { useContext } from 'react';
+import { PremiumContext } from '@/contexts/PremiumContext';
 
 interface AdPlaceholderProps {
   variant?: 'horizontal' | 'vertical' | 'square';
@@ -8,7 +9,9 @@ interface AdPlaceholderProps {
 }
 
 export const AdPlaceholder = ({ variant = 'horizontal', className = '', monetagId }: AdPlaceholderProps) => {
-  const { isPremium } = usePremium();
+  // Use context directly to handle cases where provider might not be available
+  const premiumContext = useContext(PremiumContext);
+  const isPremium = premiumContext?.isPremium ?? false;
 
   // Hide ads for premium users
   if (isPremium) {

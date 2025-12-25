@@ -11,7 +11,7 @@ interface PremiumContextType {
   deactivatePremium: () => void;
 }
 
-const PremiumContext = createContext<PremiumContextType | undefined>(undefined);
+export const PremiumContext = createContext<PremiumContextType | undefined>(undefined);
 
 export const PremiumProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
