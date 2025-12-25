@@ -46,20 +46,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Surface OAuth callback errors (e.g. misconfigured provider) directly in the UI
     const params = new URLSearchParams(window.location.search);
-    const oauthError = params.get('error');
-    const oauthErrorDescription = params.get('error_description');
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    
+    const oauthError = params.get('error') || hashParams.get('error');
+    const oauthErrorDescription = params.get('error_description') || hashParams.get('error_description');
+    
     if (oauthError) {
       toast({
         variant: 'destructive',
         title: 'Google sign-in failed',
         description: oauthErrorDescription ?? oauthError,
       });
+      // Clear both query params and hash
       window.history.replaceState({}, document.title, window.location.pathname);
     }
 
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log('[Auth] onAuthStateChange:', event, 'hasSession:', !!session);
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoading(false);
@@ -99,7 +104,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     );
 
     // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      console.log('[Auth] getSession result:', { hasSession: !!session, error });
+      if (error) {
+        console.error('[Auth] getSession error:', error);
+      }
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoading(false);
