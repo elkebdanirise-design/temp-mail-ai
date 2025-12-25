@@ -1,16 +1,20 @@
 import { motion } from 'framer-motion';
-import { Check, Zap, Shield, Globe, Headphones, Sparkles } from 'lucide-react';
+import { Check, Zap, Shield, Globe, Headphones, Sparkles, Clock, Paperclip, Bot } from 'lucide-react';
 
 const freeFeatures = [
   { icon: Zap, text: 'Standard Mail Generation' },
-  { icon: Shield, text: '24h Email Retention' },
+  { icon: Clock, text: '24h Email Retention' },
+  { icon: Paperclip, text: '5MB Attachments' },
   { icon: Sparkles, text: 'Standard Speed' },
   { icon: Check, text: 'Ad-Supported Experience' },
 ];
 
 const proFeatures = [
   { icon: Zap, text: 'No Advertisements' },
+  { icon: Clock, text: '7 Days Email Retention' },
+  { icon: Paperclip, text: '25MB Attachments' },
   { icon: Shield, text: 'AI-Enhanced Privacy' },
+  { icon: Bot, text: 'AI-Powered Spam Filtering' },
   { icon: Globe, text: 'Custom Domain Access' },
   { icon: Sparkles, text: 'High-Speed Servers' },
   { icon: Headphones, text: '24/7 Premium Support' },
@@ -61,16 +65,16 @@ export const PricingSection = () => {
               </div>
             </div>
 
-            <ul className="space-y-4 flex-1">
+            <ul className="space-y-3 flex-1">
               {freeFeatures.map((feature, index) => (
                 <li key={index} className="flex items-center gap-3">
                   <div 
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                     style={{ background: 'hsl(var(--secondary))' }}
                   >
                     <feature.icon className="w-4 h-4 text-muted-foreground" />
                   </div>
-                  <span className="text-foreground/80">{feature.text}</span>
+                  <span className="text-foreground/80 text-sm">{feature.text}</span>
                 </li>
               ))}
             </ul>
@@ -153,11 +157,11 @@ export const PricingSection = () => {
               </div>
             </div>
 
-            <ul className="space-y-4 flex-1">
+            <ul className="space-y-3 flex-1">
               {proFeatures.map((feature, index) => (
                 <li key={index} className="flex items-center gap-3">
                   <div 
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                     style={{ 
                       background: 'linear-gradient(135deg, hsl(var(--aurora-orange) / 0.2), hsl(var(--aurora-magenta) / 0.15))',
                       border: '1px solid hsl(var(--aurora-orange) / 0.3)',
@@ -168,16 +172,21 @@ export const PricingSection = () => {
                       style={{ color: 'hsl(var(--aurora-orange))' }}
                     />
                   </div>
-                  <span className="text-foreground">{feature.text}</span>
+                  <span className="text-foreground text-sm">{feature.text}</span>
                 </li>
               ))}
             </ul>
 
-            <button 
-              className="mt-8 w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-300 hover:scale-[1.02] mesh-gradient-btn-intense"
+            <motion.button 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className="mt-8 w-full py-4 px-6 rounded-xl font-bold text-white text-lg transition-all duration-300 mesh-gradient-btn-intense"
+              style={{
+                boxShadow: '0 0 30px hsl(var(--aurora-orange) / 0.4), 0 8px 32px hsl(var(--aurora-magenta) / 0.3)',
+              }}
             >
               Upgrade to Pro
-            </button>
+            </motion.button>
           </motion.div>
         </div>
       </div>
