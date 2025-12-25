@@ -44,33 +44,96 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    // Surface OAuth callback errors (e.g. misconfigured provider) directly in the UI
-    const params = new URLSearchParams(window.location.search);
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    let isMounted = true;
     
-    const oauthError = params.get('error') || hashParams.get('error');
-    const oauthErrorDescription = params.get('error_description') || hashParams.get('error_description');
-    
-    if (oauthError) {
-      toast({
-        variant: 'destructive',
-        title: 'Google sign-in failed',
-        description: oauthErrorDescription ?? oauthError,
-      });
-      // Clear both query params and hash
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
+    const initializeAuth = async () => {
+      try {
+        // Check if this is an OAuth callback with hash fragment
+        const hashFragment = window.location.hash;
+        const hasAccessToken = hashFragment.includes('access_token');
+        
+        if (hasAccessToken) {
+          console.log('[Auth] OAuth callback detected, processing hash fragment...');
+          // Supabase will automatically parse the hash and establish the session
+          // We just need to wait for getSession to complete
+        }
+        
+        // Surface OAuth callback errors
+        const params = new URLSearchParams(window.location.search);
+        const hashParams = new URLSearchParams(hashFragment.substring(1));
+        
+        const oauthError = params.get('error') || hashParams.get('error');
+        const oauthErrorDescription = params.get('error_description') || hashParams.get('error_description');
+        
+        if (oauthError) {
+          toast({
+            variant: 'destructive',
+            title: 'Google sign-in failed',
+            description: oauthErrorDescription ?? oauthError,
+          });
+          window.history.replaceState({}, document.title, window.location.pathname);
+          if (isMounted) setIsLoading(false);
+          return;
+        }
 
-    // Set up auth state listener FIRST
+        // Get the session - this will also process any OAuth hash fragments
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        console.log('[Auth] getSession result:', { hasSession: !!session, error });
+        
+        if (error) {
+          console.error('[Auth] getSession error:', error);
+        }
+        
+        if (isMounted) {
+          setSession(session);
+          setUser(session?.user ?? null);
+          setIsLoading(false);
+          
+          // Clean URL after successful OAuth callback
+          if (hasAccessToken) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+            console.log('[Auth] Cleaned OAuth hash from URL');
+          }
+          
+          // Sync profile if user exists
+          if (session?.user) {
+            const profileReady = await ensureUserProfile(session.user);
+            // Show welcome modal for fresh OAuth logins
+            if (hasAccessToken && profileReady && !hasShownWelcomeModal.current) {
+              hasShownWelcomeModal.current = true;
+              const userName =
+                session.user.user_metadata?.full_name ||
+                session.user.user_metadata?.name ||
+                session.user.email?.split('@')[0] ||
+                'there';
+              const avatarUrl =
+                session.user.user_metadata?.avatar_url ||
+                session.user.user_metadata?.picture ||
+                null;
+              setWelcomeData({ isOpen: true, userName, avatarUrl });
+            }
+          }
+        }
+      } catch (err) {
+        console.error('[Auth] Initialization error:', err);
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    // Set up auth state listener for ongoing changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         console.log('[Auth] onAuthStateChange:', event, 'hasSession:', !!session);
+        
+        if (!isMounted) return;
+        
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoading(false);
         
-        // Show welcome modal and create profile when user signs in
-        if (event === 'SIGNED_IN' && session?.user) {
+        // Handle sign-in events (not from initial OAuth callback)
+        if (event === 'SIGNED_IN' && session?.user && !window.location.hash.includes('access_token')) {
           const userName =
             session.user.user_metadata?.full_name ||
             session.user.user_metadata?.name ||
@@ -82,8 +145,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             session.user.user_metadata?.picture ||
             null;
 
-          // Sync profile first; only then show the welcome UI
           setTimeout(async () => {
+            if (!isMounted) return;
             const profileReady = await ensureUserProfile(session.user);
             if (profileReady && !hasShownWelcomeModal.current) {
               hasShownWelcomeModal.current = true;
@@ -92,7 +155,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }, 0);
         }
         
-        // Show goodbye toast and reset flag on sign out
+        // Handle sign out
         if (event === 'SIGNED_OUT') {
           hasShownWelcomeModal.current = false;
           toast({
@@ -103,25 +166,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     );
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session }, error }) => {
-      console.log('[Auth] getSession result:', { hasSession: !!session, error });
-      if (error) {
-        console.error('[Auth] getSession error:', error);
-      }
-      setSession(session);
-      setUser(session?.user ?? null);
-      setIsLoading(false);
+    // Initialize auth
+    initializeAuth();
 
-      // If a user exists but their profile row is missing, force a sync.
-      if (session?.user) {
-        setTimeout(() => {
-          ensureUserProfile(session.user);
-        }, 0);
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Ensure user has a profile in the profiles table
