@@ -16,6 +16,7 @@ interface LetterAvatarProps {
   name: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
+  interactive?: boolean;
 }
 
 const getInitial = (name: string): string => {
@@ -40,20 +41,26 @@ const sizeClasses = {
   xl: 'w-28 h-28 text-5xl sm:w-36 sm:h-36 sm:text-6xl',
 };
 
-export const LetterAvatar = memo(({ name, size = 'md', className = '' }: LetterAvatarProps) => {
+export const LetterAvatar = memo(({ name, size = 'md', className = '', interactive = true }: LetterAvatarProps) => {
   const initial = getInitial(name);
   const color = getColorFromName(name);
 
   return (
     <div
-      className={`rounded-full flex items-center justify-center font-bold ${sizeClasses[size]} ${className}`}
+      className={`
+        letter-avatar
+        rounded-full flex items-center justify-center font-bold 
+        ${sizeClasses[size]} 
+        ${interactive ? 'letter-avatar-interactive' : ''} 
+        ${className}
+      `}
       style={{
         background: `linear-gradient(135deg, ${color.bg}, ${color.bg.replace('50%', '40%')})`,
         color: color.text,
-        boxShadow: `0 4px 20px ${color.bg.replace(')', ' / 0.4)')}`
-      }}
+        '--avatar-glow-color': color.bg.replace(')', ' / 0.5)'),
+      } as React.CSSProperties}
     >
-      {initial}
+      <span className="letter-avatar-initial">{initial}</span>
     </div>
   );
 });
