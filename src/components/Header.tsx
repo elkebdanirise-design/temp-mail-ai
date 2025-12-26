@@ -290,9 +290,9 @@ export const Header = memo(() => {
                 </DropdownMenu>
               ) : (
               <>
-                  {/* Pro Button - Mobile: 36x72, Desktop: 44x110 */}
+                  {/* Pro Button - Mobile: 36x72, Desktop: 44x110 with touch feedback */}
                   {!isPremium && (
-                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] transition-transform rounded-lg h-[36px] md:h-11 w-[72px] md:w-[110px] p-0">
+                    <Button asChild className="relative overflow-hidden mesh-gradient-btn-intense header-cta-frame header-cta-static hover:scale-[1.02] active:scale-95 transition-transform duration-150 rounded-lg h-[36px] md:h-11 w-[72px] md:w-[110px] p-0">
                       <a href="#pro-systems" onClick={e => handleAnchorClick(e, '#pro-systems')} className="w-full h-full flex items-center justify-center gap-1.5">
                         <Zap className="w-3.5 h-3.5 md:w-[18px] md:h-[18px] text-white shrink-0" />
                         <span className="text-[11px] md:text-[15px] font-semibold text-white leading-none">Pro</span>
@@ -300,11 +300,11 @@ export const Header = memo(() => {
                     </Button>
                   )}
                   
-                  {/* Login Button - Mobile: 36x72, Desktop: 44x110 */}
+                  {/* Login Button - Mobile: 36x72, Desktop: 44x110 with touch feedback */}
                   <Button 
                     asChild 
                     variant="ghost" 
-                    className="geometric-diamond-btn header-cta-frame h-[36px] md:h-11 w-[72px] md:w-[110px] p-0 rounded-lg"
+                    className="geometric-diamond-btn header-cta-frame h-[36px] md:h-11 w-[72px] md:w-[110px] p-0 rounded-lg active:scale-95 transition-transform duration-150"
                   >
                     <Link to="/auth" className="w-full h-full flex items-center justify-center gap-1.5">
                       <LogIn className="w-3.5 h-3.5 md:w-[18px] md:h-[18px] shrink-0" style={{ color: 'hsl(var(--aurora-orange))' }} />
